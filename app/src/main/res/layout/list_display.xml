@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="@color/blue"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_eges"
+        android:text="pending\n"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="316dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@android:color/transparent"
+        app:icon="@drawable/barcode_icon"
+        app:iconTint="@android:color/black"
+        app:iconGravity="textTop"
+        app:iconSize="100dp"/>
+
+
+</LinearLayout>

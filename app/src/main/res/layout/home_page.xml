@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:paddingTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:paddingStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profilePictureHomePage"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:src="@color/blue"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="230dp"
+                android:layout_height="100dp"
+                android:paddingStart="10dp"
+                android:text="welcome back\n"
+                android:textSize="25sp" />
+
+            <ImageButton
+                android:id="@+id/optionsButton"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="More options"
+                android:src="@drawable/option_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingTop="50dp"
+            android:paddingStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/NumberOfLists"
+                android:layout_width="125dp"
+                android:layout_height="50dp"
+                android:text="number of lists\n"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:background="@drawable/round_eges"
+
+
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/blue"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            android:layout_weight="0"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/blue"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addListButton"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/circle"
+            android:text="+"
+            android:textSize="30sp"
+            />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
