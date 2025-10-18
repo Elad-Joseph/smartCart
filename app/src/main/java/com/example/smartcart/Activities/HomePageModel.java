@@ -3,27 +3,47 @@ package com.example.smartcart.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
+import com.example.smartcart.data.DbUsersHandler;
+import com.example.smartcart.data.FireStoreListCallBack;
+import com.example.smartcart.modle.ImportedShoppingLists;
+import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
+
+import java.util.ArrayList;
 
 
 public class HomePageModel extends AppCompatActivity {
     SharedPreferences sharedPreferences;
+    private DbUsersHandler UserDatabase;
+    ImportedShoppingLists importedShoppingLists;
+
 
     ImageButton optionsButton;
     TextView welcomeText;
     MaterialTextView NumberOfListTextview;
     MaterialButton addList;
+    LinearLayout listsLayout;
+    LinearLayout listContainer;
+
+    private String email;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,23 +56,28 @@ public class HomePageModel extends AppCompatActivity {
         setUpListeners();
 
         String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
-        int numberOfLists = sharedPreferences.getInt("number list" , 0);
+        email = sharedPreferences.getString("email", null);
+        int numberOfLists = sharedPreferences.getInt("number list", 0);
 
         if (username != null) {
-            welcomeText.setText(welcomeText.getText().toString()+username);
+            welcomeText.setText(welcomeText.getText().toString() + username);
         }
 
-        NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + numberOfLists);
+        NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + numberOfLists);
 
+        importedShoppingLists = new ImportedShoppingLists();
+        UserDatabase = new DbUsersHandler();
+        refreshLists();
     }
 
 
-    public void setUpIds(){
+    public void setUpIds() {
         optionsButton = findViewById(R.id.optionsButton);
         welcomeText = findViewById(R.id.welcomeText);
         NumberOfListTextview = findViewById(R.id.NumberOfLists);
         addList = findViewById(R.id.addListButton);
+        listsLayout = findViewById(R.id.listsContainer);
+        listContainer = findViewById(R.id.listsContainer);
     }
 
     public void setUpListeners() {
@@ -63,13 +88,8 @@ public class HomePageModel extends AppCompatActivity {
             }
         });
 
-        addList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomePageModel.this , BarcodeScannerModel.class);
-                startActivity(intent);
-            }
-        });
+        addList.setOnClickListener(v -> showAddListPopup());
+
     }
 
     private void showOptionsMenu(View anchor) {
@@ -84,10 +104,9 @@ public class HomePageModel extends AppCompatActivity {
                     Intent intent = new Intent(HomePageModel.this, ProfilePageModel.class);
                     startActivity(intent);
                     return true;
-                }
-                 else if (item.getItemId() == R.id.sighOut) {
+                } else if (item.getItemId() == R.id.sighOut) {
                     sharedPreferences.edit().clear().apply();
-                    Intent intent = new Intent(HomePageModel.this , loginModel.class);
+                    Intent intent = new Intent(HomePageModel.this, loginModel.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
@@ -97,6 +116,48 @@ public class HomePageModel extends AppCompatActivity {
         });
 
         popupMenu.show();
+    }
+
+    private void showAddListPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Inflate the custom layout
+        View view = LayoutInflater.from(this).inflate(R.layout.popup_add_list, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        EditText editTextListName = view.findViewById(R.id.editTextListName);
+        Button buttonAddList = view.findViewById(R.id.buttonAddList);
+
+        buttonAddList.setOnClickListener(v -> {
+            String listName = editTextListName.getText().toString().trim();
+
+            if (!listName.isEmpty()) {
+                ShoppingList newList = new ShoppingList();
+                newList = new ShoppingList(listName);
+                UserDatabase.addNewListToUser(email, newList);
+                listContainer.addView(newList.createRow(this));
+                Toast.makeText(this, "List added: " + listName, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                editTextListName.setError("Enter a name");
+            }
+        });
+    }
+
+    private void refreshLists() {
+        listsLayout.removeAllViews();
+        UserDatabase.getListsFromUser(email, new FireStoreListCallBack() {
+            @Override
+            public void onCallBack(ArrayList<ShoppingList> lists) {
+                for (ShoppingList list : lists) {
+                    importedShoppingLists.addList(list);
+                    listContainer.addView(list.createRow(HomePageModel.this));
+                }
+            }
+        });
     }
 }
 

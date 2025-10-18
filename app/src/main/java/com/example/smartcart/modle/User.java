@@ -20,7 +20,7 @@ public class User {
 
     }
 
-    public Map<String , Object>exportUserToDB(){
+    public Map<String , Object> exportUserToDB(){
         Map<String , Object> user = new HashMap<>();
         user.put("username" , this.Username);
         user.put("email" , this.Email);

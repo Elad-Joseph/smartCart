@@ -33,6 +33,7 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/barcodeButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="@android:color/transparent"

@@ -1,7 +1,10 @@
 package com.example.smartcart.data;
 
+import com.example.smartcart.modle.Item;
 import com.example.smartcart.modle.Product;
+import com.example.smartcart.modle.ShoppingList;
 import com.example.smartcart.modle.User;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,6 +26,18 @@ public class DbUsersHandler {
 
     public DbUsersHandler(){
         database = FirebaseFirestore.getInstance();
+        database.collection("users").get()
+                .addOnCompleteListener(allDocsTask -> {
+                    if (allDocsTask.isSuccessful()) {
+                        Log.d("FirestoreDebug", "All user documents:");
+                        for (DocumentSnapshot doc : allDocsTask.getResult()) {
+                            Log.d("FirestoreDebug", doc.getId() + " -> " + doc.getData());
+                        }
+                    } else {
+                        Log.e("FirestoreDebug", "Error getting all users: ", allDocsTask.getException());
+                    }
+                });
+
     }
 
     public void addNewUser(User u){
@@ -49,7 +64,7 @@ public class DbUsersHandler {
                                 list.add(data);
                                 fireStoreCallBack.onCallBack(list);
                             } else {
-                                // Password doesn't match: return empty list or handle error
+                                // Password doesn't match: return empty list
                                 fireStoreCallBack.onCallBack(new ArrayList<>());
                             }
                         } else {
@@ -62,6 +77,7 @@ public class DbUsersHandler {
                     }
                 });
     }
+
 
     public void findProduct(String id , FireStoreCallBack fireStoreCallBack){
         database.collection("products").whereEqualTo("id" , id).get()
@@ -89,30 +105,61 @@ public class DbUsersHandler {
         database.collection("products").add(p.exportProduct());
     }
 
-    public void getListFromUser(String email , FireStoreListCallBack fireStoreListCallBack){
+    public void getListsFromUser(String email , FireStoreListCallBack fireStoreListCallBack){
         database.collection("users").whereEqualTo("email" , email).get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (!querySnapshot.isEmpty()) {
                             CollectionReference collectionReference = querySnapshot.getDocuments().get(0).getReference().collection("list");
-                            ArrayList<Map<String, ArrayList<Map<String, Object>>>> lists = new ArrayList<>();
-                            collectionReference.get().addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    QuerySnapshot querySnapshot1 = task1.getResult();
+                            ArrayList<ShoppingList> shoppingLists = new ArrayList<>();
+
+                            collectionReference.get().addOnCompleteListener(getLists -> {
+                                if (getLists.isSuccessful()) {
+                                    QuerySnapshot querySnapshot1 = getLists.getResult();
                                     if(!querySnapshot1.isEmpty()){
-                                    for (QueryDocumentSnapshot document : task1.getResult()) {
-                                        Map<String, Object> data = document.getData();
-                                        String listName = (String) document.get("name");
-                                        ArrayList<Map<String, Object>> items = (ArrayList<Map<String, Object>>) document.get("items");
-                                        Map<String, ArrayList<Map<String, Object>>> list = new HashMap<>();
-                                        list.put(listName, items);
-                                        lists.add(list);
+                                    for (QueryDocumentSnapshot document : getLists.getResult()) {
+                                        Map<String, Object> list = document.getData();
+                                        ShoppingList shoppingList = new ShoppingList();
+                                        for(String key : list.keySet()){
+                                            Log.d("FirestoreDebug", "List Data Key: " + key + ", Value: " + list.get(key));
+                                            switch (key) {
+                                                case "name":
+                                                    shoppingList.setName((String) list.get(key));
+                                                    break;
+
+                                                case "items":
+                                                    ArrayList<Map<String, Object>> databaseItems = (ArrayList<Map<String, Object>>) list.get(key);
+                                                    for (Map<String, Object> databaseItem : databaseItems) {
+                                                        Item item = new Item( (String) databaseItem.get("name") ,(boolean) databaseItem.get("checked"));
+                                                        shoppingList.addItem(item);
+                                                    }
+                                                    break;
+
+                                                case "numberOfItems":
+                                                    shoppingList.setLength(((Long) list.get(key)).intValue());
+                                                    break;
+
+                                                case "Id":
+                                                    shoppingList.setId(((Long) list.get(key)).intValue());
+                                                    break;
+                                                case "Hadderid":
+                                                    shoppingList.setHadderid(((Long) list.get(key)).intValue());
+                                                    break;
+                                                case "EditButtonid":
+                                                    shoppingList.setEditButtonid(((Long) list.get(key)).intValue());
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        shoppingLists.add(shoppingList);
                                     }
                                     }
                                 }
+                                fireStoreListCallBack.onCallBack(shoppingLists);
                             });
-                            fireStoreListCallBack.onCallBack(lists);
+
                         } else {
                             fireStoreListCallBack.onCallBack(new ArrayList<>());
                         }
@@ -122,6 +169,34 @@ public class DbUsersHandler {
                     }
                 });
     }
+
+    public void addNewListToUser(String email, ShoppingList shoppingList) {
+        Log.d("FirestoreDebug", "addNewListToUser called with email: " + email);
+        database.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            DocumentSnapshot userDocument = querySnapshot.getDocuments().get(0);
+                            CollectionReference listCollection = userDocument.getReference().collection("list");
+
+                            listCollection.add(shoppingList.exportListToDB())
+                                    .addOnSuccessListener(documentReference ->
+                                            Log.d("FirestoreDebug", "List added successfully with ID: " + documentReference.getId()))
+                                    .addOnFailureListener(e ->
+                                            Log.e("FirestoreDebug", "Error adding list", e));
+
+                        } else {
+                            Log.e("FirestoreDebug", "No user found with email: " + email);
+                        }
+                    } else {
+                        Log.e("FirestoreDebug", "User query failed", task.getException());
+                    }
+                });
+    }
+
 
     public void getProfilePicture(String email){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -133,4 +208,3 @@ public class DbUsersHandler {
     }
 
 }
-

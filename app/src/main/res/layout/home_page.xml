@@ -1,104 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
+    <!-- Main vertical container -->
     <LinearLayout
-        android:paddingTop="30dp"
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Top bar with profile + welcome + options -->
         <LinearLayout
-            android:paddingStart="10dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_weight="0"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profilePictureHomePage"
                 android:layout_width="84dp"
                 android:layout_height="84dp"
                 android:src="@color/blue"
-                app:shapeAppearanceOverlay="@style/CircleImageView" />
+                app:shapeAppearanceOverlay="@style/CircleImageView"
+                app:strokeColor="@color/blue"
+                app:strokeWidth="2dp"
+                android:elevation="2dp" />
 
             <TextView
                 android:id="@+id/welcomeText"
-                android:layout_width="230dp"
-                android:layout_height="100dp"
-                android:paddingStart="10dp"
-                android:text="welcome back\n"
-                android:textSize="25sp" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="16dp"
+                android:text="Welcome back!"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/optionsButton"
-                android:layout_width="50dp"
-                android:layout_height="100dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="More options"
-                android:src="@drawable/option_button" />
-
+                android:src="@drawable/option_button"
+                app:tint="@color/black" />
         </LinearLayout>
 
+        <!-- Section: Stats / Info -->
         <LinearLayout
-            android:paddingTop="50dp"
-            android:paddingStart="20dp"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_weight="0"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/NumberOfLists"
-                android:layout_width="125dp"
-                android:layout_height="50dp"
-                android:text="number of lists\n"
-                android:textSize="15sp"
-                android:textAlignment="center"
-                android:background="@drawable/round_eges"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:strokeColor="@color/blue"
+                app:strokeWidth="2dp">
 
-
-                />
-
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/NumberOfLists"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Number of Lists"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
+        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/blue"/>
+            android:background="@color/blue"
+            android:layout_marginVertical="8dp" />
 
+        <!-- Scrollable content -->
         <ScrollView
+            android:id="@+id/scrollViewLists"
             android:layout_width="match_parent"
-            android:layout_height="370dp"
-            android:layout_weight="0"
-            >
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="ifContentScrolls"
+            android:paddingVertical="8dp">
 
             <LinearLayout
+                android:id="@+id/listsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:paddingHorizontal="8dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_gravity="left"
+                    android:orientation="horizontal"
+                    android:background="@drawable/square">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:backgroundTint="@color/clear"
+                        android:layout_weight="5"
+                        >
+
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/my_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:backgroundTint="@color/clear"
+                            android:background="@drawable/square"
+                            />
+
+                        <TextView
+                            android:id="@+id/my_button_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sample List"
+                            android:textColor="@color/black"
+                            android:textSize="25sp"
+                            android:paddingStart="8dp"
+                            android:layout_gravity="left|center_vertical"/>
+
+
+                    </FrameLayout>
+
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end|center_vertical"
+                        android:src="@drawable/baseline_edit_square"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
         </ScrollView>
 
+        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/blue"/>
+            android:background="@color/blue"
+            android:layout_marginVertical="8dp" />
 
+        <!-- Floating Add Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addListButton"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:layout_gravity="center"
             android:background="@drawable/circle"
             android:text="+"
             android:textSize="30sp"
-            />
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/blue"
+            android:elevation="6dp" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
