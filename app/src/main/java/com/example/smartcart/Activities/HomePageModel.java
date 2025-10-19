@@ -65,7 +65,7 @@ public class HomePageModel extends AppCompatActivity {
 
         NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + numberOfLists);
 
-        importedShoppingLists = new ImportedShoppingLists();
+        importedShoppingLists = ImportedShoppingLists.getInstance();
         UserDatabase = new DbUsersHandler();
         refreshLists();
     }
@@ -159,5 +159,7 @@ public class HomePageModel extends AppCompatActivity {
             }
         });
     }
+
+
 }
 

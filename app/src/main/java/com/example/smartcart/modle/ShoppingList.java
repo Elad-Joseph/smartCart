@@ -2,6 +2,7 @@ package com.example.smartcart.modle;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.smartcart.Activities.ListDisplayModel;
 import com.example.smartcart.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -97,6 +99,10 @@ public class ShoppingList {
         Id = id;
     }
 
+    public int getId() {
+        return Id;
+    }
+
 
     public Map<String , Object> exportListToDB() {
         Map<String, Object> listData = new HashMap<>();
@@ -140,6 +146,14 @@ public class ShoppingList {
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
         materialButton.setId(Id);
+        materialButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ListDisplayModel.class);
+                intent.putExtra("ListId", Id);
+                context.startActivity(intent);
+            }
+        });
         materialButton.setLayoutParams(btnParams);
         materialButton.setBackgroundResource(R.drawable.clear_background);
         materialButton.setBackgroundTintList(null); // clear tint

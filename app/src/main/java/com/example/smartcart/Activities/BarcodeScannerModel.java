@@ -37,6 +37,7 @@ public class BarcodeScannerModel extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
+
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -165,4 +166,6 @@ public class BarcodeScannerModel extends AppCompatActivity {
             }
         });
     }
+
+
 }

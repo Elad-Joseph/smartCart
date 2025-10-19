@@ -10,10 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
+import com.example.smartcart.modle.ImportedShoppingLists;
+import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 
 public class ListDisplayModel extends AppCompatActivity {
     SharedPreferences sharedPreferences;
+    private ImportedShoppingLists importedShoppingLists;
+    private ShoppingList currentShoppingList;
 
     MaterialButton scanItemsButton;
 
@@ -32,8 +36,9 @@ public class ListDisplayModel extends AppCompatActivity {
         setUpIds();
         setUpListeners();
 
-
-
+        Intent intent = getIntent();
+        importedShoppingLists = ImportedShoppingLists.getInstance();
+        currentShoppingList = importedShoppingLists.getListById(intent.getIntExtra("listId", -1));
 
     }
 
