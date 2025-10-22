@@ -3,6 +3,7 @@ package com.example.smartcart.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.FireStoreCallBack;
 import com.example.smartcart.R;
 import com.example.smartcart.UserViewModel;
+import com.example.smartcart.modle.CurrentUser;
 import com.google.firebase.FirebaseApp;
 
 import java.util.List;
@@ -100,6 +102,7 @@ public class loginModel extends  AppCompatActivity {
                     editor.putString("email", email);
                     editor.putInt("list number" , numberOfLists);
                     editor.apply();
+
 
                     Intent intent = new Intent(loginModel.this, HomePageModel.class);
                     startActivity(intent);

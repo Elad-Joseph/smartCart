@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
+
 //        userViewModel= new ViewModelProvider(this).get(UserViewModel.class);
 //
 //        userViewModel.getUser().observe(this , user -> {

@@ -1,5 +1,6 @@
 package com.example.smartcart.data;
 
+import com.example.smartcart.Activities.HomePageModel;
 import com.example.smartcart.modle.Item;
 import com.example.smartcart.modle.Product;
 import com.example.smartcart.modle.ShoppingList;
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -207,5 +209,34 @@ public class DbUsersHandler {
                 });
     }
 
+    public void removeListFromUser(String email , int id){
+        database.collection("users").whereEqualTo("email" , email).get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            CollectionReference collectionReference = querySnapshot.getDocuments().get(0).getReference().collection("list");
+
+                            collectionReference.get().addOnCompleteListener(getLists -> {
+                                if (getLists.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : getLists.getResult()) {
+                                        Map<String, Object> list = document.getData();
+                                        if(((Long)list.get("Id")).intValue() == id){
+                                            document.getReference().delete();
+                                            Log.d("FirestoreDebug", "List deleted:" + id);
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else {
+                            Log.e("FirestoreDebug", "No user found with email: " + email);
+                        }
+                    } else {
+                        Log.e("FirestoreDebug", "User query failed", task.getException());
+                    }
+                });
+    }
 
 }

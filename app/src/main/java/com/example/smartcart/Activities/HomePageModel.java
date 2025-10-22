@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartcart.R;
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.FireStoreListCallBack;
+import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
@@ -58,6 +59,11 @@ public class HomePageModel extends AppCompatActivity {
         String username = sharedPreferences.getString("username", null);
         email = sharedPreferences.getString("email", null);
         int numberOfLists = sharedPreferences.getInt("number list", 0);
+
+        CurrentUser currentUser = CurrentUser.getInstance();
+        currentUser.setEmail(email);
+        currentUser.setUsername(username);
+        currentUser.setNumberOfLists(numberOfLists);
 
         if (username != null) {
             welcomeText.setText(welcomeText.getText().toString() + username);
