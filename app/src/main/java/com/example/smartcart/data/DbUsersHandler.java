@@ -209,7 +209,7 @@ public class DbUsersHandler {
                 });
     }
 
-    public void removeListFromUser(String email , int id){
+    public void removeListFromUser(String email , int id , CallBack callBack){
         database.collection("users").whereEqualTo("email" , email).get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
@@ -227,6 +227,7 @@ public class DbUsersHandler {
                                             break;
                                         }
                                     }
+                                    callBack.onCallBack();
                                 }
                             });
 

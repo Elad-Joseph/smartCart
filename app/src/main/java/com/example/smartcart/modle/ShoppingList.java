@@ -124,7 +124,61 @@ public class ShoppingList {
 
         return listData;
     }
+// java
 
+
+//public FrameLayout createRow(Context context) {
+//    // FrameLayout (height 75dp, weight 5)
+//    FrameLayout frameLayout = new FrameLayout(context);
+//    LinearLayout.LayoutParams flParams = new LinearLayout.LayoutParams(
+//            0,
+//            dpToPx(context, 75)
+//    );
+//    frameLayout.setLayoutParams(flParams);
+//    frameLayout.setBackgroundResource(R.drawable.square);
+//
+//    // MaterialButton (match_parent)
+//    MaterialButton materialButton = new MaterialButton(context);
+//    FrameLayout.LayoutParams btnParams = new FrameLayout.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.MATCH_PARENT
+//    );
+//    materialButton.setId(Id);
+//    materialButton.setLayoutParams(btnParams);
+//    materialButton.setBackgroundResource(R.drawable.square);
+//    materialButton.setBackgroundTintList(null); // clear tint like app:backgroundTint="@color/clear"
+//    materialButton.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent(context, ListDisplayModel.class);
+//            intent.putExtra("ListId", Id);
+//            if (context instanceof Activity) {
+//                ((Activity) context).startActivity(intent);
+//            } else {
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+//            }
+//        }
+//    });
+//    frameLayout.addView(materialButton);
+//
+//    // TextView (left | center_vertical)
+//    TextView textView = new TextView(context);
+//    FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//    );
+//    tvParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
+//    textView.setId(Hadderid);
+//    textView.setLayoutParams(tvParams);
+//    textView.setText(Name);
+//    textView.setTextColor(Color.BLACK);
+//    textView.setTextSize(25);
+//    textView.setPadding(dpToPx(context, 8), 0, 0, 0);
+//    frameLayout.addView(textView);
+//
+//    return frameLayout;
+//}
     public LinearLayout createRow(Context context) {
         // Parent LinearLayout
         LinearLayout linearLayout = new LinearLayout(context);
@@ -189,58 +243,6 @@ public class ShoppingList {
 
         // Add FrameLayout to LinearLayout
         linearLayout.addView(frameLayout);
-
-        // ImageButton (right 25%)
-        ImageButton imageButton = new ImageButton(context);
-        LinearLayout.LayoutParams ibParams = new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                1f // weight 1
-        );
-        imageButton.setId(EditButtonid);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context, imageButton);
-                MenuInflater inflater = popupMenu.getMenuInflater();
-                inflater.inflate(R.menu.list_options, popupMenu.getMenu());
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.deleteList) {
-                            CurrentUser currentUser = CurrentUser.getInstance();
-                            DbUsersHandler dbUsersHandler = new DbUsersHandler();
-                            dbUsersHandler.removeListFromUser(currentUser.getEmail(), Id);
-                            Toast.makeText(context, "List Deleted:"+ currentUser.getEmail() + " " + Id , Toast.LENGTH_SHORT).show();
-                            return true;
-                        } else if (itemId == R.id.sighOut) {
-                            SharedPreferences sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
-                            sharedPreferences.edit().clear().apply();
-                            Intent intent = new Intent(context, loginModel.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            if (context instanceof Activity) {
-                                ((Activity) context).startActivity(intent);
-                                ((Activity) context).finish();
-                            } else {
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                context.startActivity(intent);
-                            }
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-
-                popupMenu.show();
-            }
-        });
-        imageButton.setLayoutParams(ibParams);
-        imageButton.setImageResource(R.drawable.baseline_edit_square);
-        imageButton.setBackgroundColor(Color.TRANSPARENT);
-        imageButton.setScaleType(ImageButton.ScaleType.CENTER_INSIDE);
-        linearLayout.addView(imageButton);
 
         return linearLayout;
     }

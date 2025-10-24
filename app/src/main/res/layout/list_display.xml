@@ -6,22 +6,63 @@
     android:layout_height="match_parent"
     android:gravity="">
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:background="@color/blue"
-        />
+        android:layout_height="170dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@color/blue"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/listNameDisplay"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:layout_weight="10"
+                />
+
+            <ImageButton
+                android:id="@+id/listOptionsButton"
+                android:layout_width="10dp"
+                android:layout_height="100dp"
+                android:src="@drawable/baseline_menu"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:layout_gravity="top|end"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="50dp"
+                android:scaleType="fitStart"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/round_eges"
         android:text="pending\n"
         android:textAlignment="center"
         android:textSize="30sp"
         />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        android:layout_marginVertical="8dp" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="316dp">
@@ -29,18 +70,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+
+        </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/barcodeButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:backgroundTint="@android:color/transparent"
-        app:icon="@drawable/barcode_icon"
-        app:iconTint="@android:color/black"
-        app:iconGravity="textTop"
-        app:iconSize="100dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        android:layout_marginVertical="8dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+
+        <ImageButton
+            android:id="@+id/barcodeButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/barcode_icon"
+            android:layout_gravity="left"
+            android:layout_marginLeft="20dp"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
+            android:id="@+id/addItemButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_add_circle_outline" />
+    </FrameLayout>
 
 
 </LinearLayout>

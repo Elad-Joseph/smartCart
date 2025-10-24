@@ -108,18 +108,18 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="8dp" >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_gravity="left"
-                    android:orientation="horizontal"
-                    android:background="@drawable/square">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="75dp"-->
+<!--                    android:layout_gravity="left"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:background="@drawable/square">-->
 
                     <FrameLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="75dp"
-                        android:backgroundTint="@color/clear"
                         android:layout_weight="5"
+                        android:background="@drawable/square"
                         >
 
 
@@ -145,15 +145,7 @@
 
                     </FrameLayout>
 
-                    <ImageButton
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end|center_vertical"
-                        android:src="@drawable/baseline_edit_square"
-                        android:background="@android:color/transparent"
-                        android:layout_weight="1"/>
-
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
 
 
