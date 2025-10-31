@@ -1,6 +1,7 @@
 package com.example.smartcart.data;
 
 import com.example.smartcart.Activities.HomePageModel;
+import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.Item;
 import com.example.smartcart.modle.Product;
 import com.example.smartcart.modle.ShoppingList;
@@ -25,8 +26,10 @@ import java.util.Map;
 public class DbUsersHandler {
     private FirebaseFirestore database;
     DocumentReference docRef;
+    CurrentUser currentUser;
 
     public DbUsersHandler(){
+        currentUser = CurrentUser.getInstance();
         database = FirebaseFirestore.getInstance();
         database.collection("users").get()
                 .addOnCompleteListener(allDocsTask -> {
@@ -199,7 +202,6 @@ public class DbUsersHandler {
                 });
     }
 
-
     public void getProfilePicture(String email){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] data = baos.toByteArray();
@@ -240,4 +242,36 @@ public class DbUsersHandler {
                 });
     }
 
+    public void addItemToSelectedList(int id , Item item , CallBack callBack){
+        database.collection("users").whereEqualTo("email" , currentUser.getEmail()).get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            CollectionReference collectionReference = querySnapshot.getDocuments().get(0).getReference().collection("list");
+
+                            collectionReference.get().addOnCompleteListener(getLists -> {
+                                if (getLists.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : getLists.getResult()) {
+                                        Map<String, Object> list = document.getData();
+                                        if(((Long)list.get("Id")).intValue() == id){
+                                            List<Map<String , Object>> itemsList = (List<Map<String , Object>>) list.get("items");
+                                            itemsList.add(item.exportToDatabase());
+                                            document.getReference().update("items" , itemsList);
+                                            Log.d("FirestoreDebug", "Item added to list:" + id);
+                                            break;
+                                        }
+                                    }
+                                    callBack.onCallBack();
+                                }
+                            });
+
+                        } else {
+                            Log.e("FirestoreDebug", "No user found with email: " + currentUser.getEmail());
+                        }
+                    } else {
+                        Log.e("FirestoreDebug", "User query failed", task.getException());
+                    }
+                });
+    }
 }

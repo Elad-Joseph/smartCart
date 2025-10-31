@@ -251,4 +251,5 @@ public class ShoppingList {
         float density = context.getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
+
 }
