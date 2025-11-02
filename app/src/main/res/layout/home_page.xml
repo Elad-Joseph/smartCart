@@ -136,7 +136,7 @@
                             android:id="@+id/my_button_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sample List"
+                            android:text="list1"
                             android:textColor="@color/black"
                             android:textSize="25sp"
                             android:paddingStart="8dp"
