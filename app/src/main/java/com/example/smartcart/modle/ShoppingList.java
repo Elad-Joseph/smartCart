@@ -36,6 +36,7 @@ public class ShoppingList {
     private String Name;
     private int Length;
     private int Id;
+    private int NumberOfCheckedItems;
 
     private int Hadderid;
     private int EditButtonid;

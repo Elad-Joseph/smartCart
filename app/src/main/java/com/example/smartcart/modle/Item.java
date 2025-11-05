@@ -15,11 +15,17 @@ import java.util.Map;
 public class Item {
     private String name;
     private Boolean checked;
+    private Product product;
+    private int amount;
 
-    public Item(String name, Boolean checked) {
-        this.name = name;
+    public Item(String name, Boolean checked , Product product) {
         this.checked = checked;
+        this.product = product;
+        this.name = product.getName();
+        this.amount = 1;
     }
+
+
 
     public Item(String name) {
         this.name = name;
@@ -38,6 +44,8 @@ public class Item {
         Map<String, Object> itemMap = new HashMap<>();
         itemMap.put("name", name);
         itemMap.put("checked", checked);
+        itemMap.put("product", product.getId());
+        itemMap.put("amount", amount);
         return itemMap;
     }
 

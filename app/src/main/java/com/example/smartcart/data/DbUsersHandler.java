@@ -136,7 +136,7 @@ public class DbUsersHandler {
                                                 case "items":
                                                     ArrayList<Map<String, Object>> databaseItems = (ArrayList<Map<String, Object>>) list.get(key);
                                                     for (Map<String, Object> databaseItem : databaseItems) {
-                                                        Item item = new Item( (String) databaseItem.get("name") ,(boolean) databaseItem.get("checked"));
+                                                        Item item = new Item( (String) databaseItem.get("name") ,(boolean) databaseItem.get("checked") , null);
                                                         shoppingList.addItem(item);
                                                     }
                                                     break;
