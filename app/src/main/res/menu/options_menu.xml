@@ -9,4 +9,8 @@
         android:title="sigh out"
         android:id="@+id/sighOut"
         />
+    <item
+        android:title="friends list"
+        android:id="@+id/toFriendsList"
+        />
 </menu>

@@ -117,6 +117,9 @@ public class HomePageModel extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
+                } else if (item.getItemId() == R.id.toFriendsList) {
+                    Intent intent = new Intent(HomePageModel.this, FriendsListModel.class);
+                    startActivity(intent);
                 }
                 return false;
             }
