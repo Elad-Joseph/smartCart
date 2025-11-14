@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.R;
+import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.User;
 
 public class signInModel extends AppCompatActivity {
@@ -18,7 +19,7 @@ public class signInModel extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    DbUsersHandler UserDatabase;
+    UserDatabase userDatabase;
 
     private Button ToLogin;
     private Button register;
@@ -35,7 +36,7 @@ public class signInModel extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("AppPrefs" , MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        UserDatabase = new DbUsersHandler();
+        userDatabase = new UserDatabase();
         setUpIds();
         setUpListeners();
 
@@ -68,12 +69,14 @@ public class signInModel extends AppCompatActivity {
                     if (password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())) {
 
                         User user = new User(username.getText().toString().trim(), email.getText().toString().trim(), password.getText().toString().trim() , 0);
-                        UserDatabase.addNewUser(user);
+                        userDatabase.addUser(user);
 
                         editor.putString("username", username.getText().toString().trim());  // Save username
                         editor.putString("email", email.getText().toString().trim());
                         editor.putInt("list number" , 0);
                         editor.apply();
+
+
 
                         Intent intent = new Intent(signInModel.this, HomePageModel.class);
                         startActivity(intent);

@@ -1,10 +1,14 @@
 package com.example.smartcart.modle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CurrentUser {
     private static CurrentUser instance;
     private String username;
     private String email;
     private int numberOfLists;
+    private int[] ListIds;
 
     private CurrentUser() {
         // Private constructor to prevent instantiation
@@ -38,4 +42,41 @@ public class CurrentUser {
     public void setNumberOfLists(int numberOfLists) {
         this.numberOfLists = numberOfLists;
     }
+
+    public int[] getListIds() {
+        return ListIds;
+    }
+
+    public void setListIds(int[] listIds) {
+        ListIds = listIds;
+        numberOfLists = (listIds != null) ? listIds.length : -1;
+    }
+
+    public void clear() {
+        username = null;
+        email = null;
+        numberOfLists = 0;
+        ListIds = null;
+    }
+
+    public void addItemToListIds(int newListId) {
+        if (ListIds == null) {
+            ListIds = new int[] { newListId };
+        } else {
+            int[] newListIds = new int[ListIds.length + 1];
+            System.arraycopy(ListIds, 0, newListIds, 0, ListIds.length);
+            newListIds[ListIds.length] = newListId;
+            ListIds = newListIds;
+        }
+    }
+
+    public Map<String , Object> exportCurrentUserToDB() {
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("username", this.username);
+        userMap.put("email", this.email);
+        userMap.put("numberOfLists", this.numberOfLists);
+        return userMap;
+    }
+
+
 }

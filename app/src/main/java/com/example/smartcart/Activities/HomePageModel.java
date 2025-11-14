@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartcart.R;
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.FireStoreListCallBack;
+import com.example.smartcart.data.ListDatabase;
+import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
@@ -34,7 +36,8 @@ import java.util.ArrayList;
 
 public class HomePageModel extends AppCompatActivity {
     SharedPreferences sharedPreferences;
-    private DbUsersHandler UserDatabase;
+    private UserDatabase userDatabase;
+    private ListDatabase listDatabase;
     ImportedShoppingLists importedShoppingLists;
 
 
@@ -73,7 +76,8 @@ public class HomePageModel extends AppCompatActivity {
         NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + numberOfLists);
 
         importedShoppingLists = ImportedShoppingLists.getInstance();
-        UserDatabase = new DbUsersHandler();
+        userDatabase = new UserDatabase();
+        listDatabase = new ListDatabase();
         refreshLists();
     }
 
@@ -148,6 +152,7 @@ public class HomePageModel extends AppCompatActivity {
                 ShoppingList newList = new ShoppingList();
                 newList = new ShoppingList(listName);
                 UserDatabase.addNewListToUser(email, newList);
+                listDatabase.addList(newList);
                 listContainer.addView(newList.createRow(this));
                 Toast.makeText(this, "List added: " + listName, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

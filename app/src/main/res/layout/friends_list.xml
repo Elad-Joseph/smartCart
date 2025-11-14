@@ -12,10 +12,16 @@
         android:background="@drawable/round_eges" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/friendSearchView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:queryHint="Search here..."/>
+        android:queryHint="Search Friends" />
 
+    <ListView
+        android:id="@+id/friendsListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp" />
 </LinearLayout>

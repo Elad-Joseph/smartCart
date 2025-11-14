@@ -113,7 +113,7 @@ public class ShoppingList {
     }
 
 
-    public Map<String , Object> exportListToDB() {
+    public Map<String , Object> exportList() {
         Map<String, Object> listData = new HashMap<>();
         listData.put("name", this.Name);
         listData.put("numberOfItems", this.Length);

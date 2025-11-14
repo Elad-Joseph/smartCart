@@ -12,10 +12,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.FireStoreCallBack;
 import com.example.smartcart.R;
 import com.example.smartcart.UserViewModel;
+import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.google.firebase.FirebaseApp;
 
@@ -24,8 +26,8 @@ import java.util.Map;
 
 public class loginModel extends  AppCompatActivity {
 
-
-    private DbUsersHandler UserDatabase;
+    private CurrentUser currentUser;
+    private UserDatabase userDatabase;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -53,7 +55,8 @@ public class loginModel extends  AppCompatActivity {
         setUpIds();
         setUpListeners();
 
-        UserDatabase = new DbUsersHandler();
+        userDatabase = new UserDatabase();
+        currentUser = CurrentUser.getInstance();
     }
 
     public void setUpIds(){
@@ -87,37 +90,34 @@ public class loginModel extends  AppCompatActivity {
     }
 
     public void loginConfirmation(String email , String password){
-        UserDatabase.readDocument(email, password, new FireStoreCallBack() {
+        userDatabase.getUserByEmail(email, password, new CallBack<Map<String , Object>>() {
             @Override
-            public void onCallBack(List<Map<String, Object>> list) {
-                if (!list.isEmpty()) {
-                    Map<String, Object> data = list.get(0);
-                    String email = (String) data.get("email");
-                    String username = (String) data.get("username");
-                    String password = (String) data.get("password");
-                    Number numberOfListsDoc = (Number) data.get("list number");
+            public void onCallBack(Map<String, Object> usersData) {
+                if (usersData != null) {
+                    String email = (String) usersData.get("email");
+                    String username = (String) usersData.get("username");
+                    String password = (String) usersData.get("password");
+                    Number numberOfListsDoc = (Number) usersData.get("list number");
                     int numberOfLists = numberOfListsDoc != null ? numberOfListsDoc.intValue() : 0;
+
+                    currentUser.setEmail(email);
+                    currentUser.setUsername(username);
+                    currentUser.setNumberOfLists(numberOfLists);
 
                     editor.putString("username", username);
                     editor.putString("email", email);
-                    editor.putInt("list number" , numberOfLists);
+                    editor.putInt("list number", numberOfLists);
                     editor.apply();
-
 
                     Intent intent = new Intent(loginModel.this, HomePageModel.class);
                     startActivity(intent);
                     finish();
-
-                }
-                else {
-                    Toast.makeText(getApplicationContext() , "email or password are wrong",Toast.LENGTH_SHORT ).show();
-
+                } else {
+                    Toast.makeText(getApplicationContext(), "email or password are wrong", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void StringCallBack(String string) {}
         });
     }
+
 
 }
