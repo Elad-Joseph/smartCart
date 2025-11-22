@@ -2,6 +2,8 @@ package com.example.smartcart.data;
 
 import android.util.Log;
 
+import com.example.smartcart.modle.CurrentUser;
+import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -14,10 +16,14 @@ public class ListDatabase {
     private FirebaseFirestore Database;
     private DocumentReference DocRef;
     private CollectionReference ColRef;
+    private CurrentUser currentUser;
+    private ImportedShoppingLists importedShoppingLists;
 
     public ListDatabase() {
         Database = FirebaseFirestore.getInstance();
         ColRef = Database.collection("lists");
+        currentUser = CurrentUser.getInstance();
+        importedShoppingLists = ImportedShoppingLists.getInstance();
     }
 
     public void addList(ShoppingList list) {
@@ -48,5 +54,25 @@ public class ListDatabase {
                 Log.d("ListDatabase", "Error getting documents: ", task.getException());
             }
         });
+    }
+
+    public void getAllListsForCurrentUser(CallBack<> callBack) {
+        int[] userListIds = currentUser.getListIds();
+        ShoppingList[] userLists = new ShoppingList[userListIds.length];
+        for(int i = 0; i < userListIds.length; i++) {
+            int I = i;
+            getList(String.valueOf(userListIds[i]) , listData -> {
+                if (listData != null) {
+//                    ShoppingList list = ShoppingList.importListFromDB(listData);
+                    ShoppingList list = new ShoppingList(listData.get("name").toString(),
+                            Integer.parseInt(listData.get("id").toString()),
+                            (int[]) listData.get("itemsIds"));
+                    importedShoppingLists.addList(list);
+                }
+                // Check if all lists have been processed
+
+            });
+            callBack.onCallBack();
+        }
     }
 }

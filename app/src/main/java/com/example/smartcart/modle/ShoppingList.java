@@ -31,49 +31,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ShoppingList {
-    private ArrayList<Item> ListOfItems;
-    private String Name;
-    private int Length;
-    private int Id;
-    private int NumberOfCheckedItems;
+public class ShoppingList extends ArrayList<Item>{
 
+    private String Name;
+    private int Id;
     private int Hadderid;
     private int EditButtonid;
 
     public ShoppingList(){
-        this.ListOfItems = new ArrayList<>();
         this.Name = "";
-        this.Length = 0;
         this.Id = UUID.randomUUID().hashCode();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(String name){
-        this.ListOfItems = new ArrayList<>();
         this.Name = name;
-        this.Length = 0;
         this.Id = UUID.randomUUID().hashCode();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(ArrayList<Item> listOfItems , String name , int length , int id , int hadderid , int editButtonid){
-        this.ListOfItems = listOfItems;
         this.Name = name;
-        this.Length = length;
         this.Id = id;
         this.Hadderid = hadderid;
         this.EditButtonid = editButtonid;
     }
 
+    public ShoppingList(String name , int id , int[] itemsIds){
+        this.Name = name;
+        this.Id = id;
+        this.Hadderid = UUID.randomUUID().hashCode();
+        this.EditButtonid = UUID.randomUUID().hashCode();
+    }
+
     public void addItem(Item item){
-        ListOfItems.add(item);
+        this.add(item);
     }
 
     public void remove(Item item){
-        ListOfItems.remove(item);
+        this.remove(item);
     }
 
     public String getName() {
@@ -81,20 +79,17 @@ public class ShoppingList {
     }
 
     public ArrayList<Item> getListOfItems() {
-        return ListOfItems;
+        return this;
     }
 
     public int getLength() {
-        return Length;
+        return size();
     }
 
     public void setName(String name) {
         Name = name;
     }
 
-    public void setLength(int length) {
-        Length = length;
-    }
 
     public void setEditButtonid(int editButtonid) {
         EditButtonid = editButtonid;
@@ -102,7 +97,9 @@ public class ShoppingList {
 
     public void setHadderid(int hadderid) {
         Hadderid = hadderid;
+
     }
+
 
     public void setId(int id) {
         Id = id;
@@ -116,7 +113,6 @@ public class ShoppingList {
     public Map<String , Object> exportList() {
         Map<String, Object> listData = new HashMap<>();
         listData.put("name", this.Name);
-        listData.put("numberOfItems", this.Length);
         List<Map<String , Object>> itemsList = new ArrayList<>();
         listData.put("items", itemsList);
         listData.put("Id", this.Id);
@@ -125,7 +121,7 @@ public class ShoppingList {
 
         return listData;
     }
-// java
+
 
 
 //public FrameLayout createRow(Context context) {

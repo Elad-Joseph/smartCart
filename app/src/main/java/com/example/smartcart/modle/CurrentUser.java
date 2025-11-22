@@ -1,5 +1,6 @@
 package com.example.smartcart.modle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,12 +8,12 @@ public class CurrentUser {
     private static CurrentUser instance;
     private String username;
     private String email;
-    private int numberOfLists;
-    private int[] ListIds;
+    private String password;
+    private String id;
+    private String FriendsIds;
+    private ArrayList<Map<String , Object>> ImportedLists;
 
-    private CurrentUser() {
-        // Private constructor to prevent instantiation
-    }
+    private CurrentUser() {}
 
     public static synchronized CurrentUser getInstance() {
         if (instance == null) {
@@ -36,37 +37,34 @@ public class CurrentUser {
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getNumberOfLists() {
-        return numberOfLists;
-    }
-    public void setNumberOfLists(int numberOfLists) {
-        this.numberOfLists = numberOfLists;
-    }
-
-    public int[] getListIds() {
-        return ListIds;
-    }
-
-    public void setListIds(int[] listIds) {
-        ListIds = listIds;
-        numberOfLists = (listIds != null) ? listIds.length : -1;
-    }
 
     public void clear() {
         username = null;
         email = null;
-        numberOfLists = 0;
-        ListIds = null;
+        password = null;
+        id = null;
+        FriendsIds = null;
+        ImportedLists = null;
     }
 
-    public void addItemToListIds(int newListId) {
-        if (ListIds == null) {
-            ListIds = new int[] { newListId };
-        } else {
-            int[] newListIds = new int[ListIds.length + 1];
-            System.arraycopy(ListIds, 0, newListIds, 0, ListIds.length);
-            newListIds[ListIds.length] = newListId;
-            ListIds = newListIds;
+    public void addListToImportedLists(Map<String , Object> newList){
+        if(ImportedLists == null){
+            ImportedLists = new ArrayList<>();
+        }
+        ImportedLists.add(newList);
+    }
+
+    public void addListToImportedLists(ShoppingList newList){
+        Map<String , Object> listMap = newList.exportList();
+        if(ImportedLists == null){
+            ImportedLists = new ArrayList<>();
+        }
+        ImportedLists.add(listMap);
+    }
+
+    public void removeListFromImportedLists(String idToRemove){
+        if(ImportedLists != null){
+            ImportedLists.removeIf(listMap -> listMap.get("id").toString().equals(idToRemove));
         }
     }
 
@@ -74,9 +72,36 @@ public class CurrentUser {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("username", this.username);
         userMap.put("email", this.email);
-        userMap.put("numberOfLists", this.numberOfLists);
+        userMap.put("password", this.password);
+        userMap.put("id", this.id);
+        userMap.put("friends ids", this.FriendsIds);
+        userMap.put("imported lists", this.ImportedLists);
         return userMap;
     }
 
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getFriendsIds() {
+        return FriendsIds;
+    }
+    public void setFriendsIds(String friendsIds) {
+        FriendsIds = friendsIds;
+    }
+    public ArrayList<Map<String , Object>> getImportedLists() {
+        return ImportedLists;
+    }
 
 }

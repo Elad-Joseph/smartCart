@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
+import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.FireStoreListCallBack;
 import com.example.smartcart.data.ListDatabase;
@@ -38,6 +39,7 @@ public class HomePageModel extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
+    private CurrentUser currentUser;
     ImportedShoppingLists importedShoppingLists;
 
 
@@ -67,7 +69,7 @@ public class HomePageModel extends AppCompatActivity {
         CurrentUser currentUser = CurrentUser.getInstance();
         currentUser.setEmail(email);
         currentUser.setUsername(username);
-        currentUser.setNumberOfLists(numberOfLists);
+
 
         if (username != null) {
             welcomeText.setText(welcomeText.getText().toString() + username);
@@ -78,6 +80,7 @@ public class HomePageModel extends AppCompatActivity {
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
+        currentUser = CurrentUser.getInstance();
         refreshLists();
     }
 
@@ -151,8 +154,10 @@ public class HomePageModel extends AppCompatActivity {
             if (!listName.isEmpty()) {
                 ShoppingList newList = new ShoppingList();
                 newList = new ShoppingList(listName);
-                UserDatabase.addNewListToUser(email, newList);
                 listDatabase.addList(newList);
+                importedShoppingLists.addList(newList);
+                currentUser.addListToImportedLists(newList);
+                userDatabase.updateUser();
                 listContainer.addView(newList.createRow(this));
                 Toast.makeText(this, "List added: " + listName, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -164,12 +169,14 @@ public class HomePageModel extends AppCompatActivity {
 
     private void refreshLists() {
         listsLayout.removeAllViews();
-        UserDatabase.getListsFromUser(email, new FireStoreListCallBack() {
+        listDatabase.getAllListsForCurrentUser(new CallBack<ShoppingList[]>() {
             @Override
-            public void onCallBack(ArrayList<ShoppingList> lists) {
-                for (ShoppingList list : lists) {
-                    importedShoppingLists.addList(list);
-                    listContainer.addView(list.createRow(HomePageModel.this));
+            public void onCallBack(ShoppingList[] value) {
+                for (ShoppingList list : value) {
+                    if (list != null) {
+                        importedShoppingLists.addList(list);
+                        listContainer.addView(list.createRow(HomePageModel.this));
+                    }
                 }
             }
         });

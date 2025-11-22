@@ -13,15 +13,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.data.CallBack;
-import com.example.smartcart.data.DbUsersHandler;
-import com.example.smartcart.data.FireStoreCallBack;
 import com.example.smartcart.R;
-import com.example.smartcart.UserViewModel;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.google.firebase.FirebaseApp;
 
-import java.util.List;
 import java.util.Map;
 
 public class loginModel extends  AppCompatActivity {
@@ -97,16 +93,14 @@ public class loginModel extends  AppCompatActivity {
                     String email = (String) usersData.get("email");
                     String username = (String) usersData.get("username");
                     String password = (String) usersData.get("password");
-                    Number numberOfListsDoc = (Number) usersData.get("list number");
-                    int numberOfLists = numberOfListsDoc != null ? numberOfListsDoc.intValue() : 0;
+
 
                     currentUser.setEmail(email);
                     currentUser.setUsername(username);
-                    currentUser.setNumberOfLists(numberOfLists);
+                    currentUser.setPassword(password);
 
                     editor.putString("username", username);
                     editor.putString("email", email);
-                    editor.putInt("list number", numberOfLists);
                     editor.apply();
 
                     Intent intent = new Intent(loginModel.this, HomePageModel.class);
