@@ -66,7 +66,7 @@ public class HomePageModel extends AppCompatActivity {
         email = sharedPreferences.getString("email", null);
         int numberOfLists = sharedPreferences.getInt("number list", 0);
 
-        CurrentUser currentUser = CurrentUser.getInstance();
+        currentUser = CurrentUser.getInstance();
         currentUser.setEmail(email);
         currentUser.setUsername(username);
 
@@ -152,14 +152,11 @@ public class HomePageModel extends AppCompatActivity {
             String listName = editTextListName.getText().toString().trim();
 
             if (!listName.isEmpty()) {
-                ShoppingList newList = new ShoppingList();
-                newList = new ShoppingList(listName);
+                ShoppingList newList = new ShoppingList(listName);
                 listDatabase.addList(newList);
-                importedShoppingLists.addList(newList);
-                currentUser.addListToImportedLists(newList);
-                userDatabase.updateUser();
+                importedShoppingLists.add(newList);
                 listContainer.addView(newList.createRow(this));
-                Toast.makeText(this, "List added: " + listName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "List added: " + listName +" "+ currentUser.getPassword(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             } else {
                 editTextListName.setError("Enter a name");
@@ -169,12 +166,11 @@ public class HomePageModel extends AppCompatActivity {
 
     private void refreshLists() {
         listsLayout.removeAllViews();
-        listDatabase.getAllListsForCurrentUser(new CallBack<ShoppingList[]>() {
+        listDatabase.getAllListsForCurrentUser(new CallBack<String>() {
             @Override
-            public void onCallBack(ShoppingList[] value) {
-                for (ShoppingList list : value) {
+            public void onCallBack(String value) {
+                for (ShoppingList list : importedShoppingLists) {
                     if (list != null) {
-                        importedShoppingLists.addList(list);
                         listContainer.addView(list.createRow(HomePageModel.this));
                     }
                 }

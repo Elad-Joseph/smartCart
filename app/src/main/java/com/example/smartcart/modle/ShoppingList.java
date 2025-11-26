@@ -34,32 +34,32 @@ import java.util.UUID;
 public class ShoppingList extends ArrayList<Item>{
 
     private String Name;
-    private int Id;
+    private String Id;
     private int Hadderid;
     private int EditButtonid;
 
     public ShoppingList(){
         this.Name = "";
-        this.Id = UUID.randomUUID().hashCode();
+        this.Id = String.valueOf(UUID.randomUUID().hashCode());
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(String name){
         this.Name = name;
-        this.Id = UUID.randomUUID().hashCode();
+        this.Id = String.valueOf(UUID.randomUUID().hashCode());
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
-    public ShoppingList(ArrayList<Item> listOfItems , String name , int length , int id , int hadderid , int editButtonid){
+    public ShoppingList(ArrayList<Item> listOfItems , String name , int length , String id , int hadderid , int editButtonid){
         this.Name = name;
         this.Id = id;
         this.Hadderid = hadderid;
         this.EditButtonid = editButtonid;
     }
 
-    public ShoppingList(String name , int id , int[] itemsIds){
+    public ShoppingList(String name , String id , int[] itemsIds){
         this.Name = name;
         this.Id = id;
         this.Hadderid = UUID.randomUUID().hashCode();
@@ -101,11 +101,11 @@ public class ShoppingList extends ArrayList<Item>{
     }
 
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
@@ -204,7 +204,7 @@ public class ShoppingList extends ArrayList<Item>{
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
-        materialButton.setId(Id);
+        materialButton.setId(Integer.parseInt(Id));
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

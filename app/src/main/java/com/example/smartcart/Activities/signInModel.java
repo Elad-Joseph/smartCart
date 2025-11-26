@@ -12,10 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.R;
 import com.example.smartcart.data.UserDatabase;
+import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.User;
 
 public class signInModel extends AppCompatActivity {
 
+    private CurrentUser currentUser;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -36,6 +38,7 @@ public class signInModel extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("AppPrefs" , MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
+        currentUser = CurrentUser.getInstance();
         userDatabase = new UserDatabase();
         setUpIds();
         setUpListeners();
@@ -68,8 +71,11 @@ public class signInModel extends AppCompatActivity {
                 if (password.getText().toString().trim() != "" && username.getText().toString().trim() != "" && email.getText().toString().trim() != ""){
                     if (password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())) {
 
-                        User user = new User(username.getText().toString().trim(), email.getText().toString().trim(), password.getText().toString().trim() , 0);
-                        userDatabase.addUser(user);
+                        currentUser.setUsername(username.getText().toString().trim());
+                        currentUser.setEmail(email.getText().toString().trim());
+                        currentUser.setPassword(password.getText().toString().trim());
+
+                        userDatabase.addUser();
 
                         editor.putString("username", username.getText().toString().trim());  // Save username
                         editor.putString("email", email.getText().toString().trim());

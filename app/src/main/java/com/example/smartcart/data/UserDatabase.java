@@ -27,8 +27,8 @@ public class UserDatabase {
         currentUser = CurrentUser.getInstance();
     }
 
-    public void addUser(User user) {
-        ColRef.add(user.exportUserToDB());
+    public void addUser() {
+        ColRef.add(currentUser.exportCurrentUserToDB());
     }
 
     public void deleteUser(String userId) {

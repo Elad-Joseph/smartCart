@@ -28,14 +28,27 @@ public class ListDatabase {
 
     public void addList(ShoppingList list) {
         ColRef.add(list.exportList());
+        currentUser.addListToImportedLists(list);
     }
 
-    public void deleteList(String listId) {
-        ColRef.document(listId).delete();
+    public void deleteList(String listId , CallBack callBack) {
+        ColRef.whereEqualTo("Id", listId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (!querySnapshot.isEmpty()) {
+                    String docId = querySnapshot.getDocuments().get(0).getId();
+                    ColRef.document(docId).delete();
+                }
+            } else {
+                Log.d("ListDatabase", "Error getting documents: ", task.getException());
+            }
+        });
+        callBack.onCallBack(null);
     }
 
-    public void updateList(String listId, ShoppingList list) {
+    public void updateList(String listId, ShoppingList list , CallBack callBack) {
         ColRef.document(listId).set(list.exportList());
+        callBack.onCallBack(null);
     }
 
     public void getList(String listId, CallBack<Map<String , Object>> callBack) {
@@ -56,23 +69,22 @@ public class ListDatabase {
         });
     }
 
-    public void getAllListsForCurrentUser(CallBack<> callBack) {
-        int[] userListIds = currentUser.getListIds();
-        ShoppingList[] userLists = new ShoppingList[userListIds.length];
+    public void getAllListsForCurrentUser(CallBack callBack) {
+        String[] userListIds = currentUser.getImportedListsIds();
+        importedShoppingLists.clear();
         for(int i = 0; i < userListIds.length; i++) {
             int I = i;
-            getList(String.valueOf(userListIds[i]) , listData -> {
+            getList(userListIds[i] , listData -> {
                 if (listData != null) {
-//                    ShoppingList list = ShoppingList.importListFromDB(listData);
                     ShoppingList list = new ShoppingList(listData.get("name").toString(),
-                            Integer.parseInt(listData.get("id").toString()),
+                            listData.get("id").toString(),
                             (int[]) listData.get("itemsIds"));
-                    importedShoppingLists.addList(list);
+                    importedShoppingLists.add(list);
                 }
                 // Check if all lists have been processed
 
             });
-            callBack.onCallBack();
+            callBack.onCallBack(null);
         }
     }
 }

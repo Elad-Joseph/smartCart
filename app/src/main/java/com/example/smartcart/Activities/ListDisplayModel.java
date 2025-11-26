@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.DbUsersHandler;
+import com.example.smartcart.data.ListDatabase;
+import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.Item;
@@ -32,10 +34,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 public class ListDisplayModel extends AppCompatActivity {
-    DbUsersHandler database;
+    private ListDatabase listDatabase;
+    private UserDatabase userDatabase;
     SharedPreferences sharedPreferences;
     private ImportedShoppingLists importedShoppingLists;
     private ShoppingList currentShoppingList;
+
+    private CurrentUser currentUser;
 
     ImageButton scanItemsButton;
     MaterialTextView listNameTextView;
@@ -48,7 +53,9 @@ public class ListDisplayModel extends AppCompatActivity {
         setContentView(R.layout.list_display);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
-        database = new DbUsersHandler();
+        userDatabase = new UserDatabase();
+        listDatabase = new ListDatabase();
+        CurrentUser currentUser = CurrentUser.getInstance();
 
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
@@ -61,7 +68,7 @@ public class ListDisplayModel extends AppCompatActivity {
 
         Intent intent = getIntent();
         importedShoppingLists = ImportedShoppingLists.getInstance();
-        currentShoppingList = importedShoppingLists.getListById(intent.getIntExtra("ListId", -1));
+        currentShoppingList = importedShoppingLists.getListById(intent.getStringExtra("ListId"));
         if (currentShoppingList != null) {
             listNameTextView.setText(currentShoppingList.getName());
         }
@@ -108,11 +115,11 @@ public class ListDisplayModel extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.deleteList) {
-                    CurrentUser currentUser = CurrentUser.getInstance();
-                    DbUsersHandler dbUsersHandler = new DbUsersHandler();
-                    dbUsersHandler.removeListFromUser(currentUser.getEmail(), currentShoppingList.getId(), new CallBack() {
+                    currentUser.removeListFromImportedLists(currentShoppingList.getId());
+                    listDatabase.deleteList(currentShoppingList.getId(), new CallBack() {
                         @Override
-                        public void onCallBack() {
+                        public void onCallBack(Object value) {
+                            Log.d("ListDisplayModel", "List deleted from ListDatabase: " + currentShoppingList.getId());
                             Intent intent = new Intent(ListDisplayModel.this, HomePageModel.class);
                             startActivity(intent);
                         }
@@ -173,9 +180,10 @@ public class ListDisplayModel extends AppCompatActivity {
                 String selectedItem = itemSelectorSpinner.getSelectedItem().toString();
                 Item item = new Item(selectedItem);
                 currentShoppingList.addItem(item);
-                database.addItemToSelectedList(currentShoppingList.getId(), item, new CallBack() {
+                listDatabase.updateList(currentShoppingList.getId(), currentShoppingList, new CallBack() {
                     @Override
-                    public void onCallBack() {
+                    public void onCallBack(Object value) {
+                        Log.d("ListDisplayModel", "List updated with new item: " + selectedItem);
                         dialog.dismiss();
                     }
                 });

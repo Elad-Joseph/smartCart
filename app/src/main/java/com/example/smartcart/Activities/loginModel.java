@@ -18,6 +18,7 @@ import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.google.firebase.FirebaseApp;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class loginModel extends  AppCompatActivity {
@@ -41,9 +42,28 @@ public class loginModel extends  AppCompatActivity {
         setContentView(R.layout.login);
         FirebaseApp.initializeApp(this);
 
+        userDatabase = new UserDatabase();
+        currentUser = CurrentUser.getInstance();
         sharedPreferences = getSharedPreferences("AppPrefs" , MODE_PRIVATE);
         editor = sharedPreferences.edit();
         if(sharedPreferences.getString("email" , null) != null){
+            String email = sharedPreferences.getString("email" , null);
+            Toast.makeText(getApplicationContext(), "Welcome back " + sharedPreferences.getString("username" , null), Toast.LENGTH_SHORT).show();
+            userDatabase.getUserByEmail(email , sharedPreferences.getString("password" , null) , new CallBack<Map<String , Object>>() {
+                @Override
+                public void onCallBack(Map<String, Object> usersData) {
+                    if (usersData != null) {
+                        String email = (String) usersData.get("email");
+                        String username = (String) usersData.get("username");
+                        String password = (String) usersData.get("password");
+                        ArrayList<Map<String, Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("importedLists");
+                        currentUser.setEmail(email);
+                        currentUser.setUsername(username);
+                        currentUser.setPassword(password);
+                        currentUser.setImportedLists(importedLists);
+                    }
+                }
+                });
             Intent intent = new Intent(loginModel.this, HomePageModel.class);
             startActivity(intent);
             finish();
@@ -51,8 +71,7 @@ public class loginModel extends  AppCompatActivity {
         setUpIds();
         setUpListeners();
 
-        userDatabase = new UserDatabase();
-        currentUser = CurrentUser.getInstance();
+
     }
 
     public void setUpIds(){
@@ -93,14 +112,18 @@ public class loginModel extends  AppCompatActivity {
                     String email = (String) usersData.get("email");
                     String username = (String) usersData.get("username");
                     String password = (String) usersData.get("password");
+                    ArrayList<Map<String, Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("importedLists");
+
 
 
                     currentUser.setEmail(email);
                     currentUser.setUsername(username);
                     currentUser.setPassword(password);
+                    currentUser.setImportedLists(importedLists);
 
                     editor.putString("username", username);
                     editor.putString("email", email);
+                    editor.putString("password" , password);
                     editor.apply();
 
                     Intent intent = new Intent(loginModel.this, HomePageModel.class);

@@ -1,5 +1,7 @@
 package com.example.smartcart.modle;
 
+import com.example.smartcart.data.UserDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,8 +14,10 @@ public class CurrentUser {
     private String id;
     private String FriendsIds;
     private ArrayList<Map<String , Object>> ImportedLists;
+    private UserDatabase userDatabase;
 
-    private CurrentUser() {}
+    private CurrentUser() {
+    }
 
     public static synchronized CurrentUser getInstance() {
         if (instance == null) {
@@ -60,6 +64,8 @@ public class CurrentUser {
             ImportedLists = new ArrayList<>();
         }
         ImportedLists.add(listMap);
+        userDatabase = new UserDatabase();
+        userDatabase.updateUser();
     }
 
     public void removeListFromImportedLists(String idToRemove){
@@ -103,5 +109,24 @@ public class CurrentUser {
     public ArrayList<Map<String , Object>> getImportedLists() {
         return ImportedLists;
     }
+    public String[] getImportedListsIds() {
+        if(ImportedLists == null){
+            return new String[0];
+        }
+        String[] ids = new String[ImportedLists.size()];
+        for(int i = 0; i < ImportedLists.size(); i++){
+            ids[i] = ImportedLists.get(i).get("id").toString();
+        }
+        return ids;
+    }
 
+    public void removeListFromImportedLists(ShoppingList listToRemove){
+        if(ImportedLists != null){
+            ImportedLists.removeIf(listMap -> listMap.get("id").toString().equals(listToRemove.getId()));
+        }
+    }
+
+    public void setImportedLists(ArrayList<Map<String, Object>> importedLists) {
+        ImportedLists = importedLists;
+    }
 }

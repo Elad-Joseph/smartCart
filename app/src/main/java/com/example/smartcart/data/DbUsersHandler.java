@@ -141,13 +141,13 @@ public class DbUsersHandler {
                                                     }
                                                     break;
 
-                                                case "numberOfItems":
-                                                    shoppingList.setLength(((Long) list.get(key)).intValue());
-                                                    break;
+//                                                case "numberOfItems":
+//                                                    shoppingList.setLength(((Long) list.get(key)).intValue());
+//                                                    break;
 
-                                                case "Id":
-                                                    shoppingList.setId(((Long) list.get(key)).intValue());
-                                                    break;
+//                                                case "Id":
+//                                                    shoppingList.setId(((Long) list.get(key)).intValue());
+//                                                    break;
                                                 case "Hadderid":
                                                     shoppingList.setHadderid(((Long) list.get(key)).intValue());
                                                     break;
@@ -187,11 +187,11 @@ public class DbUsersHandler {
                             DocumentSnapshot userDocument = querySnapshot.getDocuments().get(0);
                             CollectionReference listCollection = userDocument.getReference().collection("list");
 
-                            listCollection.add(shoppingList.exportListToDB())
-                                    .addOnSuccessListener(documentReference ->
-                                            Log.d("FirestoreDebug", "List added successfully with ID: " + documentReference.getId()))
-                                    .addOnFailureListener(e ->
-                                            Log.e("FirestoreDebug", "Error adding list", e));
+//                            listCollection.add(shoppingList.exportListToDB())
+//                                    .addOnSuccessListener(documentReference ->
+//                                            Log.d("FirestoreDebug", "List added successfully with ID: " + documentReference.getId()))
+//                                    .addOnFailureListener(e ->
+//                                            Log.e("FirestoreDebug", "Error adding list", e));
 
                         } else {
                             Log.e("FirestoreDebug", "No user found with email: " + email);
@@ -229,7 +229,7 @@ public class DbUsersHandler {
                                             break;
                                         }
                                     }
-                                    callBack.onCallBack();
+//                                    callBack.onCallBack();
                                 }
                             });
 
@@ -262,7 +262,7 @@ public class DbUsersHandler {
                                             break;
                                         }
                                     }
-                                    callBack.onCallBack();
+//                                    callBack.onCallBack();
                                 }
                             });
 
