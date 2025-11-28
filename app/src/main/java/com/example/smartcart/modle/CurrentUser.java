@@ -4,6 +4,7 @@ import com.example.smartcart.data.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CurrentUser {
@@ -115,7 +116,7 @@ public class CurrentUser {
         }
         String[] ids = new String[ImportedLists.size()];
         for(int i = 0; i < ImportedLists.size(); i++){
-            ids[i] = ImportedLists.get(i).get("id").toString();
+            ids[i] = ImportedLists.get(i).get("Id").toString();
         }
         return ids;
     }
@@ -126,7 +127,11 @@ public class CurrentUser {
         }
     }
 
-    public void setImportedLists(ArrayList<Map<String, Object>> importedLists) {
-        ImportedLists = importedLists;
+    public void setImportedLists(List<Map<String , Object>> importedLists) {
+        if(importedLists == null){
+            ImportedLists = new ArrayList<>();
+            return;
+        }
+        ImportedLists = new ArrayList<>(importedLists);
     }
 }

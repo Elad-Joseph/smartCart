@@ -55,7 +55,7 @@ public class ListDisplayModel extends AppCompatActivity {
 
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
-        CurrentUser currentUser = CurrentUser.getInstance();
+        currentUser = CurrentUser.getInstance();
 
         sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
 
@@ -116,6 +116,7 @@ public class ListDisplayModel extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.deleteList) {
                     currentUser.removeListFromImportedLists(currentShoppingList.getId());
+                    userDatabase.deleteListFromUser(currentShoppingList.getId());
                     listDatabase.deleteList(currentShoppingList.getId(), new CallBack() {
                         @Override
                         public void onCallBack(Object value) {

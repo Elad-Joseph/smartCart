@@ -59,7 +59,7 @@ public class ShoppingList extends ArrayList<Item>{
         this.EditButtonid = editButtonid;
     }
 
-    public ShoppingList(String name , String id , int[] itemsIds){
+    public ShoppingList(String name , String id , List<String> itemsIds){
         this.Name = name;
         this.Id = id;
         this.Hadderid = UUID.randomUUID().hashCode();
@@ -123,61 +123,7 @@ public class ShoppingList extends ArrayList<Item>{
     }
 
 
-
-//public FrameLayout createRow(Context context) {
-//    // FrameLayout (height 75dp, weight 5)
-//    FrameLayout frameLayout = new FrameLayout(context);
-//    LinearLayout.LayoutParams flParams = new LinearLayout.LayoutParams(
-//            0,
-//            dpToPx(context, 75)
-//    );
-//    frameLayout.setLayoutParams(flParams);
-//    frameLayout.setBackgroundResource(R.drawable.square);
-//
-//    // MaterialButton (match_parent)
-//    MaterialButton materialButton = new MaterialButton(context);
-//    FrameLayout.LayoutParams btnParams = new FrameLayout.LayoutParams(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.MATCH_PARENT
-//    );
-//    materialButton.setId(Id);
-//    materialButton.setLayoutParams(btnParams);
-//    materialButton.setBackgroundResource(R.drawable.square);
-//    materialButton.setBackgroundTintList(null); // clear tint like app:backgroundTint="@color/clear"
-//    materialButton.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            Intent intent = new Intent(context, ListDisplayModel.class);
-//            intent.putExtra("ListId", Id);
-//            if (context instanceof Activity) {
-//                ((Activity) context).startActivity(intent);
-//            } else {
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//            }
-//        }
-//    });
-//    frameLayout.addView(materialButton);
-//
-//    // TextView (left | center_vertical)
-//    TextView textView = new TextView(context);
-//    FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(
-//            ViewGroup.LayoutParams.WRAP_CONTENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//    );
-//    tvParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
-//    textView.setId(Hadderid);
-//    textView.setLayoutParams(tvParams);
-//    textView.setText(Name);
-//    textView.setTextColor(Color.BLACK);
-//    textView.setTextSize(25);
-//    textView.setPadding(dpToPx(context, 8), 0, 0, 0);
-//    frameLayout.addView(textView);
-//
-//    return frameLayout;
-//}
     public LinearLayout createRow(Context context) {
-        // Parent LinearLayout
         LinearLayout linearLayout = new LinearLayout(context);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

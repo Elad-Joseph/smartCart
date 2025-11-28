@@ -89,5 +89,9 @@ public class UserDatabase {
         });
     }
 
+    public void deleteListFromUser(String listId){
+        currentUser.removeListFromImportedLists(listId);
+        updateUser();
+    }
 
 }

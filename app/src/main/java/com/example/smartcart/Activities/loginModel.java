@@ -19,6 +19,8 @@ import com.example.smartcart.modle.CurrentUser;
 import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class loginModel extends  AppCompatActivity {
@@ -56,17 +58,20 @@ public class loginModel extends  AppCompatActivity {
                         String email = (String) usersData.get("email");
                         String username = (String) usersData.get("username");
                         String password = (String) usersData.get("password");
-                        ArrayList<Map<String, Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("importedLists");
+                        List<Map<String , Object>> importedLists = (List<Map<String, Object>>) usersData.get("imported lists");
+                        Log.d("LoginModel", "Imported Lists: " + importedLists);
                         currentUser.setEmail(email);
                         currentUser.setUsername(username);
                         currentUser.setPassword(password);
                         currentUser.setImportedLists(importedLists);
+
+                        Intent intent = new Intent(loginModel.this, HomePageModel.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }
                 });
-            Intent intent = new Intent(loginModel.this, HomePageModel.class);
-            startActivity(intent);
-            finish();
+
         }
         setUpIds();
         setUpListeners();
@@ -112,7 +117,7 @@ public class loginModel extends  AppCompatActivity {
                     String email = (String) usersData.get("email");
                     String username = (String) usersData.get("username");
                     String password = (String) usersData.get("password");
-                    ArrayList<Map<String, Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("importedLists");
+                    List<Map<String , Object>> importedLists = (List<Map<String , Object>>) usersData.get("imported lists");
 
 
 
