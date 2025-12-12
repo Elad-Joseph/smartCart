@@ -1,12 +1,20 @@
 package com.example.smartcart.data;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.smartcart.Activities.HomePageModel;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ShoppingList;
 import com.example.smartcart.modle.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +33,10 @@ public class UserDatabase {
         Database = FirebaseFirestore.getInstance();
         ColRef = Database.collection("users");
         currentUser = CurrentUser.getInstance();
+
     }
+
+
 
     public void addUser() {
         ColRef.add(currentUser.exportCurrentUserToDB());
@@ -37,10 +48,12 @@ public class UserDatabase {
 
     public void updateUser() {
 //        ColRef.document(userId).set(currentUser.exportCurrentUserToDB());
+        currentUser = CurrentUser.getInstance();
         ColRef.whereEqualTo("email", currentUser.getEmail()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();
                 if (!querySnapshot.isEmpty()) {
+                    currentUser = CurrentUser.getInstance();
                     String docId = querySnapshot.getDocuments().get(0).getId();
                     ColRef.document(docId).set(currentUser.exportCurrentUserToDB());
                 }
@@ -90,7 +103,7 @@ public class UserDatabase {
     }
 
     public void deleteListFromUser(String listId){
-        currentUser.removeListFromImportedLists(listId);
+        currentUser.removeListFromImportedShoppingList(listId);
         updateUser();
     }
 

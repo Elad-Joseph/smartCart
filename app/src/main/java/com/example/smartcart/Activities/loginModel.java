@@ -58,7 +58,7 @@ public class loginModel extends  AppCompatActivity {
                         String email = (String) usersData.get("email");
                         String username = (String) usersData.get("username");
                         String password = (String) usersData.get("password");
-                        List<Map<String , Object>> importedLists = (List<Map<String, Object>>) usersData.get("imported lists");
+                        ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("imported lists");
                         Log.d("LoginModel", "Imported Lists: " + importedLists);
                         currentUser.setEmail(email);
                         currentUser.setUsername(username);
@@ -117,7 +117,7 @@ public class loginModel extends  AppCompatActivity {
                     String email = (String) usersData.get("email");
                     String username = (String) usersData.get("username");
                     String password = (String) usersData.get("password");
-                    List<Map<String , Object>> importedLists = (List<Map<String , Object>>) usersData.get("imported lists");
+                    ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String , Object>>) usersData.get("imported lists");
 
 
 

@@ -46,6 +46,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.firebaseui:firebase-ui-auth:9.0.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.9.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.9.2")
     implementation ("com.google.android.gms:play-services-vision:20.1.3")

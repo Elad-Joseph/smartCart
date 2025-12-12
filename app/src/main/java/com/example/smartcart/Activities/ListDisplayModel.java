@@ -67,8 +67,9 @@ public class ListDisplayModel extends AppCompatActivity {
         setUpListeners();
 
         Intent intent = getIntent();
+        String currentListId = intent.getStringExtra("ListId");
         importedShoppingLists = ImportedShoppingLists.getInstance();
-        currentShoppingList = importedShoppingLists.getListById(intent.getStringExtra("ListId"));
+        currentShoppingList = importedShoppingLists.getListById(currentListId);
         if (currentShoppingList != null) {
             listNameTextView.setText(currentShoppingList.getName());
         }
@@ -115,7 +116,7 @@ public class ListDisplayModel extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.deleteList) {
-                    currentUser.removeListFromImportedLists(currentShoppingList.getId());
+//                    currentUser.removeListFromImportedLists(currentShoppingList.getId());
                     userDatabase.deleteListFromUser(currentShoppingList.getId());
                     listDatabase.deleteList(currentShoppingList.getId(), new CallBack() {
                         @Override
@@ -123,6 +124,7 @@ public class ListDisplayModel extends AppCompatActivity {
                             Log.d("ListDisplayModel", "List deleted from ListDatabase: " + currentShoppingList.getId());
                             Intent intent = new Intent(ListDisplayModel.this, HomePageModel.class);
                             startActivity(intent);
+                            finish();
                         }
                     });
                     Toast.makeText(ListDisplayModel.this,"List Deleted:"+ currentUser.getEmail() + " " + currentShoppingList.getId() , Toast.LENGTH_SHORT).show();

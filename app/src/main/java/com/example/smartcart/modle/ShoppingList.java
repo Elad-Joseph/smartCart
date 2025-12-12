@@ -115,7 +115,7 @@ public class ShoppingList extends ArrayList<Item>{
         listData.put("name", this.Name);
         List<Map<String , Object>> itemsList = new ArrayList<>();
         listData.put("items", itemsList);
-        listData.put("Id", this.Id);
+        listData.put("id", this.Id);
         listData.put("Hadderid", this.Hadderid);
         listData.put("EditButtonid", this.EditButtonid);
 

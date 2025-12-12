@@ -33,7 +33,7 @@ public class ListDatabase {
     }
 
     public void deleteList(String listId, CallBack callBack) {
-        ColRef.whereEqualTo("Id", listId).get().addOnCompleteListener(task -> {
+        ColRef.whereEqualTo("id", listId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();
                 if (!querySnapshot.isEmpty()) {
@@ -54,7 +54,7 @@ public class ListDatabase {
     }
 
     public void getList(String listId, CallBack<Map<String, Object>> callBack) {
-        ColRef.whereEqualTo("Id", listId).get().addOnCompleteListener(task -> {
+        ColRef.whereEqualTo("id", listId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();
                 if (!querySnapshot.isEmpty()) {
@@ -73,6 +73,7 @@ public class ListDatabase {
 
     public void getAllListsForCurrentUser(CallBack callBack) {
         String[] userListIds = currentUser.getImportedListsIds();
+
         importedShoppingLists.clear();
         for (int i = 0; i < userListIds.length; i++) {
 
@@ -81,7 +82,7 @@ public class ListDatabase {
                 public void onCallBack(Map<String, Object> value) {
                     if (value != null) {
                         ShoppingList list = new ShoppingList(value.get("name").toString(),
-                                value.get("Id").toString(),
+                                value.get("id").toString(),
                                 (List<String>) value.get("items"));
                         String a = list.getName();
                         importedShoppingLists.add(list);

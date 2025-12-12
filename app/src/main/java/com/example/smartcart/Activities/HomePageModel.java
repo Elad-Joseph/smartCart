@@ -67,12 +67,9 @@ public class HomePageModel extends AppCompatActivity {
         int numberOfLists = sharedPreferences.getInt("number list", 0);
 
         currentUser = CurrentUser.getInstance();
-        currentUser.setEmail(email);
-        currentUser.setUsername(username);
-
 
         if (username != null) {
-            welcomeText.setText(welcomeText.getText().toString() + username);
+            welcomeText.setText(welcomeText.getText().toString() + username + currentUser.getPassword());
         }
 
         NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + numberOfLists);
@@ -80,7 +77,6 @@ public class HomePageModel extends AppCompatActivity {
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
-        currentUser = CurrentUser.getInstance();
         refreshLists();
     }
 
@@ -153,8 +149,9 @@ public class HomePageModel extends AppCompatActivity {
 
             if (!listName.isEmpty()) {
                 ShoppingList newList = new ShoppingList(listName);
-                listDatabase.addList(newList);
                 importedShoppingLists.add(newList);
+                listDatabase.addList(newList);
+                userDatabase.updateUser();
                 listContainer.addView(newList.createRow(this));
                 Toast.makeText(this, "List added: " + listName +" "+ currentUser.getPassword(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();

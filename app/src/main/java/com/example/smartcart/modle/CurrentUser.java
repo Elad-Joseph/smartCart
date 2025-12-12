@@ -1,5 +1,8 @@
 package com.example.smartcart.modle;
 
+import android.provider.ContactsContract;
+import android.util.Log;
+
 import com.example.smartcart.data.UserDatabase;
 
 import java.util.ArrayList;
@@ -14,7 +17,8 @@ public class CurrentUser {
     private String password;
     private String id;
     private String FriendsIds;
-    private ArrayList<Map<String , Object>> ImportedLists;
+    private ArrayList<Map<String , Object>> importedLists;
+    private ImportedShoppingLists importedShoppingLists;
     private UserDatabase userDatabase;
 
     private CurrentUser() {
@@ -49,43 +53,49 @@ public class CurrentUser {
         password = null;
         id = null;
         FriendsIds = null;
-        ImportedLists = null;
+        importedLists = null;
     }
 
-    public void addListToImportedLists(Map<String , Object> newList){
-        if(ImportedLists == null){
-            ImportedLists = new ArrayList<>();
-        }
-        ImportedLists.add(newList);
-    }
 
     public void addListToImportedLists(ShoppingList newList){
         Map<String , Object> listMap = newList.exportList();
-        if(ImportedLists == null){
-            ImportedLists = new ArrayList<>();
+        if(importedLists == null){
+            importedLists = new ArrayList<>();
         }
-        ImportedLists.add(listMap);
-        userDatabase = new UserDatabase();
-        userDatabase.updateUser();
+        importedLists.add(listMap);
     }
 
-    public void removeListFromImportedLists(String idToRemove){
-        if(ImportedLists != null){
-            ImportedLists.removeIf(listMap -> listMap.get("id").toString().equals(idToRemove));
-        }
-    }
 
+    public void removeListFromImportedShoppingList(String idToRemove){
+        importedShoppingLists = ImportedShoppingLists.getInstance();
+        importedShoppingLists.RemoveListById(idToRemove);
+    }
     public Map<String , Object> exportCurrentUserToDB() {
+        setImportedListsToImportedShoppingLists();
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("username", this.username);
         userMap.put("email", this.email);
         userMap.put("password", this.password);
         userMap.put("id", this.id);
         userMap.put("friends ids", this.FriendsIds);
-        userMap.put("imported lists", this.ImportedLists);
+        userMap.put("imported lists", this.importedLists);
         return userMap;
     }
 
+    public void setImportedListsToImportedShoppingLists(){
+        importedShoppingLists = ImportedShoppingLists.getInstance();
+        if(importedLists == null){
+            importedLists = new ArrayList<>();
+        }
+        importedLists.clear();
+        for(ShoppingList list : importedShoppingLists){
+            importedLists.add(list.exportList());
+        }
+    }
+
+    public void setImportedLists(ArrayList<Map<String , Object>> importedLists) {
+        this.importedLists = importedLists;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -108,30 +118,20 @@ public class CurrentUser {
         FriendsIds = friendsIds;
     }
     public ArrayList<Map<String , Object>> getImportedLists() {
-        return ImportedLists;
+        return importedLists;
     }
+
     public String[] getImportedListsIds() {
-        if(ImportedLists == null){
+        if(importedLists == null){
             return new String[0];
         }
-        String[] ids = new String[ImportedLists.size()];
-        for(int i = 0; i < ImportedLists.size(); i++){
-            ids[i] = ImportedLists.get(i).get("Id").toString();
+
+        String[] ids = new String[importedLists.size()];
+        for(int i = 0; i < importedLists.size(); i++){
+            ids[i] = importedLists.get(i).get("id").toString();
         }
         return ids;
     }
 
-    public void removeListFromImportedLists(ShoppingList listToRemove){
-        if(ImportedLists != null){
-            ImportedLists.removeIf(listMap -> listMap.get("id").toString().equals(listToRemove.getId()));
-        }
-    }
 
-    public void setImportedLists(List<Map<String , Object>> importedLists) {
-        if(importedLists == null){
-            ImportedLists = new ArrayList<>();
-            return;
-        }
-        ImportedLists = new ArrayList<>(importedLists);
-    }
 }
