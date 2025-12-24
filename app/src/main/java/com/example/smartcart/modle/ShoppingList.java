@@ -22,7 +22,6 @@ import com.example.smartcart.Activities.ListDisplayModel;
 import com.example.smartcart.Activities.ProfilePageModel;
 import com.example.smartcart.Activities.loginModel;
 import com.example.smartcart.R;
-import com.example.smartcart.data.DbUsersHandler;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -48,6 +47,13 @@ public class ShoppingList extends ArrayList<Item>{
     public ShoppingList(String name){
         this.Name = name;
         this.Id = String.valueOf(UUID.randomUUID().hashCode());
+        this.Hadderid = UUID.randomUUID().hashCode();
+        this.EditButtonid = UUID.randomUUID().hashCode();
+    }
+
+    public ShoppingList(String name , String id){
+        this.Name = name;
+        this.Id = id;
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }

@@ -69,9 +69,9 @@ public class CurrentUser {
     public void removeListFromImportedShoppingList(String idToRemove){
         importedShoppingLists = ImportedShoppingLists.getInstance();
         importedShoppingLists.RemoveListById(idToRemove);
+        setImportedListsToImportedShoppingLists();
     }
     public Map<String , Object> exportCurrentUserToDB() {
-        setImportedListsToImportedShoppingLists();
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("username", this.username);
         userMap.put("email", this.email);

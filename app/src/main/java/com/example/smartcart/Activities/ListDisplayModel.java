@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
-import com.example.smartcart.data.DbUsersHandler;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;

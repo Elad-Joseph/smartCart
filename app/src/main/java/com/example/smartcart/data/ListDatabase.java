@@ -72,29 +72,46 @@ public class ListDatabase {
     }
 
     public void getAllListsForCurrentUser(CallBack callBack) {
-        String[] userListIds = currentUser.getImportedListsIds();
-
-        importedShoppingLists.clear();
-        for (int i = 0; i < userListIds.length; i++) {
-
-            getList(userListIds[i], new CallBack<Map<String, Object>>() {
-                @Override
-                public void onCallBack(Map<String, Object> value) {
-                    if (value != null) {
-                        ShoppingList list = new ShoppingList(value.get("name").toString(),
-                                value.get("id").toString(),
-                                (List<String>) value.get("items"));
-                        String a = list.getName();
-                        importedShoppingLists.add(list);
-                        if (importedShoppingLists.size() == userListIds.length) {
-                            {
-                                callBack.onCallBack(null);
-                            }
-                        }
-                    }
+//        String[] userListIds = currentUser.getImportedListsIds();
+//
+//        importedShoppingLists.clear();
+//        for (int i = 0; i < userListIds.length; i++) {
+//
+//            getList(userListIds[i], new CallBack<Map<String, Object>>() {
+//                @Override
+//                public void onCallBack(Map<String, Object> value) {
+//                    if (value != null) {
+//                        ShoppingList list = new ShoppingList(value.get("name").toString(),
+//                                value.get("id").toString(),
+//                                (List<String>) value.get("items"));
+//                        String a = list.getName();
+//                        importedShoppingLists.add(list);
+//                        if (importedShoppingLists.size() == userListIds.length) {
+//                            {
+//                                callBack.onCallBack(null);
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
+        UserDatabase userDatabase = new UserDatabase();
+        userDatabase.getListsFromUser(new CallBack<List<Map<String, Object>>>() {
+            @Override
+            public void onCallBack(List<Map<String , Object>> value) {
+                importedShoppingLists.clear();
+                if(value == null){
+                    callBack.onCallBack(null);
+                    return;
                 }
-            });
-        }
+                for(Map<String , Object> listData : value){
+                    ShoppingList list = new ShoppingList(listData.get("name").toString(),
+                            listData.get("id").toString());
+                    importedShoppingLists.add(list);
+                }
+                callBack.onCallBack(null);
+            }
+        });
 
     }
 }

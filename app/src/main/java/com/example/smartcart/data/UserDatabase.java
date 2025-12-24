@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Currency;
+import java.util.List;
 import java.util.Map;
 
 public class UserDatabase {
@@ -107,4 +108,17 @@ public class UserDatabase {
         updateUser();
     }
 
+    public void getListsFromUser(CallBack<List<Map<String , Object>>> callBack){
+        currentUser = CurrentUser.getInstance();
+        getUserByEmail(currentUser.getEmail() , currentUser.getPassword() , new CallBack<Map<String, Object>>() {
+            @Override
+            public void onCallBack(Map<String, Object> usersData) {
+                if (usersData != null) {
+                    callBack.onCallBack((List<Map<String, Object>>) usersData.get("imported lists"));
+                } else {
+                    callBack.onCallBack(null);
+                }
+            }
+        });
+    }
 }

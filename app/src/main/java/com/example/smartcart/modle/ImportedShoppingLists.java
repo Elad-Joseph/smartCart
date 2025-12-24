@@ -32,7 +32,7 @@ public class ImportedShoppingLists extends ArrayList<ShoppingList>{
     public void RemoveListById(String id) {
         for(ShoppingList i : this){
             if(i.getId().equals(id)){
-                this.remove(i);
+                this.remove(this.indexOf(i));
                 return;
             }
         }
@@ -45,4 +45,6 @@ public class ImportedShoppingLists extends ArrayList<ShoppingList>{
         }
         return ids.toArray(new String[0]);
     }
+
+
 }
