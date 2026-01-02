@@ -25,10 +25,7 @@ import java.util.Map;
 
 public class loginModel extends  AppCompatActivity {
 
-    private CurrentUser currentUser;
     private UserDatabase userDatabase;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     private Button LoginButton;
     private Button NewAcountButton;
@@ -45,34 +42,18 @@ public class loginModel extends  AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         userDatabase = new UserDatabase();
-        currentUser = CurrentUser.getInstance();
-        sharedPreferences = getSharedPreferences("AppPrefs" , MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        if(sharedPreferences.getString("email" , null) != null){
-            String email = sharedPreferences.getString("email" , null);
-            Toast.makeText(getApplicationContext(), "Welcome back " + sharedPreferences.getString("username" , null), Toast.LENGTH_SHORT).show();
-            userDatabase.getUserByEmail(email , sharedPreferences.getString("password" , null) , new CallBack<Map<String , Object>>() {
-                @Override
-                public void onCallBack(Map<String, Object> usersData) {
-                    if (usersData != null) {
-                        String email = (String) usersData.get("email");
-                        String username = (String) usersData.get("username");
-                        String password = (String) usersData.get("password");
-                        ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String, Object>>) usersData.get("imported lists");
-                        Log.d("LoginModel", "Imported Lists: " + importedLists);
-                        currentUser.setEmail(email);
-                        currentUser.setUsername(username);
-                        currentUser.setPassword(password);
-                        currentUser.setImportedLists(importedLists);
 
-                        Intent intent = new Intent(loginModel.this, HomePageModel.class);
-                        startActivity(intent);
-                        finish();
-                    }
+        userDatabase.checkForExistingSession(new CallBack<Boolean>() {
+            @Override
+            public void onCallBack(Boolean value) {
+                if (value) {
+                    Intent intent = new Intent(loginModel.this, HomePageModel.class);
+                    startActivity(intent);
+                    finish();
                 }
-                });
+            }
+        });
 
-        }
         setUpIds();
         setUpListeners();
 
@@ -110,35 +91,20 @@ public class loginModel extends  AppCompatActivity {
     }
 
     public void loginConfirmation(String email , String password){
-        userDatabase.getUserByEmail(email, password, new CallBack<Map<String , Object>>() {
+
+        userDatabase.loginUser(email , password , new CallBack<>() {
             @Override
-            public void onCallBack(Map<String, Object> usersData) {
-                if (usersData != null) {
-                    String email = (String) usersData.get("email");
-                    String username = (String) usersData.get("username");
-                    String password = (String) usersData.get("password");
-                    ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String , Object>>) usersData.get("imported lists");
-
-
-
-                    currentUser.setEmail(email);
-                    currentUser.setUsername(username);
-                    currentUser.setPassword(password);
-                    currentUser.setImportedLists(importedLists);
-
-                    editor.putString("username", username);
-                    editor.putString("email", email);
-                    editor.putString("password" , password);
-                    editor.apply();
-
+            public void onCallBack(Boolean isSuccess) {
+                if (isSuccess) {
                     Intent intent = new Intent(loginModel.this, HomePageModel.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "email or password are wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Email or password are wrong", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 
 

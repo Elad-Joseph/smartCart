@@ -28,21 +28,17 @@ public class ListDatabase {
     }
 
     public void addList(ShoppingList list) {
-        ColRef.add(list.exportList());
-        currentUser.addListToImportedLists(list);
+        importedShoppingLists.add(list);
+        currentUser.setImportedListsToImportedShoppingLists();
+        ColRef.document(list.getId()).set(list.exportList());
     }
 
-    public void deleteList(String listId, CallBack callBack) {
-        ColRef.whereEqualTo("id", listId).get().addOnCompleteListener(task -> {
+    public void deleteList(String listId, CallBack<Void> callBack) {
+        ColRef.document(listId).delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                QuerySnapshot querySnapshot = task.getResult();
-                if (!querySnapshot.isEmpty()) {
-                    String docId = querySnapshot.getDocuments().get(0).getId();
-                    ColRef.document(docId).delete();
-                    callBack.onCallBack(null);
-                }
+                callBack.onCallBack(null);
             } else {
-                Log.d("ListDatabase", "Error getting documents: ", task.getException());
+                Log.d("ListDatabase", "Error deleting document: ", task.getException());
             }
         });
         callBack.onCallBack(null);
@@ -54,19 +50,13 @@ public class ListDatabase {
     }
 
     public void getList(String listId, CallBack<Map<String, Object>> callBack) {
-        ColRef.whereEqualTo("id", listId).get().addOnCompleteListener(task -> {
+        ColRef.document(listId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                QuerySnapshot querySnapshot = task.getResult();
-                if (!querySnapshot.isEmpty()) {
-                    Map<String, Object> listData = querySnapshot.getDocuments().get(0).getData();
-
-                    callBack.onCallBack(listData);
-                } else {
-                    callBack.onCallBack(null);
-                }
+                Map<String, Object> listData = task.getResult().getData();
+                callBack.onCallBack(listData);
             } else {
                 callBack.onCallBack(null);
-                Log.d("ListDatabase", "Error getting documents: ", task.getException());
+                Log.d("ListDatabase", "Error getting document: ", task.getException());
             }
         });
     }

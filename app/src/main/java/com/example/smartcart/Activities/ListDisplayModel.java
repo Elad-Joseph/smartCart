@@ -35,7 +35,6 @@ import com.google.android.material.textview.MaterialTextView;
 public class ListDisplayModel extends AppCompatActivity {
     private ListDatabase listDatabase;
     private UserDatabase userDatabase;
-    SharedPreferences sharedPreferences;
     private ImportedShoppingLists importedShoppingLists;
     private ShoppingList currentShoppingList;
 
@@ -56,19 +55,15 @@ public class ListDisplayModel extends AppCompatActivity {
         listDatabase = new ListDatabase();
         currentUser = CurrentUser.getInstance();
 
-        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
-        int numberOfLists = sharedPreferences.getInt("number list" , 0);
-
         setUpIds();
         setUpListeners();
 
         Intent intent = getIntent();
         String currentListId = intent.getStringExtra("CurrentListId");
+
         importedShoppingLists = ImportedShoppingLists.getInstance();
         currentShoppingList = importedShoppingLists.getListById(currentListId);
+
         if (currentShoppingList != null) {
             listNameTextView.setText(currentShoppingList.getName());
         }

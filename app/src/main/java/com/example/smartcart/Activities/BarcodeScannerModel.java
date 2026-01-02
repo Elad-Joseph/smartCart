@@ -24,8 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.smartcart.data.CallBack;
-import com.example.smartcart.data.DbUsersHandler;
-import com.example.smartcart.data.FireStoreCallBack;
 import com.example.smartcart.R;
 import com.example.smartcart.data.ProductDatabase;
 import com.example.smartcart.modle.ImportedShoppingLists;

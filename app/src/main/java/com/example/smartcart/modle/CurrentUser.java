@@ -21,6 +21,7 @@ public class CurrentUser {
     private ImportedShoppingLists importedShoppingLists;
     private UserDatabase userDatabase;
 
+
     private CurrentUser() {
     }
 
@@ -54,6 +55,7 @@ public class CurrentUser {
         id = null;
         FriendsIds = null;
         importedLists = null;
+        importedShoppingLists.clearInstance();
     }
 
 

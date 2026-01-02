@@ -41,5 +41,10 @@ public class ImportedShoppingLists extends ArrayList<ShoppingList>{
         return ids.toArray(new String[0]);
     }
 
-
+    public void clearInstance() {
+        if (instance != null) {
+            instance.clear();
+            instance = null;
+        }
+    }
 }

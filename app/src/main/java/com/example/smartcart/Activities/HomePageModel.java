@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
-import com.example.smartcart.data.FireStoreListCallBack;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
@@ -31,11 +30,10 @@ import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
 
 
 public class HomePageModel extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
+
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
@@ -56,22 +54,13 @@ public class HomePageModel extends AppCompatActivity {
         setContentView(R.layout.home_page);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
-        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-
         setUpIds();
         setUpListeners();
 
-        String username = sharedPreferences.getString("username", null);
-        email = sharedPreferences.getString("email", null);
-        int numberOfLists = sharedPreferences.getInt("number list", 0);
-
         currentUser = CurrentUser.getInstance();
+        welcomeText.setText(welcomeText.getText().toString() + currentUser.getUsername());
 
-        if (username != null) {
-            welcomeText.setText(welcomeText.getText().toString() + username + currentUser.getPassword());
-        }
 
-        NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + numberOfLists);
 
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
@@ -109,17 +98,21 @@ public class HomePageModel extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
                 if (item.getItemId() == R.id.ToProfileSettings) {
                     Intent intent = new Intent(HomePageModel.this, ProfilePageModel.class);
                     startActivity(intent);
+                    finish();
                     return true;
-                } else if (item.getItemId() == R.id.sighOut) {
-                    sharedPreferences.edit().clear().apply();
+                }
+                else if (item.getItemId() == R.id.sighOut) {
+                    userDatabase.signOutUser();
                     Intent intent = new Intent(HomePageModel.this, loginModel.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
-                } else if (item.getItemId() == R.id.toFriendsList) {
+                }
+                else if (item.getItemId() == R.id.toFriendsList) {
                     Intent intent = new Intent(HomePageModel.this, FriendsListModel.class);
                     startActivity(intent);
                 }
@@ -149,8 +142,10 @@ public class HomePageModel extends AppCompatActivity {
             if (!listName.isEmpty()) {
                 ShoppingList newList = new ShoppingList(listName);
                 importedShoppingLists.add(newList);
+
                 listDatabase.addList(newList);
                 userDatabase.updateUser();
+
                 listContainer.addView(newList.createRow(this));
                 Toast.makeText(this, "List added: " + listName +" "+ currentUser.getPassword(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -170,6 +165,7 @@ public class HomePageModel extends AppCompatActivity {
                         listContainer.addView(list.createRow(HomePageModel.this));
                     }
                 }
+                NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + importedShoppingLists.size());
             }
         });
     }

@@ -17,8 +17,6 @@ import com.example.smartcart.modle.User;
 public class signInModel extends AppCompatActivity {
 
     private CurrentUser currentUser;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
 
     UserDatabase userDatabase;
 
@@ -34,11 +32,10 @@ public class signInModel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_in);
 
-        sharedPreferences = getSharedPreferences("AppPrefs" , MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
         currentUser = CurrentUser.getInstance();
+
         userDatabase = new UserDatabase();
+
         setUpIds();
         setUpListeners();
 
@@ -67,29 +64,31 @@ public class signInModel extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (password.getText().toString().trim() != "" && username.getText().toString().trim() != "" && email.getText().toString().trim() != ""){
-                    if (password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())) {
-
-                        currentUser.setUsername(username.getText().toString().trim());
-                        currentUser.setEmail(email.getText().toString().trim());
-                        currentUser.setPassword(password.getText().toString().trim());
-
-                        userDatabase.addUser();
-
-                        editor.putString("username", username.getText().toString().trim());  // Save username
-                        editor.putString("email", email.getText().toString().trim());
-                        editor.putInt("list number" , 0);
-                        editor.apply();
-
-
-
-                        Intent intent = new Intent(signInModel.this, HomePageModel.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
+                registerNewUser();
             }
         });
     }
 
+    public void registerNewUser() {
+        String passwordText = password.getText().toString().trim();
+        String confirmPasswordText = confirmPassword.getText().toString().trim();
+        String usernameText = username.getText().toString().trim();
+        String emailText = email.getText().toString().trim();
+
+        if (passwordText != "" && usernameText != "" && emailText != "") {
+            if (passwordText.equals(confirmPasswordText)) {
+
+                currentUser.setUsername(usernameText);
+                currentUser.setEmail(emailText);
+                currentUser.setPassword(passwordText);
+
+                userDatabase.createNewUser();
+
+                Intent intent = new Intent(signInModel.this, HomePageModel.class);
+                startActivity(intent);
+                finish();
+            }
+
+        }
+    }
 }

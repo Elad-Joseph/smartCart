@@ -59,20 +59,6 @@ public class ShoppingList extends ArrayList<Item>{
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
-    public ShoppingList(ArrayList<Item> listOfItems , String name , int length , String id , int hadderid , int editButtonid){
-        this.Name = name;
-        this.Id = id;
-        this.Hadderid = hadderid;
-        this.EditButtonid = editButtonid;
-    }
-
-    public ShoppingList(String name , String id , List<String> itemsIds){
-        this.Name = name;
-        this.Id = id;
-        this.Hadderid = UUID.randomUUID().hashCode();
-        this.EditButtonid = UUID.randomUUID().hashCode();
-    }
-
     public void addItem(Item item){
         this.add(item);
     }
@@ -85,26 +71,12 @@ public class ShoppingList extends ArrayList<Item>{
         return Name;
     }
 
-    public ArrayList<Item> getListOfItems() {
-        return this;
-    }
-
     public int getLength() {
         return size();
     }
 
     public void setName(String name) {
         Name = name;
-    }
-
-
-    public void setEditButtonid(int editButtonid) {
-        EditButtonid = editButtonid;
-    }
-
-    public void setHadderid(int hadderid) {
-        Hadderid = hadderid;
-
     }
 
 
@@ -131,8 +103,6 @@ public class ShoppingList extends ArrayList<Item>{
         List<Map<String , Object>> itemsList = new ArrayList<>();
         listData.put("items", itemsList);
         listData.put("id", this.Id);
-        listData.put("Hadderid", this.Hadderid);
-        listData.put("EditButtonid", this.EditButtonid);
 
         return listData;
     }
@@ -180,7 +150,7 @@ public class ShoppingList extends ArrayList<Item>{
             }
         });
 
-
+        materialButton.setId(EditButtonid);
         materialButton.setLayoutParams(btnParams);
         materialButton.setBackgroundResource(R.drawable.clear_background);
         materialButton.setBackgroundTintList(null); // clear tint
