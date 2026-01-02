@@ -17,6 +17,7 @@ public class Item {
     private Boolean checked;
     private Product product;
     private int amount;
+    private int amountChecked;
 
     public Item(String name, Boolean checked , Product product) {
         this.checked = checked;
@@ -30,6 +31,8 @@ public class Item {
     public Item(String name) {
         this.name = name;
         this.checked = false;
+        this.amount = 1;
+        this.product = new Product(name);
     }
 
     public String getName() {
@@ -120,6 +123,29 @@ public class Item {
         itemContainer.addView(rowLayout);
 
         return itemContainer;
+    }
+
+    public String getProductId() {
+        return product.getId();
+    }
+
+    public void markItem(){
+        if(!checked){
+            if(amountChecked < amount) {
+                amountChecked += 1;
+            }
+            if(amountChecked == amount) {
+                checked = true;
+            }
+        }
+    }
+
+    public void unmarkItem(){
+        if(amountChecked > 0) {
+            amountChecked -= 1;
+            checked = false;
+        }
+
     }
 
 }

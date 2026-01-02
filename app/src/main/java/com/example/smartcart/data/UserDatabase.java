@@ -48,7 +48,6 @@ public class UserDatabase {
     }
 
     public void updateUser() {
-//        ColRef.document(userId).set(currentUser.exportCurrentUserToDB());
         currentUser = CurrentUser.getInstance();
         ColRef.whereEqualTo("email", currentUser.getEmail()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -121,4 +120,5 @@ public class UserDatabase {
             }
         });
     }
+
 }

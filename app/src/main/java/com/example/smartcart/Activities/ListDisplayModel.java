@@ -66,7 +66,7 @@ public class ListDisplayModel extends AppCompatActivity {
         setUpListeners();
 
         Intent intent = getIntent();
-        String currentListId = intent.getStringExtra("ListId");
+        String currentListId = intent.getStringExtra("CurrentListId");
         importedShoppingLists = ImportedShoppingLists.getInstance();
         currentShoppingList = importedShoppingLists.getListById(currentListId);
         if (currentShoppingList != null) {
@@ -87,6 +87,7 @@ public class ListDisplayModel extends AppCompatActivity {
             public void onClick(View v) {
                 // Intent to navigate to the barcode scanning activity
                 Intent intent = new Intent(ListDisplayModel.this, BarcodeScannerModel.class);
+                intent.putExtra("CurrentListId", currentShoppingList.getId());
                 startActivity(intent);
             }
         });
@@ -115,7 +116,6 @@ public class ListDisplayModel extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.deleteList) {
-//                    currentUser.removeListFromImportedLists(currentShoppingList.getId());
                     userDatabase.deleteListFromUser(currentShoppingList.getId());
                     listDatabase.deleteList(currentShoppingList.getId(), new CallBack() {
                         @Override

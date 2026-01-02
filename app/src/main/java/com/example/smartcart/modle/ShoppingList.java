@@ -1,6 +1,7 @@
 // java
 package com.example.smartcart.modle;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -115,6 +116,14 @@ public class ShoppingList extends ArrayList<Item>{
         return Id;
     }
 
+    public Boolean containsItem(String itemId) {
+        for (Item item : this) {
+            if (item.getProductId().equals(itemId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Map<String , Object> exportList() {
         Map<String, Object> listData = new HashMap<>();
@@ -161,7 +170,7 @@ public class ShoppingList extends ArrayList<Item>{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ListDisplayModel.class);
-                intent.putExtra("ListId", Id);
+                intent.putExtra("CurrentListId", Id);
                 if (context instanceof Activity) {
                     ((Activity) context).startActivity(intent);
                 } else {
@@ -170,6 +179,8 @@ public class ShoppingList extends ArrayList<Item>{
                 }
             }
         });
+
+
         materialButton.setLayoutParams(btnParams);
         materialButton.setBackgroundResource(R.drawable.clear_background);
         materialButton.setBackgroundTintList(null); // clear tint
@@ -201,4 +212,12 @@ public class ShoppingList extends ArrayList<Item>{
         return Math.round(dp * density);
     }
 
+    public void markItem(String itemId) {
+       for (Item item: this) {
+           if (item.getProductId().equals(itemId)) {
+               item.markItem();
+               break;
+           }
+       }
+    }
 }

@@ -82,6 +82,7 @@ public class CurrentUser {
         return userMap;
     }
 
+
     public void setImportedListsToImportedShoppingLists(){
         importedShoppingLists = ImportedShoppingLists.getInstance();
         if(importedLists == null){

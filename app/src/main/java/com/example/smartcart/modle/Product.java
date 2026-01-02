@@ -2,6 +2,7 @@ package com.example.smartcart.modle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class Product {
     private String Name;
@@ -10,6 +11,11 @@ public class Product {
     public Product(String name , String id){
         this.Name = name;
         this.Id = id;
+    }
+
+    public Product(String name){
+        this.Name = name;
+        this.Id = UUID.randomUUID().toString();
     }
 
     public Product(){
@@ -29,14 +35,6 @@ public class Product {
 
     public String getName() {
         return Name;
-    }
-
-    public void setId(String id) {
-        Id = id;
-    }
-
-    public void setName(String name) {
-        Name = name;
     }
 
 }
