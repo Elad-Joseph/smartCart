@@ -32,7 +32,7 @@ import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-public class ListDisplayModel extends AppCompatActivity {
+public class ListDisplayModel extends BaseActivity {
     private ListDatabase listDatabase;
     private UserDatabase userDatabase;
     private ImportedShoppingLists importedShoppingLists;
@@ -44,6 +44,7 @@ public class ListDisplayModel extends AppCompatActivity {
     MaterialTextView listNameTextView;
     ImageButton optionsButton;
     ImageButton addItemButton;
+    ImageButton GoToHomePageButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,8 +56,10 @@ public class ListDisplayModel extends AppCompatActivity {
         listDatabase = new ListDatabase();
         currentUser = CurrentUser.getInstance();
 
-        setUpIds();
-        setUpListeners();
+        setupDoubleBackExit();
+
+        SetupIds();
+        SetupListeners();
 
         Intent intent = getIntent();
         String currentListId = intent.getStringExtra("CurrentListId");
@@ -70,14 +73,17 @@ public class ListDisplayModel extends AppCompatActivity {
 
     }
 
-    public void setUpIds(){
+    @Override
+    protected void SetupIds(){
         scanItemsButton = findViewById(R.id.barcodeButton);
         listNameTextView = findViewById(R.id.listNameDisplay);
         optionsButton = findViewById(R.id.listOptionsButton);
         addItemButton = findViewById(R.id.addItemButton);
+        GoToHomePageButton = findViewById(R.id.listDisplayToHomePage);
     }
 
-    public void setUpListeners(){
+    @Override
+    public void SetupListeners(){
         scanItemsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Intent to navigate to the barcode scanning activity
@@ -96,6 +102,14 @@ public class ListDisplayModel extends AppCompatActivity {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addNewItemToList();
+            }
+        });
+
+        GoToHomePageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ListDisplayModel.this, HomePageModel.class);
+                startActivity(intent);
+                finish();
             }
         });
 

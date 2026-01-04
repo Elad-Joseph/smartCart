@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.SparseArray;
@@ -27,6 +29,7 @@ import com.example.smartcart.data.CallBack;
 import com.example.smartcart.R;
 import com.example.smartcart.data.ProductDatabase;
 import com.example.smartcart.modle.ImportedShoppingLists;
+import com.example.smartcart.modle.Product;
 import com.example.smartcart.modle.ShoppingList;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -38,13 +41,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class BarcodeScannerModel extends AppCompatActivity {
+public class BarcodeScannerModel extends BaseActivity {
 
-    ProductDatabase database;
+    private ProductDatabase database;
 
-    String productName;
-
-    SharedPreferences sharedPreferences;
+    private Product scannedProduct;
 
     private Boolean allowScan;
 
@@ -54,53 +55,57 @@ public class BarcodeScannerModel extends AppCompatActivity {
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-    //This class provides methods to play DTMF tones
+
     private ToneGenerator toneGen1;
-    private TextView barcodeText;
+
     private String barcodeData;
     private ImageButton scanButton;
 
-    private long scanStartTime = 0L;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.barcode_scanner);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        setupId();
-        setupListeners();
+
+        setupDoubleBackExit();
+
+        SetupIds();
+        SetupListeners();
 
         database = new ProductDatabase();
 
         allowScan = false;
 
-        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", null);
-        String email = sharedPreferences.getString("email", null);
-        int numberOfLists = sharedPreferences.getInt("number list" , 0);
-
         Intent intent = getIntent();
         ImportedShoppingLists importedShoppingLists = ImportedShoppingLists.getInstance();
         currentShoppingList = importedShoppingLists.getListById(intent.getStringExtra("CurrentListId"));
-
 
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
         initialiseDetectorsAndSources();
 
     }
 
-    public void setupId(){
+    @Override
+    protected void SetupIds(){
         surfaceView = findViewById(R.id.camera);
         scanButton = findViewById(R.id.btn_scan);
     }
 
-    public void setupListeners(){
+    @Override
+    protected void SetupListeners(){
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 allowScan = true;
-                scanStartTime = SystemClock.elapsedRealtime();
                 scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    // Action 1: Change the button color
+                    scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+
+                    // Action 2: Update your boolean flag
+                    allowScan = false;
+                }, 3000);
             }
         });
     }
@@ -161,10 +166,6 @@ public class BarcodeScannerModel extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if(SystemClock.elapsedRealtime() - scanStartTime > 4000L){
-                    scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-                    allowScan = false;
-                }
                 if (barcodes.size() != 0) {
                     barcodeData = barcodes.valueAt(0).displayValue;
                     getProductFromDatabase(barcodeData);
@@ -185,21 +186,21 @@ public class BarcodeScannerModel extends AppCompatActivity {
             @Override
             public void onCallBack(Map<String, Object> value) {
                 if(value != null){
-                    productName = value.get("name").toString();
+                    scannedProduct = new Product(value.get("name").toString(), value.get("id").toString());
                     if(currentShoppingList.containsItem(id)){
                         currentShoppingList.markItem(id);
                     }
-                    ProductFoundPopup(productName);
+                    ProductFoundPopup();
 
                 } else {
-                    productName = "Product not found";
+                    scannedProduct = null;
 //
                 }
             }
         });
     }
 
-    public void ProductFoundPopup(String productName){
+    public void ProductFoundPopup(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Product Found");
 
@@ -219,7 +220,7 @@ public class BarcodeScannerModel extends AppCompatActivity {
         }
 
 
-        productNameTextView.setText(productNameTextView.getText().toString() + productName);
+        productNameTextView.setText(productNameTextView.getText().toString() + scannedProduct.getName());
 
         OkButton.setOnClickListener(new View.OnClickListener() {
             @Override

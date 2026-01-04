@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class loginModel extends  AppCompatActivity {
+public class loginModel extends  BaseActivity {
 
     private UserDatabase userDatabase;
 
@@ -36,6 +36,7 @@ public class loginModel extends  AppCompatActivity {
     private EditText getEmail;
     private EditText getPassword;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
@@ -54,13 +55,16 @@ public class loginModel extends  AppCompatActivity {
             }
         });
 
-        setUpIds();
-        setUpListeners();
+        setupDoubleBackExit();
+
+        SetupIds();
+        SetupListeners();
 
 
     }
 
-    public void setUpIds(){
+    @Override
+    protected void SetupIds(){
         LoginButton = findViewById(R.id.loginButton);
         NewAcountButton = findViewById(R.id.newAcount);
 
@@ -68,7 +72,8 @@ public class loginModel extends  AppCompatActivity {
         getPassword = findViewById(R.id.getPasswordLogin);
     }
 
-    public void setUpListeners(){
+    @Override
+    protected void SetupListeners(){
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +91,7 @@ public class loginModel extends  AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(loginModel.this, signInModel.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

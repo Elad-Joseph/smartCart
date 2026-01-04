@@ -1,24 +1,23 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
@@ -32,13 +31,15 @@ import com.google.android.material.textview.MaterialTextView;
 
 
 
-public class HomePageModel extends AppCompatActivity {
+public class HomePageModel extends BaseActivity {
 
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
     ImportedShoppingLists importedShoppingLists;
 
+
+    private boolean doubleBackToExitPressedOnce;
 
     ImageButton optionsButton;
     TextView welcomeText;
@@ -49,18 +50,22 @@ public class HomePageModel extends AppCompatActivity {
 
     private String email;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
-        setUpIds();
-        setUpListeners();
+        setupDoubleBackExit();
+
+        SetupIds();
+        SetupListeners();
 
         currentUser = CurrentUser.getInstance();
         welcomeText.setText(welcomeText.getText().toString() + currentUser.getUsername());
 
-
+        doubleBackToExitPressedOnce = false;
+        doubleBackToExit();
 
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
@@ -68,8 +73,8 @@ public class HomePageModel extends AppCompatActivity {
         refreshLists();
     }
 
-
-    public void setUpIds() {
+    @Override
+    protected void SetupIds() {
         optionsButton = findViewById(R.id.optionsButton);
         welcomeText = findViewById(R.id.welcomeText);
         NumberOfListTextview = findViewById(R.id.NumberOfLists);
@@ -78,7 +83,8 @@ public class HomePageModel extends AppCompatActivity {
         listContainer = findViewById(R.id.listsContainer);
     }
 
-    public void setUpListeners() {
+    @Override
+    protected void SetupListeners() {
         optionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +147,6 @@ public class HomePageModel extends AppCompatActivity {
 
             if (!listName.isEmpty()) {
                 ShoppingList newList = new ShoppingList(listName);
-                importedShoppingLists.add(newList);
 
                 listDatabase.addList(newList);
                 userDatabase.updateUser();
@@ -151,6 +156,25 @@ public class HomePageModel extends AppCompatActivity {
                 dialog.dismiss();
             } else {
                 editTextListName.setError("Enter a name");
+            }
+        });
+    }
+
+    public void doubleBackToExit(){
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+                    // If pressed twice, finish the activity/exit the app
+                    finish();
+                    return;
+                }
+
+                doubleBackToExitPressedOnce = true;
+                Toast.makeText(HomePageModel.this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+                // Reset the flag after 2 seconds
+                new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
             }
         });
     }

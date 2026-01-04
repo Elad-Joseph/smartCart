@@ -143,6 +143,7 @@ public class ShoppingList extends ArrayList<Item>{
                 intent.putExtra("CurrentListId", Id);
                 if (context instanceof Activity) {
                     ((Activity) context).startActivity(intent);
+                    ((Activity) context).finish();
                 } else {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

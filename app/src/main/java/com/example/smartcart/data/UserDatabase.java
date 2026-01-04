@@ -41,7 +41,7 @@ public class UserDatabase {
 
     }
 
-    public void createNewUser(){
+    public void createNewUser(CallBack<Boolean> callBack){
         String email = currentUser.getEmail();
         String password = currentUser.getPassword();
         authHandler.sighup(email , password , new CallBack<FirebaseUser>() {
@@ -50,6 +50,10 @@ public class UserDatabase {
                 if(firebaseUser != null){
                     currentUser.setId(firebaseUser.getUid());
                     ColRef.document(firebaseUser.getUid()).set(currentUser.exportCurrentUserToDB());
+                    callBack.onCallBack(true);
+                }
+                else{
+                    callBack.onCallBack(false);
                 }
             }
         });

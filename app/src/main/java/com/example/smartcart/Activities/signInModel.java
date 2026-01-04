@@ -3,6 +3,7 @@ package com.example.smartcart.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,11 +11,12 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
+import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.User;
 
-public class signInModel extends AppCompatActivity {
+public class signInModel extends BaseActivity {
 
     private CurrentUser currentUser;
 
@@ -36,12 +38,13 @@ public class signInModel extends AppCompatActivity {
 
         userDatabase = new UserDatabase();
 
-        setUpIds();
-        setUpListeners();
+        SetupIds();
+        SetupListeners();
 
     }
 
-    public void setUpIds(){
+    @Override
+    protected void SetupIds(){
         ToLogin = findViewById(R.id.goToLogin);
         register = findViewById(R.id.registerButton);
 
@@ -51,7 +54,8 @@ public class signInModel extends AppCompatActivity {
         confirmPassword = findViewById(R.id.getConfirmPasswordSignIn);
     }
 
-    public void setUpListeners(){
+    @Override
+    protected void SetupListeners(){
         ToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,11 +86,21 @@ public class signInModel extends AppCompatActivity {
                 currentUser.setEmail(emailText);
                 currentUser.setPassword(passwordText);
 
-                userDatabase.createNewUser();
+                userDatabase.createNewUser(new CallBack<Boolean>() {
+                    @Override
+                    public void onCallBack(Boolean value) {
+                        if (value) {
+                            Intent intent = new Intent(signInModel.this, HomePageModel.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else {
+                            Log.d("Firebase authentication" , "unable to register user" );
+                        }
+                    }
+                });
 
-                Intent intent = new Intent(signInModel.this, HomePageModel.class);
-                startActivity(intent);
-                finish();
+
             }
 
         }
