@@ -40,14 +40,14 @@ public class ShoppingList extends ArrayList<Item>{
 
     public ShoppingList(){
         this.Name = "";
-        this.Id = String.valueOf(UUID.randomUUID().hashCode());
+        this.Id = UUID.randomUUID().toString();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(String name){
         this.Name = name;
-        this.Id = String.valueOf(UUID.randomUUID().hashCode());
+        this.Id = UUID.randomUUID().toString();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
@@ -135,7 +135,7 @@ public class ShoppingList extends ArrayList<Item>{
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         );
-        materialButton.setId(Integer.parseInt(Id));
+        materialButton.setId(UUID.randomUUID().hashCode());
         materialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +187,15 @@ public class ShoppingList extends ArrayList<Item>{
        for (Item item: this) {
            if (item.getProductId().equals(itemId)) {
                item.markItem();
+               break;
+           }
+       }
+    }
+
+    public void unmarkItem(String itemId) {
+       for (Item item: this) {
+           if (item.getProductId().equals(itemId)) {
+               item.unmarkItem();
                break;
            }
        }
