@@ -48,7 +48,7 @@ public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleView
         ShoppingList shoppingList = DataSet.get(position);
         String currentName = shoppingList.getName();
 
-//        Idk what is this part for
+//        Idk what is this
 //        if (holder.ListButton != null) {
 //            holder.ListButton.setText(currentName);
 //        }

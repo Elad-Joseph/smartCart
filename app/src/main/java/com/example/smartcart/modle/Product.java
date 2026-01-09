@@ -7,15 +7,18 @@ import java.util.UUID;
 public class Product {
     private String Name;
     private String Id;
+    private String Price;
 
-    public Product(String name , String id){
+    public Product(String name , String id , String price){
         this.Name = name;
         this.Id = id;
+        this.Price = price;
     }
 
     public Product(String name){
         this.Name = name;
         this.Id = UUID.randomUUID().toString();
+        this.Price = "0";
     }
 
     public Product(){
@@ -35,6 +38,10 @@ public class Product {
 
     public String getName() {
         return Name;
+    }
+
+    public String getPrice() {
+        return Price;
     }
 
 }

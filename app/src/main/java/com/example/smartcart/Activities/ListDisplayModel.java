@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,9 +29,12 @@ import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
+import com.example.smartcart.modle.AddItemBottomSheet;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.Item;
+import com.example.smartcart.modle.Product;
+import com.example.smartcart.modle.RecycleViewAdapterAddItem;
 import com.example.smartcart.modle.RecycleViewAdapterListDistplay;
 import com.example.smartcart.modle.ShoppingList;
 import com.example.smartcart.modle.recycleViewAdapterHomePage;
@@ -52,6 +56,7 @@ public class ListDisplayModel extends BaseActivity {
     ImageButton addItemButton;
     ImageButton GoToHomePageButton;
     private RecyclerView ItemContainerRecyclerView;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -173,27 +178,29 @@ public class ListDisplayModel extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+        AddItemBottomSheet addItemBottomSheet = new AddItemBottomSheet();
+        addItemBottomSheet.show(getSupportFragmentManager(), "AddItemBottomSheet");
 
         Button addItemButton = view.findViewById(R.id.buttonAddSelectedItem);
 
-        Item item;
-        Item[] itemsArray = {
-                new Item ("Milk"),
-                new Item ("Eggs"),
-                new Item ("Bread"),
-                new Item ("Butter"),
-                new Item ("Cheese"),
-                new Item ("Apples"),
-                new Item ("Bananas"),
-                new Item ("Chicken"),
-                new Item ("Rice"),
-        };
+        SearchView searchView = view.findViewById(R.id.searchViewAddItem);
 
-        ArrayAdapter<Item> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                itemsArray
-        );
+        RecyclerView addItemRecycleView = findViewById(R.id.recyclerViewItemsToAdd);
+        RecycleViewAdapterAddItem recycleViewAdapterAddItem = new RecycleViewAdapterAddItem(currentUser.getRecommendedProducts());
+        addItemRecycleView.setAdapter(recycleViewAdapterAddItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recycleViewAdapterAddItem.getFilter().filter(newText);
+                return false;
+            }
+        });
 
 
 
@@ -203,9 +210,9 @@ public class ListDisplayModel extends BaseActivity {
 
             }
         });
-
-
     }
+
+
 
     public void refreshItemList(){
         adapter.refreshDataSet();

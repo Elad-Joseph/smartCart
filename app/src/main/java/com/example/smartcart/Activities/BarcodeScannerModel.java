@@ -186,7 +186,7 @@ public class BarcodeScannerModel extends BaseActivity {
             @Override
             public void onCallBack(Map<String, Object> value) {
                 if(value != null){
-                    scannedProduct = new Product(value.get("name").toString(), value.get("id").toString());
+//                    scannedProduct = new Product(value.get("name").toString(), value.get("id").toString());
                     if(currentShoppingList.containsItem(id)){
                         currentShoppingList.markItem(id);
                     }

@@ -20,6 +20,7 @@ public class CurrentUser {
     private ArrayList<Map<String , Object>> importedLists;
     private ImportedShoppingLists importedShoppingLists;
     private UserDatabase userDatabase;
+    private ArrayList<Product> recommendedProducts;
 
 
     private CurrentUser() {
@@ -30,6 +31,24 @@ public class CurrentUser {
             instance = new CurrentUser();
         }
         return instance;
+    }
+
+    public ArrayList<Product> getRecommendedProducts() {
+        return recommendedProducts;
+    }
+
+    public void setRecommendedProducts(ArrayList<Product> recommendedProducts) {
+        this.recommendedProducts = recommendedProducts;
+    }
+
+    public ArrayList<String> getRecommendedProductsNames() {
+        ArrayList<String> names = new ArrayList<>();
+        if (recommendedProducts != null) {
+            for (Product product : recommendedProducts) {
+                names.add(product.getName());
+            }
+        }
+        return names;
     }
 
     public String getUsername() {
