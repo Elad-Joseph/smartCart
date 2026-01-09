@@ -47,4 +47,8 @@ public class ImportedShoppingLists extends ArrayList<ShoppingList>{
             instance = null;
         }
     }
+
+    public ArrayList<ShoppingList> getAllLists() {
+        return this;
+    }
 }

@@ -93,66 +93,15 @@
             android:layout_marginVertical="8dp" />
 
         <!-- Scrollable content -->
-        <ScrollView
-            android:id="@+id/scrollViewLists"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ListRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:overScrollMode="ifContentScrolls"
             android:paddingVertical="8dp">
+        </androidx.recyclerview.widget.RecyclerView>
 
-            <LinearLayout
-                android:id="@+id/listsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="8dp" >
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="75dp"-->
-<!--                    android:layout_gravity="left"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:background="@drawable/square">-->
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="75dp"
-                        android:layout_weight="5"
-                        android:background="@drawable/square"
-                        >
-
-
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/my_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:backgroundTint="@color/clear"
-                            android:background="@drawable/square"
-                            />
-
-                        <TextView
-                            android:id="@+id/my_button_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="list1"
-                            android:textColor="@color/black"
-                            android:textSize="25sp"
-                            android:paddingStart="8dp"
-                            android:layout_gravity="left|center_vertical"/>
-
-
-                    </FrameLayout>
-
-<!--                </LinearLayout>-->
-
-
-
-
-
-            </LinearLayout>
-        </ScrollView>
 
         <!-- Divider -->
         <View

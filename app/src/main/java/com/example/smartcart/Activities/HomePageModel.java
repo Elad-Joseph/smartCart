@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
@@ -26,6 +28,7 @@ import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
+import com.example.smartcart.modle.recycleViewAdapter;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -37,6 +40,7 @@ public class HomePageModel extends BaseActivity {
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
     ImportedShoppingLists importedShoppingLists;
+    private recycleViewAdapter adapter;
 
 
     private boolean doubleBackToExitPressedOnce;
@@ -47,6 +51,7 @@ public class HomePageModel extends BaseActivity {
     MaterialButton addList;
     LinearLayout listsLayout;
     LinearLayout listContainer;
+    private RecyclerView ListContainerRecyclerView;
 
     private String email;
 
@@ -60,12 +65,12 @@ public class HomePageModel extends BaseActivity {
 
         SetupIds();
         SetupListeners();
+        SetUpRecyclerView();
 
         currentUser = CurrentUser.getInstance();
         welcomeText.setText(welcomeText.getText().toString() + currentUser.getUsername());
 
-        doubleBackToExitPressedOnce = false;
-        doubleBackToExit();
+        setupDoubleBackExit();
 
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
@@ -79,8 +84,7 @@ public class HomePageModel extends BaseActivity {
         welcomeText = findViewById(R.id.welcomeText);
         NumberOfListTextview = findViewById(R.id.NumberOfLists);
         addList = findViewById(R.id.addListButton);
-        listsLayout = findViewById(R.id.listsContainer);
-        listContainer = findViewById(R.id.listsContainer);
+        ListContainerRecyclerView = findViewById(R.id.ListRecyclerView);
     }
 
     @Override
@@ -94,6 +98,14 @@ public class HomePageModel extends BaseActivity {
 
         addList.setOnClickListener(v -> showAddListPopup());
 
+    }
+
+    public void SetUpRecyclerView() {
+        ListContainerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // 3. Set the Adapter
+        adapter = new recycleViewAdapter();
+        ListContainerRecyclerView.setAdapter(adapter);
     }
 
     private void showOptionsMenu(View anchor) {
@@ -150,8 +162,7 @@ public class HomePageModel extends BaseActivity {
 
                 listDatabase.addList(newList);
                 userDatabase.updateUser();
-
-                listContainer.addView(newList.createRow(this));
+                refreshLists();
                 Toast.makeText(this, "List added: " + listName +" "+ currentUser.getPassword(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             } else {
@@ -160,36 +171,12 @@ public class HomePageModel extends BaseActivity {
         });
     }
 
-    public void doubleBackToExit(){
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (doubleBackToExitPressedOnce) {
-                    // If pressed twice, finish the activity/exit the app
-                    finish();
-                    return;
-                }
-
-                doubleBackToExitPressedOnce = true;
-                Toast.makeText(HomePageModel.this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-                // Reset the flag after 2 seconds
-                new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
-            }
-        });
-    }
-
     private void refreshLists() {
-        listsLayout.removeAllViews();
         listDatabase.getAllListsForCurrentUser(new CallBack<String>() {
             @Override
             public void onCallBack(String value) {
-                for (ShoppingList list : importedShoppingLists) {
-                    if (list != null) {
-                        listContainer.addView(list.createRow(HomePageModel.this));
-                    }
-                }
-                NumberOfListTextview.setText(NumberOfListTextview.getText().toString() + "\n" + importedShoppingLists.size());
+                adapter.refreshDataSet();
+                NumberOfListTextview.setText("Number of Lists" + "\n" + importedShoppingLists.size());
             }
         });
     }

@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.smartcart.modle.recycleViewAdapter;
 import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,15 +17,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseFirestore database;
-    private UserViewModel userViewModel;
+    RecyclerView recyclerView;
+    recycleViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,33 +41,19 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        List<String> items = Arrays.asList("Apple", "Banana", "Orange", "Grapes");
+
+        // 2. Setup RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+
+        // Use a LayoutManager (Linear for vertical list, Grid for grids)
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            // 3. Set the Adapter
+        adapter = new recycleViewAdapter();
+        recyclerView.setAdapter(adapter);
 
 
-//        userViewModel= new ViewModelProvider(this).get(UserViewModel.class);
-//
-//        userViewModel.getUser().observe(this , user -> {
-//            if(user != null){
-//                Log.d("ViewModel", "Email: " + user.getEmail());
-//                Log.d("ViewModel", "Username: " + user.getUsername());
-//            }
-//        });
-//
-//
-//        DbUsersHandler d = new DbUsersHandler();
-//        d.readDocument("eladj", "123", new FireStoreCallBack() {
-//            @Override
-//            public void onCallBack(List<Map<String, Object>> list) {
-//                if (!list.isEmpty()) {
-//                    Map<String, Object> data = list.get(0);
-//                    String email = (String) data.get("email");
-//                    String username = (String) data.get("username");
-//                    String password = (String) data.get("password");
-//
-//                    User user = new User(username, email, password);
-//                    userViewModel.setUser(user);  // store in ViewModel
-//                }
-//            }
-//        });
 
     }
 
