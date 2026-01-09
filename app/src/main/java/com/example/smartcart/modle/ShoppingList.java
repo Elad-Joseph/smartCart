@@ -59,6 +59,10 @@ public class ShoppingList extends ArrayList<Item>{
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
+    public ArrayList<Item> getAllItems(){
+        return this;
+    }
+
     public void addItem(Item item){
         this.add(item);
     }
@@ -105,82 +109,6 @@ public class ShoppingList extends ArrayList<Item>{
         listData.put("id", this.Id);
 
         return listData;
-    }
-
-
-    public LinearLayout createRow(Context context) {
-        LinearLayout linearLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                dpToPx(context, 75)
-        );
-        linearLayout.setLayoutParams(llParams);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setGravity(Gravity.LEFT);
-        linearLayout.setBackgroundResource(R.drawable.square); // blue border drawable
-
-        // FrameLayout (left 75%)
-        FrameLayout frameLayout = new FrameLayout(context);
-        LinearLayout.LayoutParams flParams = new LinearLayout.LayoutParams(
-                0,
-                dpToPx(context, 75),
-                5f // weight 5
-        );
-        frameLayout.setLayoutParams(flParams);
-        frameLayout.setBackgroundColor(Color.TRANSPARENT); // clear background
-
-        // MaterialButton
-        MaterialButton materialButton = new MaterialButton(context);
-        FrameLayout.LayoutParams btnParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        );
-        materialButton.setId(UUID.randomUUID().hashCode());
-        materialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ListDisplayModel.class);
-                intent.putExtra("CurrentListId", Id);
-                if (context instanceof Activity) {
-                    ((Activity) context).startActivity(intent);
-                    ((Activity) context).finish();
-                } else {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
-            }
-        });
-
-        materialButton.setId(EditButtonid);
-        materialButton.setLayoutParams(btnParams);
-        materialButton.setBackgroundResource(R.drawable.clear_background);
-        materialButton.setBackgroundTintList(null); // clear tint
-        frameLayout.addView(materialButton);
-
-        // TextView inside button
-        TextView textView = new TextView(context);
-        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        textView.setId(Hadderid);
-        tvParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
-        textView.setLayoutParams(tvParams);
-        textView.setText(Name);
-        textView.setTextColor(Color.BLACK);
-        textView.setTextSize(25);
-        textView.setPadding(dpToPx(context, 8), 0, 0, 0);
-        frameLayout.addView(textView);
-
-        // Add FrameLayout to LinearLayout
-        linearLayout.addView(frameLayout);
-
-        return linearLayout;
-    }
-
-    private static int dpToPx(Context context, int dp) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round(dp * density);
     }
 
     public void markItem(String itemId) {

@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
@@ -28,7 +31,9 @@ import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.Item;
+import com.example.smartcart.modle.RecycleViewAdapterListDistplay;
 import com.example.smartcart.modle.ShoppingList;
+import com.example.smartcart.modle.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -37,6 +42,7 @@ public class ListDisplayModel extends BaseActivity {
     private UserDatabase userDatabase;
     private ImportedShoppingLists importedShoppingLists;
     private ShoppingList currentShoppingList;
+    private RecycleViewAdapterListDistplay adapter;
 
     private CurrentUser currentUser;
 
@@ -45,6 +51,7 @@ public class ListDisplayModel extends BaseActivity {
     ImageButton optionsButton;
     ImageButton addItemButton;
     ImageButton GoToHomePageButton;
+    private RecyclerView ItemContainerRecyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +64,6 @@ public class ListDisplayModel extends BaseActivity {
         currentUser = CurrentUser.getInstance();
 
         setupDoubleBackExit();
-
         SetupIds();
         SetupListeners();
 
@@ -71,6 +77,9 @@ public class ListDisplayModel extends BaseActivity {
             listNameTextView.setText(currentShoppingList.getName());
         }
 
+//
+        SetUpRecyclerView();
+
     }
 
     @Override
@@ -80,6 +89,7 @@ public class ListDisplayModel extends BaseActivity {
         optionsButton = findViewById(R.id.listOptionsButton);
         addItemButton = findViewById(R.id.addItemButton);
         GoToHomePageButton = findViewById(R.id.listDisplayToHomePage);
+        ItemContainerRecyclerView = findViewById(R.id.itemRecyclerView);
     }
 
     @Override
@@ -113,6 +123,14 @@ public class ListDisplayModel extends BaseActivity {
             }
         });
 
+    }
+
+    public void SetUpRecyclerView(){
+        ItemContainerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // 3. Set the Adapter
+        adapter = new RecycleViewAdapterListDistplay(currentShoppingList);
+        ItemContainerRecyclerView.setAdapter(adapter);
     }
 
     public void popupOptionsMenu(){
@@ -155,7 +173,7 @@ public class ListDisplayModel extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        Spinner itemSelectorSpinner = view.findViewById(R.id.spinnerItemSelector);
+
         Button addItemButton = view.findViewById(R.id.buttonAddSelectedItem);
 
         Item item;
@@ -171,36 +189,25 @@ public class ListDisplayModel extends BaseActivity {
                 new Item ("Rice"),
         };
 
-        itemSelectorSpinner.setAdapter(new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsArray));
+        ArrayAdapter<Item> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                itemsArray
+        );
 
-        itemSelectorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedItem = itemSelectorSpinner.getSelectedItem().toString();
-                Item item = new Item(selectedItem);
-                currentShoppingList.addItem(item);
-                listDatabase.updateList(currentShoppingList.getId(), currentShoppingList, new CallBack() {
-                    @Override
-                    public void onCallBack(Object value) {
-                        Log.d("ListDisplayModel", "List updated with new item: " + selectedItem);
-                        dialog.dismiss();
-                    }
-                });
+
             }
         });
 
 
+    }
+
+    public void refreshItemList(){
+        adapter.refreshDataSet();
     }
 }

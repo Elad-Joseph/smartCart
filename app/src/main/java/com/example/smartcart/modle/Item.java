@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.smartcart.R;
 
 import java.util.HashMap;
@@ -19,7 +21,7 @@ public class Item {
     private int amount;
     private int amountChecked;
 
-    public Item(String name, Boolean checked , Product product) {
+    public Item(String name, Boolean checked, Product product) {
         this.checked = checked;
         this.product = product;
         this.name = product.getName();
@@ -27,12 +29,28 @@ public class Item {
     }
 
 
-
     public Item(String name) {
         this.name = name;
         this.checked = false;
         this.amount = 1;
         this.product = new Product(name);
+    }
+
+    public Item(Product product) {
+        this.product = product;
+        this.name = product.getName();
+        this.checked = false;
+        this.amount = 1;
+    }
+
+    public void addAmount(int amount) {
+        this.amount += amount;
+    }
+
+    public void decreaseAmount(int amount) {
+        if (this.amount - amount >= 0) {
+            this.amount -= amount;
+        }
     }
 
     public String getName() {
@@ -129,23 +147,22 @@ public class Item {
         return product.getId();
     }
 
-    public void markItem(){
-        if(!checked){
-            if(amountChecked < amount) {
+    public void markItem() {
+        if (!checked) {
+            if (amountChecked < amount) {
                 amountChecked += 1;
             }
-            if(amountChecked == amount) {
+            if (amountChecked == amount) {
                 checked = true;
             }
         }
     }
 
-    public void unmarkItem(){
-        if(amountChecked > 0) {
+    public void unmarkItem() {
+        if (amountChecked > 0) {
             amountChecked -= 1;
             checked = false;
         }
 
     }
-
 }

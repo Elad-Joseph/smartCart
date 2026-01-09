@@ -28,7 +28,7 @@ import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
-import com.example.smartcart.modle.recycleViewAdapter;
+import com.example.smartcart.modle.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -40,7 +40,7 @@ public class HomePageModel extends BaseActivity {
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
     ImportedShoppingLists importedShoppingLists;
-    private recycleViewAdapter adapter;
+    private recycleViewAdapterHomePage adapter;
 
 
     private boolean doubleBackToExitPressedOnce;
@@ -104,7 +104,7 @@ public class HomePageModel extends BaseActivity {
         ListContainerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 3. Set the Adapter
-        adapter = new recycleViewAdapter();
+        adapter = new recycleViewAdapterHomePage();
         ListContainerRecyclerView.setAdapter(adapter);
     }
 

@@ -87,88 +87,12 @@
         android:layout_height="2dp"
         android:background="@color/blue"
         android:layout_marginVertical="8dp" />
-    <ScrollView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="316dp">
-
-        <LinearLayout
-            android:id="@+id/itemContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:orientation="horizontal"
-                android:background="@drawable/square">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/clear"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="item1"
-                        android:textSize="25sp"
-                        android:paddingStart="8dp"
-                        android:layout_gravity="left|center_vertical"/>
-                </FrameLayout>
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:orientation="horizontal"
-                android:background="@drawable/square">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="item2"
-                        android:textSize="25sp"
-                        android:layout_gravity="left|center_vertical"/>
-
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:textSize="15sp"
-                        android:textAlignment="center"
-                        android:text="2/5"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/baseline_undo"/>
-                    <CheckBox
-                        android:layout_width="75dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="60dp"/>
-                </FrameLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="316dp"
+        />
 
     <View
         android:layout_width="match_parent"

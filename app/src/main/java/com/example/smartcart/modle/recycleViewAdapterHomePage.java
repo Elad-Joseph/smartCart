@@ -14,24 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcart.Activities.ListDisplayModel;
 import com.example.smartcart.R;
-import com.example.smartcart.modle.ImportedShoppingLists;
-import com.example.smartcart.modle.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class recycleViewAdapter extends RecyclerView.Adapter<recycleViewAdapter.ViewHolder> {
+public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleViewAdapterHomePage.ViewHolder> {
 
     private ArrayList<ShoppingList> DataSet;
     private ImportedShoppingLists importedShoppingLists;
 
-    public recycleViewAdapter() {
+    public recycleViewAdapterHomePage() {
         this.importedShoppingLists = ImportedShoppingLists.getInstance();
         this.DataSet = importedShoppingLists.getAllLists();
     }
 
     public void refreshDataSet() {
-        this.importedShoppingLists = ImportedShoppingLists.getInstance();
         this.DataSet = importedShoppingLists.getAllLists();
         notifyDataSetChanged();
     }
@@ -51,9 +48,10 @@ public class recycleViewAdapter extends RecyclerView.Adapter<recycleViewAdapter.
         ShoppingList shoppingList = DataSet.get(position);
         String currentName = shoppingList.getName();
 
-        if (holder.ListButton != null) {
-            holder.ListButton.setText(currentName);
-        }
+//        Idk what is this part for
+//        if (holder.ListButton != null) {
+//            holder.ListButton.setText(currentName);
+//        }
         if (holder.ListHeader != null) {
             holder.ListHeader.setText(currentName);
         }
