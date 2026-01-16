@@ -16,11 +16,51 @@
    <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/recyclerViewItemsToAdd"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
+       android:layout_height="wrap_content"
+       android:overScrollMode="ifContentScrolls"
+       />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/add_item_decreesAmount"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/baseline_remove"
+            android:backgroundTint="@color/black"
+            android:layout_gravity="center_vertical"
+            />
+
+        <EditText
+            android:id="@+id/add_item_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="amount"
+            android:text="1"
+            android:textAlignment="center"
+            android:inputType="numberDecimal"/>
+
+        <ImageButton
+            android:id="@+id/add_item_addAmount"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/baseline_add"
+            android:backgroundTint="@color/black"
+            android:layout_gravity="center_vertical"
+        />
+
+
+
+    </LinearLayout>
     <Button
         android:id="@+id/buttonAddSelectedItem"
         android:layout_width="match_parent"
         android:layout_height="75dp"
+        android:layout_marginTop="30dp"
         android:text="add"/>
 </LinearLayout>

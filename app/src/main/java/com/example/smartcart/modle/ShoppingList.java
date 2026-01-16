@@ -31,43 +31,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ShoppingList extends ArrayList<Item>{
+public class ShoppingList extends ArrayList<Item> {
 
     private String Name;
     private String Id;
     private int Hadderid;
     private int EditButtonid;
 
-    public ShoppingList(){
+    public ShoppingList() {
         this.Name = "";
         this.Id = UUID.randomUUID().toString();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
-    public ShoppingList(String name){
+    public ShoppingList(String name) {
         this.Name = name;
         this.Id = UUID.randomUUID().toString();
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
-    public ShoppingList(String name , String id){
+    public ShoppingList(String name, String id) {
         this.Name = name;
         this.Id = id;
         this.Hadderid = UUID.randomUUID().hashCode();
         this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
-    public ArrayList<Item> getAllItems(){
+    public ArrayList<Item> getAllItems() {
         return this;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         this.add(item);
     }
 
-    public void remove(Item item){
+    public void remove(Item item) {
         this.remove(item);
     }
 
@@ -101,15 +101,24 @@ public class ShoppingList extends ArrayList<Item>{
         return false;
     }
 
-    public Map<String , Object> exportList() {
+    public Map<String, Object> exportList() {
         Map<String, Object> listData = new HashMap<>();
         listData.put("name", this.Name);
-        List<Map<String , Object>> itemsList = new ArrayList<>();
+        ArrayList<Map<String, Object>> itemsList = setShoppingListItemsToMap();
         listData.put("items", itemsList);
         listData.put("id", this.Id);
 
         return listData;
     }
+
+    public ArrayList<Map<String, Object>> setShoppingListItemsToMap() {
+        ArrayList<Map<String, Object>> itemsList = new ArrayList<>();
+        for (Item item : this) {
+            itemsList.add(item.exportToDatabase());
+        }
+        return itemsList;
+    }
+
 
     public void markItem(String itemId) {
        for (Item item: this) {

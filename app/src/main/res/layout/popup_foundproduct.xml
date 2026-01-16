@@ -17,8 +17,19 @@
         android:textAlignment="center"/>
 
     <TextView
+        android:id="@+id/ProductFoundIdDisplay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Id: "
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/ProductFoundPriceDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="price: "
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
 
 
     <com.google.android.material.button.MaterialButton

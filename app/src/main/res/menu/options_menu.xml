@@ -13,4 +13,8 @@
         android:title="friends list"
         android:id="@+id/toFriendsList"
         />
+    <item
+        android:title="new product"
+        android:id="@+id/HomePageNewProduct"
+        />
 </menu>

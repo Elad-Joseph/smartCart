@@ -21,10 +21,10 @@ public class AddItemBottomSheet extends BottomSheetDialogFragment {
     private CurrentUser currentUser;
 
 
-    public interface OnProductSelectedListener {
-        void onProductSelected(Product product);
-    }
-    private OnProductSelectedListener listener;
+//    public interface OnProductSelectedListener {
+//        void onProductSelected(Product product);
+//    }
+//    private OnProductSelectedListener listener;
 
     @Nullable
     @Override
@@ -58,16 +58,16 @@ public class AddItemBottomSheet extends BottomSheetDialogFragment {
         return view;
     }
 
-    public void onAttach(@Nullable android.content.Context context) {
-        super.onAttach(context);
-        if(context instanceof OnProductSelectedListener) {
-            listener = (OnProductSelectedListener) context;
-        }else{
-            throw new RuntimeException(context.toString()
-                    + " must implement OnProductSelectedListener");
-        }
-
-    }
+//    public void onAttach(@Nullable android.content.Context context) {
+//        super.onAttach(context);
+//        if(context instanceof OnProductSelectedListener) {
+//            listener = (OnProductSelectedListener) context;
+//        }else{
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnProductSelectedListener");
+//        }
+//
+//    }
 
 
 }

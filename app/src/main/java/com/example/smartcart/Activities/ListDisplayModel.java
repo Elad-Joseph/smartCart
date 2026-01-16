@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -44,9 +46,12 @@ import com.google.android.material.textview.MaterialTextView;
 public class ListDisplayModel extends BaseActivity {
     private ListDatabase listDatabase;
     private UserDatabase userDatabase;
+    private CallBack<Product> callBack;
+
     private ImportedShoppingLists importedShoppingLists;
     private ShoppingList currentShoppingList;
     private RecycleViewAdapterListDistplay adapter;
+    private Product SelectedProduct;
 
     private CurrentUser currentUser;
 
@@ -68,6 +73,7 @@ public class ListDisplayModel extends BaseActivity {
         listDatabase = new ListDatabase();
         currentUser = CurrentUser.getInstance();
 
+
         setupDoubleBackExit();
         SetupIds();
         SetupListeners();
@@ -82,8 +88,10 @@ public class ListDisplayModel extends BaseActivity {
             listNameTextView.setText(currentShoppingList.getName());
         }
 
-//
+
         SetUpRecyclerView();
+
+        refreshItemList();
 
     }
 
@@ -169,6 +177,7 @@ public class ListDisplayModel extends BaseActivity {
     }
 
     public void addNewItemToList(){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Inflate the custom layout
@@ -178,16 +187,23 @@ public class ListDisplayModel extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        AddItemBottomSheet addItemBottomSheet = new AddItemBottomSheet();
-        addItemBottomSheet.show(getSupportFragmentManager(), "AddItemBottomSheet");
+//        AddItemBottomSheet addItemBottomSheet = new AddItemBottomSheet();
+//        addItemBottomSheet.show(getSupportFragmentManager(), "AddItemBottomSheet");
 
         Button addItemButton = view.findViewById(R.id.buttonAddSelectedItem);
 
         SearchView searchView = view.findViewById(R.id.searchViewAddItem);
 
-        RecyclerView addItemRecycleView = findViewById(R.id.recyclerViewItemsToAdd);
+        RecyclerView addItemRecycleView = view.findViewById(R.id.recyclerViewItemsToAdd);
+
         RecycleViewAdapterAddItem recycleViewAdapterAddItem = new RecycleViewAdapterAddItem(currentUser.getRecommendedProducts());
+
+        addItemRecycleView.setLayoutManager(new LinearLayoutManager(this));
         addItemRecycleView.setAdapter(recycleViewAdapterAddItem);
+
+        recycleViewAdapterAddItem.setOnClickListener(product ->{
+            SelectedProduct = product;
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -201,12 +217,44 @@ public class ListDisplayModel extends BaseActivity {
                 return false;
             }
         });
+        EditText itemAmountEditText = view.findViewById(R.id.add_item_amount);
+        ImageButton addAmount = view.findViewById(R.id.add_item_addAmount);
+        ImageButton decreaseAmount = view.findViewById(R.id.add_item_decreesAmount);
 
 
+        addAmount.setOnClickListener(v -> {
+            int itemAmount = Integer.parseInt(itemAmountEditText.getText().toString())+1;
+            itemAmountEditText.setText(String.valueOf(itemAmount));
+        });
+
+
+        decreaseAmount.setOnClickListener(v -> {
+            int itemAmount = Integer.parseInt(itemAmountEditText.getText().toString());
+            if (itemAmount > 1) {
+                itemAmount--;
+                itemAmountEditText.setText(String.valueOf(itemAmount));
+            }
+            else{
+                Toast.makeText(view.getContext() , "cant be a negative number" , Toast.LENGTH_SHORT).show();
+            }
+        });
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SelectedProduct != null){
+                    Item itemToAdd = new Item(SelectedProduct);
+                    itemToAdd.setAmount(Integer.parseInt(itemAmountEditText.getText().toString()));
+                    currentShoppingList.add(itemToAdd);
+                    currentUser.setImportedListsToImportedShoppingLists();
+                    userDatabase.updateUser();
+                    listDatabase.updateList(currentShoppingList);
+                    refreshItemList();
+                    dialog.dismiss();
+                }
+                else{
+                    Toast.makeText(view.getContext() , "select a product" , Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

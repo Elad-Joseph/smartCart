@@ -9,6 +9,8 @@ public class Product {
     private String Id;
     private String Price;
 
+
+
     public Product(String name , String id , String price){
         this.Name = name;
         this.Id = id;
@@ -29,6 +31,7 @@ public class Product {
         Map<String , Object> product = new HashMap<>();
         product.put("name" , this.Name);
         product.put("id" , this.Id);
+        product.put("price" , this.Price);
         return product;
     }
 

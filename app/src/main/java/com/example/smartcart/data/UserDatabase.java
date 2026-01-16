@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.smartcart.Activities.HomePageModel;
 import com.example.smartcart.modle.CurrentUser;
+import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.ShoppingList;
 import com.example.smartcart.modle.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,12 +33,16 @@ public class UserDatabase {
     private CollectionReference ColRef;
     private CurrentUser currentUser;
     private autenticationHandler authHandler;
+    private ProductDatabase productDatabase;
+    private ImportedShoppingLists importedShoppingLists;
 
     public UserDatabase() {
         Database = FirebaseFirestore.getInstance();
         ColRef = Database.collection("users");
         currentUser = CurrentUser.getInstance();
         authHandler = new autenticationHandler();
+        productDatabase = new ProductDatabase();
+        importedShoppingLists = ImportedShoppingLists.getInstance();
 
     }
 
@@ -77,13 +82,20 @@ public class UserDatabase {
                                 String password = (String) userData.get("password");
                                 ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String , Object>>) userData.get("imported lists");
 
-                                currentUser.setEmail(email);
-                                currentUser.setUsername(username);
-                                currentUser.setPassword(password);
-                                currentUser.setImportedLists(importedLists);
-                                currentUser.setId(firebaseUser.getUid());
+                                productDatabase.getNProducts(20, new CallBack<ArrayList<Map<String, Object>>>() {
+                                    @Override
+                                    public void onCallBack(ArrayList<Map<String, Object>> value) {
+                                        currentUser.setRecommendedProducts(value);
+                                        currentUser.setEmail(email);
+                                        currentUser.setUsername(username);
+                                        currentUser.setPassword(password);
+                                        currentUser.setImportedLists(importedLists);
+                                        currentUser.setId(firebaseUser.getUid());
 
-                                callBack.onCallBack(true);
+                                        callBack.onCallBack(true);
+                                    }
+                                });
+
                             } else {
                                 callBack.onCallBack(false);
                             }
@@ -112,13 +124,19 @@ public class UserDatabase {
                             String password = (String) userData.get("password");
                             ArrayList<Map<String , Object>> importedLists = (ArrayList<Map<String , Object>>) userData.get("imported lists");
 
-                            currentUser.setEmail(email);
-                            currentUser.setUsername(username);
-                            currentUser.setPassword(password);
-                            currentUser.setImportedLists(importedLists);
-                            currentUser.setId(authHandler.getCurrentUser().getUid());
+                            productDatabase.getNProducts(20, new CallBack<ArrayList<Map<String, Object>>>() {
+                                @Override
+                                public void onCallBack(ArrayList<Map<String, Object>> value) {
+                                    currentUser.setRecommendedProducts(value);
+                                    currentUser.setEmail(email);
+                                    currentUser.setUsername(username);
+                                    currentUser.setPassword(password);
+                                    currentUser.setImportedLists(importedLists);
+                                    currentUser.setId(authHandler.getCurrentUser().getUid());
 
-                            callBack.onCallBack(true);
+                                    callBack.onCallBack(true);
+                                }
+                            });
 
                         } else {
                             Log.d("UserDatabase", "No such document");

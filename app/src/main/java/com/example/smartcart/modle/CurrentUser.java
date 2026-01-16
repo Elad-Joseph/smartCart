@@ -37,8 +37,12 @@ public class CurrentUser {
         return recommendedProducts;
     }
 
-    public void setRecommendedProducts(ArrayList<Product> recommendedProducts) {
-        this.recommendedProducts = recommendedProducts;
+    public void setRecommendedProducts(ArrayList<Map<String , Object>> recommendedProducts) {
+        ArrayList<Product> productList = new ArrayList<>();
+        for(Map<String , Object> product : recommendedProducts){
+            productList.add(new Product(product.get("name").toString() , product.get("id").toString() , "0"));
+        }
+        this.recommendedProducts = productList;
     }
 
     public ArrayList<String> getRecommendedProductsNames() {

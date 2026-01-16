@@ -53,6 +53,10 @@ public class Item {
         }
     }
 
+    public void setAmount(int amount){
+        this.amount = amount;
+    }
+
     public String getName() {
         return name;
     }
@@ -65,7 +69,7 @@ public class Item {
         Map<String, Object> itemMap = new HashMap<>();
         itemMap.put("name", name);
         itemMap.put("checked", checked);
-        itemMap.put("product", product.getId());
+        itemMap.put("productId", product.getId());
         itemMap.put("amount", amount);
         return itemMap;
     }

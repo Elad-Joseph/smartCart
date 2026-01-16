@@ -2,7 +2,11 @@ package com.example.smartcart.data;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.smartcart.modle.Product;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,4 +66,17 @@ public class ProductDatabase {
         });
     }
 
+    public void IsExist(String productId , CallBack<Boolean> callBack){
+        ColRef.document(productId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    callBack.onCallBack(documentSnapshot.exists());
+                }else{
+                    callBack.onCallBack(null);
+                }
+            }
+        });
+    }
 }

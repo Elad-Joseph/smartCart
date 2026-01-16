@@ -1,6 +1,7 @@
 package com.example.smartcart.modle;
 
 
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,16 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
 
     private ArrayList<Product> DataSet;
     private ArrayList<Product> FilteredDataSet;
+    private CallBack<Product> callBack;
 
 
     public RecycleViewAdapterAddItem(ArrayList<Product> products) {
         this.DataSet = products;
         this.FilteredDataSet = new ArrayList<>(products);
+    }
+
+    public void setOnClickListener(CallBack<Product> callBack){
+        this.callBack = callBack;
     }
 
     public void refreshDataSet(ArrayList<Product> products) {
@@ -58,7 +64,10 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                FilteredDataSet.addAll((ArrayList<Product>) results.values);
+                FilteredDataSet.clear(); // Clear the old filtered list
+                if (results.values != null) {
+                    FilteredDataSet.addAll((ArrayList<Product>) results.values);
+                }
                 notifyDataSetChanged();
             }
         };
@@ -75,30 +84,23 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewAdapterAddItem.ViewHolder holder, int position) {
-        Product product = DataSet.get(position);
-        String currentName = product.getName();
+        // ALWAYS use FilteredDataSet here
+        Product product = FilteredDataSet.get(position);
 
-
-        if (holder.ProductNameDisplay != null) {
-            holder.ProductNameDisplay.setText(currentName);
-        }
-
-        if (holder.ProductPriceDisplay != null) {
-            holder.ProductPriceDisplay.setText(product.getPrice());
-        }
+        holder.ProductNameDisplay.setText(product.getName());
+        holder.ProductPriceDisplay.setText(product.getPrice());
 
         holder.itemView.setOnClickListener(v -> {
-             Product SelectedProduct = FilteredDataSet.get(holder.getAdapterPosition());
-
+            if (callBack != null) {
+                callBack.onCallBack(product);
+            }
         });
-
     }
-
-
 
     @Override
     public int getItemCount() {
-        return DataSet.size();
+        // ALWAYS return the filtered size
+        return FilteredDataSet.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

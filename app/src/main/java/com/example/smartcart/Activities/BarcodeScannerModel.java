@@ -60,6 +60,8 @@ public class BarcodeScannerModel extends BaseActivity {
 
     private String barcodeData;
     private ImageButton scanButton;
+    private ImageButton backToListDisplay;
+    private ImageButton addNewProduct;
 
 
     @Override
@@ -90,6 +92,9 @@ public class BarcodeScannerModel extends BaseActivity {
     protected void SetupIds(){
         surfaceView = findViewById(R.id.camera);
         scanButton = findViewById(R.id.btn_scan);
+        backToListDisplay = findViewById(R.id.barcodeScannerToListDisplay);
+        addNewProduct = findViewById(R.id.addNewProductButton);
+
     }
 
     @Override
@@ -106,6 +111,39 @@ public class BarcodeScannerModel extends BaseActivity {
                     // Action 2: Update your boolean flag
                     allowScan = false;
                 }, 3000);
+            }
+        });
+
+        backToListDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext() , ListDisplayModel.class);
+                intent.putExtra("CurrentListId" , currentShoppingList.getId());
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        addNewProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (cameraSource != null) {
+                    cameraSource.stop();
+                }
+
+                AddNewProductPopUp newProductPopUp = new AddNewProductPopUp();
+                newProductPopUp.setOnPopupStopListener(() -> {
+
+                    try {
+                        if (ActivityCompat.checkSelfPermission(BarcodeScannerModel.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                            cameraSource.start(surfaceView.getHolder());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                newProductPopUp.show(getSupportFragmentManager(), "new_product");
             }
         });
     }
@@ -186,14 +224,15 @@ public class BarcodeScannerModel extends BaseActivity {
             @Override
             public void onCallBack(Map<String, Object> value) {
                 if(value != null){
-//                    scannedProduct = new Product(value.get("name").toString(), value.get("id").toString());
+                    scannedProduct = new Product(value.get("name").toString(), value.get("id").toString() , value.get("price").toString());
                     if(currentShoppingList.containsItem(id)){
                         currentShoppingList.markItem(id);
                     }
                     ProductFoundPopup();
 
                 } else {
-                    scannedProduct = null;
+                    scannedProduct = new Product("UNKNOWN" , id ,"NULL");
+                    ProductFoundPopup();
 //
                 }
             }
@@ -211,6 +250,8 @@ public class BarcodeScannerModel extends BaseActivity {
         dialog.show();
 
         TextView productNameTextView = view.findViewById(R.id.ProductFoundNameDisplay);
+        TextView productIdTextView = view.findViewById(R.id.ProductFoundIdDisplay);
+        TextView productPriceTextView = view.findViewById(R.id.ProductFoundPriceDisplay);
         MaterialButton OkButton = view.findViewById(R.id.buttonOkFoundProduct);
         MaterialButton markButton = view.findViewById(R.id.markItemButton);
         if(currentShoppingList.containsItem(barcodeData)){
@@ -220,25 +261,34 @@ public class BarcodeScannerModel extends BaseActivity {
         }
 
 
-        productNameTextView.setText(productNameTextView.getText().toString() + scannedProduct.getName());
 
+        productNameTextView.setText(productNameTextView.getText().toString() + scannedProduct.getName());
+        productIdTextView.setText(productIdTextView.getText().toString() + scannedProduct.getId());
+        productPriceTextView.setText(productPriceTextView.getText().toString() + scannedProduct.getPrice());
         OkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
+        if(currentShoppingList.containsItem(scannedProduct.getId())){
+            markButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            markButton.setVisibility(View.GONE);
+        }
         markButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentShoppingList.markItem(barcodeData);
+                currentShoppingList.markItem(scannedProduct.getId());
                 dialog.dismiss();
             }
         });
 
 
     }
+
+
 
 
 }

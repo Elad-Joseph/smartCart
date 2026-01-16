@@ -134,6 +134,11 @@ public class HomePageModel extends BaseActivity {
                     Intent intent = new Intent(HomePageModel.this, FriendsListModel.class);
                     startActivity(intent);
                 }
+                else if (item.getItemId() == R.id.HomePageNewProduct) {
+                    AddNewProductPopUp newProductPopUp = new AddNewProductPopUp();
+                    newProductPopUp.show(getSupportFragmentManager() , "new product");
+
+                }
                 return false;
             }
         });
