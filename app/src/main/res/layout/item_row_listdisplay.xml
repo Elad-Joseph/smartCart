@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="75dp"
+        android:orientation="horizontal"
         android:background="@drawable/square">
 
         <TextView
@@ -14,25 +15,28 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_weight="1"
             android:text="Item Name"
             android:textSize="25sp"
             android:layout_gravity="left|center_vertical"/>
-
-
-        <ImageButton
-            android:id="@+id/ItemOptionsButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/option_button"/>
 
         <CheckBox
             android:id="@+id/ItemCheckBox"
             android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="60dp"/>
-    </FrameLayout>
+            android:layout_weight="0"
+            />
+
+        <ImageButton
+            android:id="@+id/ItemOptionsButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="1dp"
+            android:background="@drawable/option_button"/>
+
+
+    </LinearLayout>
 
 </LinearLayout>

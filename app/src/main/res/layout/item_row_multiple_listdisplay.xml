@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:background="@drawable/square">
+        <TextView
+            android:id="@+id/ItemNameDisplayMultiple"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Item Name"
+            android:textSize="25sp"
+            android:layout_gravity="left|center_vertical"/>
+
+        <TextView
+            android:id="@+id/ItemQuantityDisplay"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="1dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="1/1"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            />
+
+        <LinearLayout
+            android:id="@+id/item_row_multiple_linearLayout"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ItemUncheckButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/baseline_remove"
+                android:backgroundTint="@color/black"/>
+            <ImageButton
+                android:id="@+id/ItemcheckButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/baseline_add"
+                android:backgroundTint="@color/black"/>
+
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/ItemOptionsButtonMultiple"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/option_button"/>
+    </LinearLayout>
+</LinearLayout>

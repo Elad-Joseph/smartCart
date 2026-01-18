@@ -24,8 +24,11 @@ public class Item {
     public Item(String name, Boolean checked, Product product) {
         this.checked = checked;
         this.product = product;
-        this.name = product.getName();
+        this.name = name;
         this.amount = 1;
+        if(checked){
+            amountChecked = amount;
+        }
     }
 
 
@@ -57,8 +60,16 @@ public class Item {
         this.amount = amount;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public Boolean getChecked() {
@@ -168,5 +179,9 @@ public class Item {
             checked = false;
         }
 
+    }
+
+    public int getAmountChecked() {
+        return amountChecked;
     }
 }

@@ -130,6 +130,8 @@ public class ListDisplayModel extends BaseActivity {
 
         GoToHomePageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                userDatabase.updateUser();
+                listDatabase.updateList(currentShoppingList);
                 Intent intent = new Intent(ListDisplayModel.this, HomePageModel.class);
                 startActivity(intent);
                 finish();
@@ -190,6 +192,11 @@ public class ListDisplayModel extends BaseActivity {
 //        AddItemBottomSheet addItemBottomSheet = new AddItemBottomSheet();
 //        addItemBottomSheet.show(getSupportFragmentManager(), "AddItemBottomSheet");
 
+        EditText itemAmountEditText = view.findViewById(R.id.add_item_amount);
+        ImageButton addAmount = view.findViewById(R.id.add_item_addAmount);
+        ImageButton decreaseAmount = view.findViewById(R.id.add_item_decreesAmount);
+        EditText ItemNameEditText = view.findViewById(R.id.add_item_SetItemName);
+
         Button addItemButton = view.findViewById(R.id.buttonAddSelectedItem);
 
         SearchView searchView = view.findViewById(R.id.searchViewAddItem);
@@ -203,6 +210,7 @@ public class ListDisplayModel extends BaseActivity {
 
         recycleViewAdapterAddItem.setOnClickListener(product ->{
             SelectedProduct = product;
+            ItemNameEditText.setText(SelectedProduct.getName());
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -217,9 +225,8 @@ public class ListDisplayModel extends BaseActivity {
                 return false;
             }
         });
-        EditText itemAmountEditText = view.findViewById(R.id.add_item_amount);
-        ImageButton addAmount = view.findViewById(R.id.add_item_addAmount);
-        ImageButton decreaseAmount = view.findViewById(R.id.add_item_decreesAmount);
+
+
 
 
         addAmount.setOnClickListener(v -> {
@@ -245,6 +252,7 @@ public class ListDisplayModel extends BaseActivity {
                 if(SelectedProduct != null){
                     Item itemToAdd = new Item(SelectedProduct);
                     itemToAdd.setAmount(Integer.parseInt(itemAmountEditText.getText().toString()));
+                    itemToAdd.setName(ItemNameEditText.getText().toString());
                     currentShoppingList.add(itemToAdd);
                     currentUser.setImportedListsToImportedShoppingLists();
                     userDatabase.updateUser();
