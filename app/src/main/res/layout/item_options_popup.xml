@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_options_popup_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="item name"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="item name:"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/item_optionsPopup_ChangeName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:hint="name"
+                    android:text="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="item amount:"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/item_optionsPopup_AddQuantityButton"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/baseline_remove"
+                            android:backgroundTint="@color/black" />
+
+                        <ImageButton
+                            android:id="@+id/item_optionsPopup_DecressQuantityButton"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/baseline_add"
+                            android:backgroundTint="@color/black" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/item_optionsPopup_quantityDisplay"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="0"
+                        android:textAlignment="center"
+
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="75dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:background="@color/clear">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Checked amount: "
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/item_optionsPopup_uncheckButton"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/baseline_remove"
+                            android:backgroundTint="@color/black" />
+
+                        <ImageButton
+                            android:id="@+id/item_optionsPopup_checkButton"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/baseline_add"
+                            android:backgroundTint="@color/black" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/item_optionsPopup_CheckedQuantityDisplay"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="0"
+                        android:textAlignment="center"
+
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/item_optionsPopup_CheckedDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textAlignment="center"
+
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+
+
+
+
+            <FrameLayout
+                android:id="@+id/item_optionsPopup_DisplayProduct"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="20dp">
+
+                <include
+                    android:id="@+id/popup_buttons_include"
+                    layout="@layout/item_row_additem_popup" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/item_optionsPopup_ProductDetailsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/item_optionsPopup_ProductNameDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="product name:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/item_optionsPopup_ProductIdDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="product id:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/item_optionsPopup_ProductPriceDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="product price:"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/item_optionsPopup_SaveButton"
+                android:layout_width="120dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/blue"
+                android:text="save changes" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/item_optionsPopup_DeleteButton"
+                android:layout_width="120dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/red"
+                android:text="delete item" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

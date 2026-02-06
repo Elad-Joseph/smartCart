@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartcart.Activities.ItemOptionsPopup;
 import com.example.smartcart.R;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
@@ -23,6 +24,8 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
     private ShoppingList currentList;
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
+    private ItemOptionsPopup itemOptionsPopup;
+
     private static final int TYPE_MULTIPLE_ITEMS = 0;
     private static final int TYPE_SINGLE_ITEM = 1;
 
@@ -32,6 +35,7 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         this.userDatabase = new UserDatabase();
         this.listDatabase = new ListDatabase();
     }
+
 
     public void refreshDataSet() {
         this.DataSet = currentList.getAllItems();
@@ -88,6 +92,12 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
             userDatabase.updateUser();
             listDatabase.updateList(currentList);
         });
+
+        holder.ItemOptionsButton.setOnClickListener(v -> {
+            itemOptionsPopup = new ItemOptionsPopup(currentList , item);
+            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
+            itemOptionsPopup.show(((androidx.fragment.app.FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager(), "ItemOptionsPopup");
+        });
     }
 
     // CHANGE 4: Parameter type is now specifically MultipleItemsViewHolder
@@ -113,7 +123,10 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         });
 
         holder.ItemOptionsButton.setOnClickListener(v -> {
-            // Implement options menu logic here
+            itemOptionsPopup = new ItemOptionsPopup(currentList , item);
+            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
+            itemOptionsPopup.show(((androidx.fragment.app.FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager(), "ItemOptionsPopup");
+
         });
     }
 
@@ -122,9 +135,6 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         return DataSet.size();
     }
 
-    // --- VIEW HOLDERS ---
-
-    // Removed the generic "ViewHolder" class to avoid confusion
 
     public static class SingleItemsViewHolder extends RecyclerView.ViewHolder {
         TextView ItemNameDisplay;

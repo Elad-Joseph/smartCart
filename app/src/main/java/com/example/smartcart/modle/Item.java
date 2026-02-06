@@ -56,6 +56,10 @@ public class Item {
         }
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
     public void setAmount(int amount){
         this.amount = amount;
     }
@@ -184,4 +188,5 @@ public class Item {
     public int getAmountChecked() {
         return amountChecked;
     }
+
 }

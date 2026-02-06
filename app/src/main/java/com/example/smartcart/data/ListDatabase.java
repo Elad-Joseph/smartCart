@@ -59,6 +59,12 @@ public class ListDatabase {
         ColRef.document(list.getId()).set(list.exportList());
     }
 
+    public void updateAllLists(){
+        for(ShoppingList list : importedShoppingLists){
+            ColRef.document(list.getId()).set(list.exportList());
+        }
+    }
+
     public void getList(String listId, CallBack<Map<String, Object>> callBack) {
         ColRef.document(listId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -117,4 +123,6 @@ public class ListDatabase {
             }
         });
     }
+
+
 }
