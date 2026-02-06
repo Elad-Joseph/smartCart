@@ -67,9 +67,6 @@ public class ShoppingList extends ArrayList<Item> {
         this.add(item);
     }
 
-    public void remove(Item item) {
-        this.remove(item);
-    }
 
     public String getName() {
         return Name;

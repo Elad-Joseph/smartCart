@@ -95,8 +95,8 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
 
         holder.ItemOptionsButton.setOnClickListener(v -> {
             itemOptionsPopup = new ItemOptionsPopup(currentList , item);
-            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
             itemOptionsPopup.show(((androidx.fragment.app.FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager(), "ItemOptionsPopup");
+            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
         });
     }
 
@@ -124,8 +124,8 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
 
         holder.ItemOptionsButton.setOnClickListener(v -> {
             itemOptionsPopup = new ItemOptionsPopup(currentList , item);
-            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
             itemOptionsPopup.show(((androidx.fragment.app.FragmentActivity) holder.itemView.getContext()).getSupportFragmentManager(), "ItemOptionsPopup");
+            itemOptionsPopup.setOnPopupStopListener(() -> refreshDataSet());
 
         });
     }

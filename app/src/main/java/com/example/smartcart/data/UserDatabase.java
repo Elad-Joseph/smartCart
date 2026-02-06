@@ -166,6 +166,7 @@ public class UserDatabase {
     }
 
     public void updateUser() {
+        currentUser.setImportedListsToImportedShoppingLists();
         ColRef.document(currentUser.getId()).set(currentUser.exportCurrentUserToDB());
     }
 

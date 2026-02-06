@@ -51,7 +51,7 @@ public class Item {
     }
 
     public void decreaseAmount(int amount) {
-        if (this.amount - amount >= 0) {
+        if (this.amount - amount >= amountChecked && this.amount - amount > 0) {
             this.amount -= amount;
         }
     }
@@ -86,6 +86,7 @@ public class Item {
         itemMap.put("checked", checked);
         itemMap.put("productId", product.getId());
         itemMap.put("amount", amount);
+        itemMap.put("amountChecked", amountChecked);
         return itemMap;
     }
 
@@ -185,8 +186,20 @@ public class Item {
 
     }
 
+    public void updateIsChecked() {
+        if (amountChecked == amount) {
+            checked = true;
+        } else {
+            checked = false;
+        }
+    }
+
     public int getAmountChecked() {
         return amountChecked;
     }
 
+    public void setAmountChecked(int amountChecked) {
+        this.amountChecked = amountChecked;
+        updateIsChecked();
+    }
 }

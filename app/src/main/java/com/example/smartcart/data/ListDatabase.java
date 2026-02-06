@@ -115,6 +115,7 @@ public class ListDatabase {
                                 Product product = new Product(value.get("name").toString() , value.get("id").toString() , value.get("price").toString());
                                 Item item = new Item(i.get("name").toString() , (boolean) i.get("checked") , product);
                                 item.setAmount(Integer.parseInt(i.get("amount").toString()));
+                                item.setAmountChecked(Integer.parseInt(i.get("amountChecked").toString()));
                                 list.add(item);
                             }
                         });

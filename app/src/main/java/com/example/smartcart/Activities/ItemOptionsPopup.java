@@ -146,6 +146,7 @@ public class ItemOptionsPopup extends DialogFragment {
             @Override
             public void onClick(View v) {
                 currentItem.addAmount(1);
+                currentItem.updateIsChecked();
                 ItemQuantityDisplay.setText(String.valueOf(currentItem.getAmount()));
             }
         });
@@ -154,6 +155,7 @@ public class ItemOptionsPopup extends DialogFragment {
             @Override
             public void onClick(View v) {
                 currentItem.decreaseAmount(1);
+                currentItem.updateIsChecked();
                 ItemQuantityDisplay.setText(String.valueOf(currentItem.getAmount()));
             }
         });
@@ -162,6 +164,8 @@ public class ItemOptionsPopup extends DialogFragment {
             @Override
             public void onClick(View v) {
                 currentItem.markItem();
+                listDatabase.updateAllLists();
+                userDatabase.updateUser();
                 ItemCheckedQuantityTextView.setText(String.valueOf(currentItem.getAmountChecked()));
             }
         });
@@ -170,6 +174,8 @@ public class ItemOptionsPopup extends DialogFragment {
             @Override
             public void onClick(View v) {
                 currentItem.unmarkItem();
+                listDatabase.updateAllLists();
+                userDatabase.updateUser();
                 ItemCheckedQuantityTextView.setText(String.valueOf(currentItem.getAmountChecked()));
             }
         });
@@ -178,7 +184,6 @@ public class ItemOptionsPopup extends DialogFragment {
             @Override
             public void onClick(View v) {
                 currentItem.setName(ItemName.getText().toString());
-                currentUser.setImportedListsToImportedShoppingLists();
                 listDatabase.updateAllLists();
                 userDatabase.updateUser();
                 dismiss();
@@ -190,7 +195,6 @@ public class ItemOptionsPopup extends DialogFragment {
             public void onClick(View v) {
                 if(DeleteItemConfirmation){
                     currentList.remove(currentItem);
-                    currentUser.setImportedListsToImportedShoppingLists();
                     listDatabase.updateAllLists();
                     userDatabase.updateUser();
                     dismiss();

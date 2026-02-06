@@ -77,14 +77,14 @@
                         android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/item_optionsPopup_AddQuantityButton"
+                            android:id="@+id/item_optionsPopup_DecressQuantityButton"
                             android:layout_width="50dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/baseline_remove"
                             android:backgroundTint="@color/black" />
 
                         <ImageButton
-                            android:id="@+id/item_optionsPopup_DecressQuantityButton"
+                            android:id="@+id/item_optionsPopup_AddQuantityButton"
                             android:layout_width="50dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/baseline_add"
