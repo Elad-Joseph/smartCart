@@ -217,7 +217,12 @@ public class BarcodeScannerModel extends BaseActivity {
         if(!allowScan){
             return;
         }
-
+        if(currentShoppingList.containsItem(id)){
+            currentShoppingList.markItem(id);
+            scannedProduct = currentShoppingList.getItemById(id).getProduct();
+            ProductFoundPopup();
+            return;
+        }
         allowScan = false;
         scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         database.getProduct(id, new CallBack<Map<String, Object>>() {

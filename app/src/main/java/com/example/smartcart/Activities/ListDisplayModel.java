@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ListDatabase;
+import com.example.smartcart.data.ProductDatabase;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.AddItemBottomSheet;
 import com.example.smartcart.modle.CurrentUser;
@@ -43,9 +44,13 @@ import com.example.smartcart.modle.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class ListDisplayModel extends BaseActivity {
     private ListDatabase listDatabase;
     private UserDatabase userDatabase;
+    private ProductDatabase productDatabase;
     private CallBack<Product> callBack;
 
     private ImportedShoppingLists importedShoppingLists;
@@ -71,6 +76,7 @@ public class ListDisplayModel extends BaseActivity {
 
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
+        productDatabase = new ProductDatabase();
         currentUser = CurrentUser.getInstance();
 
 
@@ -87,6 +93,14 @@ public class ListDisplayModel extends BaseActivity {
         if (currentShoppingList != null) {
             listNameTextView.setText(currentShoppingList.getName());
         }
+
+
+        productDatabase.getNProducts(20, new CallBack<ArrayList<Map<String, Object>>>() {
+            @Override
+            public void onCallBack(ArrayList<Map<String, Object>> value) {
+                currentUser.setRecommendedProducts(value);
+            }
+        });
 
 
         SetUpRecyclerView();

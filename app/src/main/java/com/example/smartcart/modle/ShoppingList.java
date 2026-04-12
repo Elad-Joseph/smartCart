@@ -98,6 +98,15 @@ public class ShoppingList extends ArrayList<Item> {
         return false;
     }
 
+    public Item getItemById(String itemId) {
+        for (Item item : this) {
+            if (item.getProductId().equals(itemId)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public Map<String, Object> exportList() {
         Map<String, Object> listData = new HashMap<>();
         listData.put("name", this.Name);

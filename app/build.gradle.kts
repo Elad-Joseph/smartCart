@@ -50,4 +50,10 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.9.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.9.2")
     implementation ("com.google.android.gms:play-services-vision:20.1.3")
+    implementation("androidx.work:work-runtime:2.9.0")
+    implementation("com.google.guava:guava:31.1-android")
+
+    // Ensure you also have the WorkManager dependency
+    implementation("androidx.work:work-runtime:2.9.0")
+
 }

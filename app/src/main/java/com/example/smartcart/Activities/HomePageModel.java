@@ -2,8 +2,6 @@ package com.example.smartcart.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,10 +14,12 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
@@ -27,11 +27,13 @@ import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
+import com.example.smartcart.modle.NotificationsHandler;
 import com.example.smartcart.modle.ShoppingList;
 import com.example.smartcart.modle.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.concurrent.TimeUnit;
 
 
 public class HomePageModel extends BaseActivity {
@@ -76,6 +78,12 @@ public class HomePageModel extends BaseActivity {
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
         refreshLists();
+
+        WorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationsHandler.class)
+                .setInitialDelay(3, TimeUnit.SECONDS)
+                .build();
+        WorkManager.getInstance(this).enqueue(workRequest);
+
     }
 
     @Override
