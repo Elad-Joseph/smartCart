@@ -38,6 +38,7 @@ public class NotificationsHandler extends Worker {
         createNotificationChannel();
 
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
                 .setContentTitle("Work Completed")
                 .setContentText("Your background task is finished!")
@@ -68,5 +69,7 @@ public class NotificationsHandler extends Worker {
         }
         return true;
     }
+
+
 
 }

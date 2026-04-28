@@ -78,7 +78,9 @@ public class CurrentUser {
         id = null;
         FriendsIds = null;
         importedLists = null;
-        importedShoppingLists.clearInstance();
+        if(importedShoppingLists != null) {
+            importedShoppingLists.clearInstance();
+        }
     }
 
 

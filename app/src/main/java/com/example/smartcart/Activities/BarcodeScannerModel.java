@@ -217,12 +217,13 @@ public class BarcodeScannerModel extends BaseActivity {
         if(!allowScan){
             return;
         }
-        if(currentShoppingList.containsItem(id)){
-            currentShoppingList.markItem(id);
-            scannedProduct = currentShoppingList.getItemById(id).getProduct();
-            ProductFoundPopup();
-            return;
-        }
+//        ProductFoundPopup();
+//        if(currentShoppingList.containsItem(id)){
+//            currentShoppingList.markItem(id);
+//            scannedProduct = currentShoppingList.getItemById(id).getProduct();
+//            ProductFoundPopup();
+//            return;
+//        }
         allowScan = false;
         scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         database.getProduct(id, new CallBack<Map<String, Object>>() {
@@ -231,7 +232,8 @@ public class BarcodeScannerModel extends BaseActivity {
                 if(value != null){
                     scannedProduct = new Product(value.get("name").toString(), value.get("id").toString() , value.get("price").toString());
                     if(currentShoppingList.containsItem(id)){
-                        currentShoppingList.markItem(id);
+//                        currentShoppingList.markItem(id);
+                        scannedProduct = currentShoppingList.getItemById(id).getProduct();
                     }
                     ProductFoundPopup();
 
