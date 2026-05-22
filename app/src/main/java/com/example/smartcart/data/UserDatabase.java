@@ -29,12 +29,10 @@ import java.util.Map;
 
 public class UserDatabase {
     private FirebaseFirestore Database;
-    private DocumentReference DocRef;
     private CollectionReference ColRef;
     private CurrentUser currentUser;
     private autenticationHandler authHandler;
     private ProductDatabase productDatabase;
-    private ImportedShoppingLists importedShoppingLists;
 
     public UserDatabase() {
         Database = FirebaseFirestore.getInstance();
@@ -42,7 +40,6 @@ public class UserDatabase {
         currentUser = CurrentUser.getInstance();
         authHandler = new autenticationHandler();
         productDatabase = new ProductDatabase();
-        importedShoppingLists = ImportedShoppingLists.getInstance();
 
     }
 
@@ -69,6 +66,10 @@ public class UserDatabase {
         authHandler.login(email , password , new CallBack<FirebaseUser>() {
             @Override
             public void onCallBack(FirebaseUser firebaseUser) {
+                if(firebaseUser == null){
+                    callBack.onCallBack(false);
+                    return;
+                }
                 ColRef.document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -157,7 +158,6 @@ public class UserDatabase {
     }
 
     public void addUser() {
-
         ColRef.add(currentUser.exportCurrentUserToDB());
     }
 

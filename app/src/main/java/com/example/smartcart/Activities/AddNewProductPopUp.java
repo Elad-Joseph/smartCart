@@ -69,7 +69,6 @@ public class AddNewProductPopUp extends DialogFragment {
 
     private OnPopupStopListener stopListener;
 
-    // 2. Method to set the listener from the Activity
     public void setOnPopupStopListener(OnPopupStopListener listener) {
         this.stopListener = listener;
     }
@@ -77,7 +76,6 @@ public class AddNewProductPopUp extends DialogFragment {
     @Override
     public void onDismiss(@NonNull android.content.DialogInterface dialog) {
         super.onDismiss(dialog);
-        // 3. Notify the Activity that we stopped
         if (stopListener != null) {
             stopListener.onPopupStopped();
         }
@@ -86,7 +84,6 @@ public class AddNewProductPopUp extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -146,10 +143,9 @@ public class AddNewProductPopUp extends DialogFragment {
                 AllowScan = true;
                 AllowScanButton.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    // Action 1: Change the button color
                     AllowScanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
 
-                    // Action 2: Update your boolean flag
+
                     AllowScan = false;
                 }, 1000);
             }
@@ -200,7 +196,6 @@ public class AddNewProductPopUp extends DialogFragment {
 
     private void initialiseDetectorsAndSources() {
 
-//        Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
 
         barcodeDetector = new BarcodeDetector.Builder(PopupView.getContext())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -208,7 +203,7 @@ public class AddNewProductPopUp extends DialogFragment {
 
         cameraSource = new CameraSource.Builder(PopupView.getContext(), barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true) //you should add this feature
+                .setAutoFocusEnabled(true)
                 .build();
 
         BarcodeScanner.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -219,12 +214,6 @@ public class AddNewProductPopUp extends DialogFragment {
                             PopupView.getContext(),
                             Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(BarcodeScanner.getHolder());
-                    } else {
-//                        ActivityCompat.requestPermissions(
-//                                ,
-//                                new String[]{Manifest.permission.CAMERA},
-//                                REQUEST_CAMERA_PERMISSION
-//                        );
                     }
 
                 } catch (IOException e) {

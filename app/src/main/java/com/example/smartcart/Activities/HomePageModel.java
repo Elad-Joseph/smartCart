@@ -17,7 +17,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
@@ -33,6 +35,7 @@ import com.example.smartcart.modle.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 
@@ -41,21 +44,14 @@ public class HomePageModel extends BaseActivity {
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
-    ImportedShoppingLists importedShoppingLists;
+    private ImportedShoppingLists importedShoppingLists;
     private recycleViewAdapterHomePage adapter;
-
-
-    private boolean doubleBackToExitPressedOnce;
-
-    ImageButton optionsButton;
-    TextView welcomeText;
-    MaterialTextView NumberOfListTextview;
-    MaterialButton addList;
-    LinearLayout listsLayout;
-    LinearLayout listContainer;
+    private ImageButton optionsButton;
+    private TextView welcomeText;
+    private MaterialTextView NumberOfListTextview;
+    private MaterialButton addList;
     private RecyclerView ListContainerRecyclerView;
 
-    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +68,50 @@ public class HomePageModel extends BaseActivity {
         currentUser = CurrentUser.getInstance();
         welcomeText.setText(welcomeText.getText().toString() + currentUser.getUsername());
 
-        setupDoubleBackExit();
 
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
         refreshLists();
 
-        WorkRequest workRequest = new OneTimeWorkRequest.Builder(NotificationsHandler.class)
-                .setInitialDelay(3, TimeUnit.SECONDS)
-                .build();
-        WorkManager.getInstance(this).enqueue(workRequest);
+            scheduleDailyNotification();
 
+    }
+    private void scheduleDailyNotification() {
+        int targetHour = 8;
+        int targetMinute = 0;
+
+        Calendar currentDate = Calendar.getInstance();
+        Calendar dueDate = Calendar.getInstance();
+
+
+        dueDate.set(Calendar.HOUR_OF_DAY, targetHour);
+        dueDate.set(Calendar.MINUTE, targetMinute);
+        dueDate.set(Calendar.SECOND, 0);
+        dueDate.set(Calendar.MILLISECOND, 0);
+
+
+        if (dueDate.before(currentDate)) {
+            dueDate.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+
+        long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
+
+
+        PeriodicWorkRequest dailyWorkRequest = new PeriodicWorkRequest.Builder(
+                NotificationsHandler.class,
+                24, TimeUnit.HOURS
+        )
+                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                .build();
+
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "DailyNotificationWork",
+                ExistingPeriodicWorkPolicy.UPDATE,
+                dailyWorkRequest
+        );
     }
 
     @Override

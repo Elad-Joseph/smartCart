@@ -64,7 +64,7 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                FilteredDataSet.clear(); // Clear the old filtered list
+                FilteredDataSet.clear();
                 if (results.values != null) {
                     FilteredDataSet.addAll((ArrayList<Product>) results.values);
                 }
@@ -75,8 +75,6 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
     @NonNull
     @Override
     public RecycleViewAdapterAddItem.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Replace R.layout.shopping_list_item with the actual layout file that contains
-        // ListButton, ListHeader and ListOptionsButton.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_row_additem_popup, parent, false);
         return new RecycleViewAdapterAddItem.ViewHolder(view);
@@ -84,7 +82,6 @@ public class RecycleViewAdapterAddItem extends RecyclerView.Adapter<RecycleViewA
 
     @Override
     public void onBindViewHolder(@NonNull RecycleViewAdapterAddItem.ViewHolder holder, int position) {
-        // ALWAYS use FilteredDataSet here
         Product product = FilteredDataSet.get(position);
 
         holder.ProductNameDisplay.setText(product.getName());

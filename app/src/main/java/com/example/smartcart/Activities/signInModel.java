@@ -20,7 +20,7 @@ public class signInModel extends BaseActivity {
 
     private CurrentUser currentUser;
 
-    UserDatabase userDatabase;
+    private UserDatabase userDatabase;
 
     private Button ToLogin;
     private Button register;
@@ -79,7 +79,7 @@ public class signInModel extends BaseActivity {
         String usernameText = username.getText().toString().trim();
         String emailText = email.getText().toString().trim();
 
-        if (passwordText != "" && usernameText != "" && emailText != "") {
+        if (passwordText.isEmpty() && usernameText.isEmpty()&& emailText.isEmpty()) {
             if (passwordText.equals(confirmPasswordText)) {
 
                 currentUser.setUsername(usernameText);
@@ -99,10 +99,7 @@ public class signInModel extends BaseActivity {
                         }
                     }
                 });
-
-
             }
-
         }
     }
 }

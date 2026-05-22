@@ -51,7 +51,6 @@ public class ListDisplayModel extends BaseActivity {
     private ListDatabase listDatabase;
     private UserDatabase userDatabase;
     private ProductDatabase productDatabase;
-    private CallBack<Product> callBack;
 
     private ImportedShoppingLists importedShoppingLists;
     private ShoppingList currentShoppingList;
@@ -60,11 +59,11 @@ public class ListDisplayModel extends BaseActivity {
 
     private CurrentUser currentUser;
 
-    ImageButton scanItemsButton;
-    MaterialTextView listNameTextView;
-    ImageButton optionsButton;
-    ImageButton addItemButton;
-    ImageButton GoToHomePageButton;
+    private ImageButton scanItemsButton;
+    private MaterialTextView listNameTextView;
+    private ImageButton optionsButton;
+    private ImageButton addItemButton;
+    private ImageButton GoToHomePageButton;
     private RecyclerView ItemContainerRecyclerView;
 
 
@@ -185,6 +184,9 @@ public class ListDisplayModel extends BaseActivity {
                     Toast.makeText(ListDisplayModel.this,"List Deleted:"+ currentUser.getEmail() + " " + currentShoppingList.getId() , Toast.LENGTH_SHORT).show();
                     return true;
                 }
+                else if(itemId == R.id.hideList){
+
+                }
                 return false;
             }
         });
@@ -203,8 +205,6 @@ public class ListDisplayModel extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-//        AddItemBottomSheet addItemBottomSheet = new AddItemBottomSheet();
-//        addItemBottomSheet.show(getSupportFragmentManager(), "AddItemBottomSheet");
 
         EditText itemAmountEditText = view.findViewById(R.id.add_item_amount);
         ImageButton addAmount = view.findViewById(R.id.add_item_addAmount);

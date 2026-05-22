@@ -4,7 +4,7 @@ package com.example.smartcart.modle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-// addlist , removelist , getlists , getlistbyid
+
 public class ImportedShoppingLists extends ArrayList<ShoppingList>{
 
     private static ImportedShoppingLists instance;

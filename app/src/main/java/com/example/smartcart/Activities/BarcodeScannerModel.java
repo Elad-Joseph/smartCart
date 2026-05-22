@@ -150,15 +150,13 @@ public class BarcodeScannerModel extends BaseActivity {
 
     private void initialiseDetectorsAndSources() {
 
-//        Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
-
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true) //you should add this feature
+                .setAutoFocusEnabled(true)
                 .build();
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -217,13 +215,6 @@ public class BarcodeScannerModel extends BaseActivity {
         if(!allowScan){
             return;
         }
-//        ProductFoundPopup();
-//        if(currentShoppingList.containsItem(id)){
-//            currentShoppingList.markItem(id);
-//            scannedProduct = currentShoppingList.getItemById(id).getProduct();
-//            ProductFoundPopup();
-//            return;
-//        }
         allowScan = false;
         scanButton.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         database.getProduct(id, new CallBack<Map<String, Object>>() {
@@ -232,7 +223,6 @@ public class BarcodeScannerModel extends BaseActivity {
                 if(value != null){
                     scannedProduct = new Product(value.get("name").toString(), value.get("id").toString() , value.get("price").toString());
                     if(currentShoppingList.containsItem(id)){
-//                        currentShoppingList.markItem(id);
                         scannedProduct = currentShoppingList.getItemById(id).getProduct();
                     }
                     ProductFoundPopup();
@@ -240,7 +230,7 @@ public class BarcodeScannerModel extends BaseActivity {
                 } else {
                     scannedProduct = new Product("UNKNOWN" , id ,"NULL");
                     ProductFoundPopup();
-//
+
                 }
             }
         });

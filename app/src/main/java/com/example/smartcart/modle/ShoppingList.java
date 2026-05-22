@@ -1,4 +1,4 @@
-// java
+
 package com.example.smartcart.modle;
 
 
@@ -35,28 +35,20 @@ public class ShoppingList extends ArrayList<Item> {
 
     private String Name;
     private String Id;
-    private int Hadderid;
-    private int EditButtonid;
 
     public ShoppingList() {
         this.Name = "";
         this.Id = UUID.randomUUID().toString();
-        this.Hadderid = UUID.randomUUID().hashCode();
-        this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(String name) {
         this.Name = name;
         this.Id = UUID.randomUUID().toString();
-        this.Hadderid = UUID.randomUUID().hashCode();
-        this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ShoppingList(String name, String id) {
         this.Name = name;
         this.Id = id;
-        this.Hadderid = UUID.randomUUID().hashCode();
-        this.EditButtonid = UUID.randomUUID().hashCode();
     }
 
     public ArrayList<Item> getAllItems() {

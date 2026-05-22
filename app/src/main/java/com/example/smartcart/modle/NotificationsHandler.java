@@ -40,8 +40,8 @@ public class NotificationsHandler extends Worker {
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId)
-                .setContentTitle("Work Completed")
-                .setContentText("Your background task is finished!")
+                .setContentTitle("SmartCart Reminder")
+                .setContentText("come and check your shopping list")
                 .setSmallIcon(android.R.drawable.ic_dialog_info);
 
 

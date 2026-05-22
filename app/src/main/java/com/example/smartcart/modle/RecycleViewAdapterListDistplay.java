@@ -17,7 +17,7 @@ import com.example.smartcart.data.UserDatabase;
 
 import java.util.ArrayList;
 
-// CHANGE 1: Extend the base RecyclerView.ViewHolder to allow multiple types
+
 public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Item> DataSet;
@@ -63,7 +63,6 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         }
     }
 
-    // CHANGE 2: Use "instanceof" to cast the holder to the correct type
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MultipleItemsViewHolder) {
@@ -73,13 +72,13 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         }
     }
 
-    // CHANGE 3: Parameter type is now specifically SingleItemsViewHolder
+
     public void bindSingleItemViewHolder(@NonNull SingleItemsViewHolder holder, int position) {
         Item item = DataSet.get(position);
 
         holder.ItemNameDisplay.setText(item.getName());
 
-        // Reset listener before setting state to prevent bugs during recycling
+
         holder.ItemCheckbox.setOnCheckedChangeListener(null);
         holder.ItemCheckbox.setChecked(item.getChecked());
 
@@ -100,7 +99,7 @@ public class RecycleViewAdapterListDistplay extends RecyclerView.Adapter<Recycle
         });
     }
 
-    // CHANGE 4: Parameter type is now specifically MultipleItemsViewHolder
+
     public void bindMultipleItemsViewHolder(@NonNull MultipleItemsViewHolder holder, int position) {
         Item item = DataSet.get(position);
 

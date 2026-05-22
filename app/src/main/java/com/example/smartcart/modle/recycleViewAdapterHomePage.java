@@ -36,8 +36,6 @@ public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Replace R.layout.shopping_list_item with the actual layout file that contains
-        // ListButton, ListHeader and ListOptionsButton.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_homepage, parent, false);
         return new ViewHolder(view);
@@ -48,10 +46,6 @@ public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleView
         ShoppingList shoppingList = DataSet.get(position);
         String currentName = shoppingList.getName();
 
-//        Idk what is this
-//        if (holder.ListButton != null) {
-//            holder.ListButton.setText(currentName);
-//        }
         if (holder.ListHeader != null) {
             holder.ListHeader.setText(currentName);
         }

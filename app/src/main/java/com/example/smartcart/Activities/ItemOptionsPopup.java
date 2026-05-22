@@ -68,7 +68,7 @@ public class ItemOptionsPopup extends DialogFragment {
 
     private ItemOptionsPopup.OnPopupStopListener stopListener;
 
-    // 2. Method to set the listener from the Activity
+
     public void setOnPopupStopListener(ItemOptionsPopup.OnPopupStopListener listener) {
         this.stopListener = listener;
     }
@@ -76,7 +76,6 @@ public class ItemOptionsPopup extends DialogFragment {
     @Override
     public void onDismiss(@NonNull android.content.DialogInterface dialog) {
         super.onDismiss(dialog);
-        // 3. Notify the Activity that we stopped
         if (stopListener != null) {
             stopListener.onPopupStopped();
         }

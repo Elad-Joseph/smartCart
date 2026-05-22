@@ -19,7 +19,6 @@ public class CurrentUser {
     private String FriendsIds;
     private ArrayList<Map<String , Object>> importedLists;
     private ImportedShoppingLists importedShoppingLists;
-    private UserDatabase userDatabase;
     private ArrayList<Product> recommendedProducts;
 
 
