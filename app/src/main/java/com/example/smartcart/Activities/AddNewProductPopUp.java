@@ -171,7 +171,7 @@ public class AddNewProductPopUp extends DialogFragment {
                             @Override
                             public void onCallBack(Boolean value) {
                                 if(value){
-                                    Toast.makeText(PopupView.getContext() , "product allready exists" , Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PopupView.getContext() , "product already exists" , Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     Product product = new Product(productName , productId , productPrice);

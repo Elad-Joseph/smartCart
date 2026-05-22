@@ -181,7 +181,7 @@ public class ListDisplayModel extends BaseActivity {
                             finish();
                         }
                     });
-                    Toast.makeText(ListDisplayModel.this,"List Deleted:"+ currentUser.getEmail() + " " + currentShoppingList.getId() , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListDisplayModel.this,"List Deleted: "+ currentShoppingList.getName() , Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 else if(itemId == R.id.hideList){
@@ -256,7 +256,7 @@ public class ListDisplayModel extends BaseActivity {
                 itemAmountEditText.setText(String.valueOf(itemAmount));
             }
             else{
-                Toast.makeText(view.getContext() , "cant be a negative number" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext() , "cant be less then one" , Toast.LENGTH_SHORT).show();
             }
         });
 

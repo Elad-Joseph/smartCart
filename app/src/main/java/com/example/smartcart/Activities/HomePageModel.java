@@ -204,7 +204,7 @@ public class HomePageModel extends BaseActivity {
                 listDatabase.addList(newList);
                 userDatabase.updateUser();
                 refreshLists();
-                Toast.makeText(this, "List added: " + listName +" "+ currentUser.getPassword(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "List added: " + listName, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             } else {
                 editTextListName.setError("Enter a name");
