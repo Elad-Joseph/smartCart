@@ -1,20 +1,17 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.UserDatabase;
 import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.User;
 
 public class signInModel extends BaseActivity {
 

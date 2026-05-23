@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +17,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
@@ -139,7 +136,7 @@ public class HomePageModel extends BaseActivity {
     public void SetUpRecyclerView() {
         ListContainerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. Set the Adapter
+
         adapter = new recycleViewAdapterHomePage();
         ListContainerRecyclerView.setAdapter(adapter);
     }

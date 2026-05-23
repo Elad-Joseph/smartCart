@@ -1,6 +1,5 @@
 package com.example.smartcart.data;
 
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

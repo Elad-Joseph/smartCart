@@ -1,7 +1,6 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,8 +9,6 @@ import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +19,6 @@ import android.Manifest;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.smartcart.data.CallBack;
@@ -38,7 +34,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class BarcodeScannerModel extends BaseActivity {

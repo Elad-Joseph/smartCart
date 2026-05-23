@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
-// BaseActivity.java
+
 public abstract class BaseActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
 
@@ -16,7 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 if (doubleBackToExitPressedOnce) {
-                    finishAffinity(); // Closes all activities in the task
+                    finishAffinity();
                     return;
                 }
                 doubleBackToExitPressedOnce = true;

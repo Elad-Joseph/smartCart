@@ -1,29 +1,21 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +24,6 @@ import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.ProductDatabase;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.AddItemBottomSheet;
 import com.example.smartcart.modle.CurrentUser;
 import com.example.smartcart.modle.ImportedShoppingLists;
 import com.example.smartcart.modle.Item;
@@ -40,8 +31,6 @@ import com.example.smartcart.modle.Product;
 import com.example.smartcart.modle.RecycleViewAdapterAddItem;
 import com.example.smartcart.modle.RecycleViewAdapterListDistplay;
 import com.example.smartcart.modle.ShoppingList;
-import com.example.smartcart.modle.recycleViewAdapterHomePage;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;

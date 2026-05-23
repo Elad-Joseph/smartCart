@@ -2,8 +2,6 @@
 package com.example.smartcart.modle;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ImportedShoppingLists extends ArrayList<ShoppingList>{
 

@@ -1,15 +1,5 @@
 package com.example.smartcart.modle;
 
-import android.content.Context;
-import android.view.Gravity;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.example.smartcart.R;
 
 import java.util.HashMap;
 import java.util.Map;

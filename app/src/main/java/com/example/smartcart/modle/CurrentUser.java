@@ -1,13 +1,9 @@
 package com.example.smartcart.modle;
 
-import android.provider.ContactsContract;
-import android.util.Log;
 
-import com.example.smartcart.data.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CurrentUser {

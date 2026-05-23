@@ -29,9 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-<!--        <activity android:name=".loginModel"/>-->
-
         <activity android:name=".Activities.signInModel"/>
 
         <activity android:name=".Activities.HomePageModel" android:supportsRtl="true"/>

@@ -1,7 +1,6 @@
 package com.example.smartcart.modle;
 
 
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.smartcart.Activities.ListDisplayModel;
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
