@@ -88,6 +88,10 @@ public class loginModel extends  BaseActivity {
     }
 
     public void loginConfirmation(String email , String password){
+        if(email.isEmpty() || password.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         userDatabase.loginUser(email , password , new CallBack<>() {
             @Override

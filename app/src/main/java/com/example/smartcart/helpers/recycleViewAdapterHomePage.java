@@ -1,4 +1,4 @@
-package com.example.smartcart.modle;
+package com.example.smartcart.helpers;
 
 
 import android.app.Activity;
@@ -66,14 +66,14 @@ public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleView
             });
         }
 
-        if (holder.OptionsButton != null) {
-            holder.OptionsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Implement options button functionality here
-                }
-            });
-        }
+//        if (holder.OptionsButton != null) {
+//            holder.OptionsButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Implement options button functionality here
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -84,13 +84,13 @@ public class recycleViewAdapterHomePage extends RecyclerView.Adapter<recycleView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView ListHeader;
         private MaterialButton ListButton;
-        private ImageButton OptionsButton;
+//        private ImageButton OptionsButton;
 
         public ViewHolder(View view) {
             super(view);
             ListButton = view.findViewById(R.id.ListButton);
             ListHeader = view.findViewById(R.id.ListHeader);
-            OptionsButton = view.findViewById(R.id.ListOptionsButton);
+//            OptionsButton = view.findViewById(R.id.ListOptionsButton);
         }
     }
 }

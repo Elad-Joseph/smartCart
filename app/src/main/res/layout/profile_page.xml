@@ -24,12 +24,12 @@
             android:backgroundTint="@color/black"
             />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profilePictureProfilePage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:background="@drawable/joni" />
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/profilePictureProfilePage"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/joni" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,32 +49,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editUsernameButton"
-                android:layout_width="75dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                app:icon="@drawable/baseline_edit_square"
-                app:iconTint="@color/black"
-                app:iconSize="30dp"
-                android:background="@android:color/transparent"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/emailProfilePage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:inputType="textEmailAddress"
-                android:hint="Email"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/editEmailButton"
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"

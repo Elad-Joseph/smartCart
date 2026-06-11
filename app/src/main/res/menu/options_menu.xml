@@ -9,10 +9,10 @@
         android:title="sigh out"
         android:id="@+id/sighOut"
         />
-    <item
-        android:title="friends list"
-        android:id="@+id/toFriendsList"
-        />
+<!--    <item-->
+<!--        android:title="friends list"-->
+<!--        android:id="@+id/toFriendsList"-->
+<!--        />-->
     <item
         android:title="new product"
         android:id="@+id/HomePageNewProduct"

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.smartcart.modle.User;
+import com.example.smartcart.helpers.User;
 
 public class UserViewModel extends ViewModel {
     private MutableLiveData<User> user = new MutableLiveData<>();

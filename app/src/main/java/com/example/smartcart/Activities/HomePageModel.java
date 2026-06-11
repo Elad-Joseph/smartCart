@@ -1,6 +1,7 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,28 +17,23 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.ImportedShoppingLists;
-import com.example.smartcart.modle.NotificationsHandler;
-import com.example.smartcart.modle.ShoppingList;
-import com.example.smartcart.modle.recycleViewAdapterHomePage;
+import com.example.smartcart.helpers.CurrentUser;
+import com.example.smartcart.helpers.ImportedShoppingLists;
+import com.example.smartcart.helpers.NotificationsHandler;
+import com.example.smartcart.helpers.ShoppingList;
+import com.example.smartcart.helpers.recycleViewAdapterHomePage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 
 public class HomePageModel extends BaseActivity {
-
+    private SharedPreferences sharedPreferences;
     private UserDatabase userDatabase;
     private ListDatabase listDatabase;
     private CurrentUser currentUser;
@@ -69,46 +65,18 @@ public class HomePageModel extends BaseActivity {
         importedShoppingLists = ImportedShoppingLists.getInstance();
         userDatabase = new UserDatabase();
         listDatabase = new ListDatabase();
+        sharedPreferences = getSharedPreferences("smartCart", MODE_PRIVATE);
         refreshLists();
 
-            scheduleDailyNotification();
-
-    }
-    private void scheduleDailyNotification() {
-        int targetHour = 8;
-        int targetMinute = 0;
-
-        Calendar currentDate = Calendar.getInstance();
-        Calendar dueDate = Calendar.getInstance();
-
-
-        dueDate.set(Calendar.HOUR_OF_DAY, targetHour);
-        dueDate.set(Calendar.MINUTE, targetMinute);
-        dueDate.set(Calendar.SECOND, 0);
-        dueDate.set(Calendar.MILLISECOND, 0);
-
-
-        if (dueDate.before(currentDate)) {
-            dueDate.add(Calendar.DAY_OF_MONTH, 1);
+        boolean activateNodification = sharedPreferences.getBoolean("notifications_enabled", false);
+        if(activateNodification){
+            NotificationsHandler.schedule(getApplicationContext());
+        }
+        else {
+            NotificationsHandler.cancel(getApplicationContext());
         }
 
 
-        long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
-
-
-        PeriodicWorkRequest dailyWorkRequest = new PeriodicWorkRequest.Builder(
-                NotificationsHandler.class,
-                24, TimeUnit.HOURS
-        )
-                .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-                .build();
-
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "DailyNotificationWork",
-                ExistingPeriodicWorkPolicy.UPDATE,
-                dailyWorkRequest
-        );
     }
 
     @Override
@@ -163,10 +131,10 @@ public class HomePageModel extends BaseActivity {
                     startActivity(intent);
                     finish();
                 }
-                else if (item.getItemId() == R.id.toFriendsList) {
-                    Intent intent = new Intent(HomePageModel.this, FriendsListModel.class);
-                    startActivity(intent);
-                }
+//                else if (item.getItemId() == R.id.toFriendsList) {
+//                    Intent intent = new Intent(HomePageModel.this, FriendsListModel.class);
+//                    startActivity(intent);
+//                }
                 else if (item.getItemId() == R.id.HomePageNewProduct) {
                     AddNewProductPopUp newProductPopUp = new AddNewProductPopUp();
                     newProductPopUp.show(getSupportFragmentManager() , "new product");

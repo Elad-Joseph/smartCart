@@ -24,13 +24,13 @@ import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.ProductDatabase;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.ImportedShoppingLists;
-import com.example.smartcart.modle.Item;
-import com.example.smartcart.modle.Product;
-import com.example.smartcart.modle.RecycleViewAdapterAddItem;
-import com.example.smartcart.modle.RecycleViewAdapterListDistplay;
-import com.example.smartcart.modle.ShoppingList;
+import com.example.smartcart.helpers.CurrentUser;
+import com.example.smartcart.helpers.ImportedShoppingLists;
+import com.example.smartcart.helpers.Item;
+import com.example.smartcart.helpers.Product;
+import com.example.smartcart.helpers.RecycleViewAdapterAddItem;
+import com.example.smartcart.helpers.RecycleViewAdapterListDistplay;
+import com.example.smartcart.helpers.ShoppingList;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -54,6 +54,7 @@ public class ListDisplayModel extends BaseActivity {
     private ImageButton addItemButton;
     private ImageButton GoToHomePageButton;
     private RecyclerView ItemContainerRecyclerView;
+    private MaterialTextView ListstatusTextView;
 
 
     @Override
@@ -105,6 +106,7 @@ public class ListDisplayModel extends BaseActivity {
         addItemButton = findViewById(R.id.addItemButton);
         GoToHomePageButton = findViewById(R.id.listDisplayToHomePage);
         ItemContainerRecyclerView = findViewById(R.id.itemRecyclerView);
+        ListstatusTextView = findViewById(R.id.listStatusDisplay);
     }
 
     @Override
@@ -173,9 +175,9 @@ public class ListDisplayModel extends BaseActivity {
                     Toast.makeText(ListDisplayModel.this,"List Deleted: "+ currentShoppingList.getName() , Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                else if(itemId == R.id.hideList){
-
-                }
+//                else if(itemId == R.id.hideList){
+//
+//                }
                 return false;
             }
         });
@@ -187,7 +189,6 @@ public class ListDisplayModel extends BaseActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Inflate the custom layout
         View view = LayoutInflater.from(this).inflate(R.layout.popup_add_item, null);
         builder.setView(view);
 
@@ -275,5 +276,6 @@ public class ListDisplayModel extends BaseActivity {
 
     public void refreshItemList(){
         adapter.refreshDataSet();
+        ListstatusTextView.setText("number of items:\n " + currentShoppingList.size());
     }
 }

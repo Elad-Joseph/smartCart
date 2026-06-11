@@ -1,4 +1,4 @@
-package com.example.smartcart.modle;
+package com.example.smartcart.helpers;
 
 
 import android.Manifest;
@@ -11,10 +11,14 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 
 public class NotificationsHandler extends Worker {
@@ -69,6 +73,39 @@ public class NotificationsHandler extends Worker {
         }
         return true;
     }
+
+    public static void schedule(Context context) {
+        Calendar now = Calendar.getInstance();
+        Calendar nextNotificationTime = Calendar.getInstance();
+        nextNotificationTime.set(Calendar.HOUR_OF_DAY, 8);
+        nextNotificationTime.set(Calendar.MINUTE, 0);
+        nextNotificationTime.set(Calendar.SECOND, 0);
+
+        if(nextNotificationTime.before(now)) {
+            nextNotificationTime.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        long delay = nextNotificationTime.getTimeInMillis() - now.getTimeInMillis();
+
+        PeriodicWorkRequest notificationWork = new PeriodicWorkRequest.Builder(NotificationsHandler.class, 1, TimeUnit.DAYS)
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                "DailyNotificationWork",
+                ExistingPeriodicWorkPolicy.KEEP,
+                notificationWork
+        );
+
+    }
+
+    public static void cancel(Context context) {
+        WorkManager.getInstance(context).cancelUniqueWork("DailyNotificationWork");
+    }
+
+
+
+
 
 
 

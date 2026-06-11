@@ -1,4 +1,4 @@
-package com.example.smartcart.modle;
+package com.example.smartcart.helpers;
 
 
 import android.view.LayoutInflater;

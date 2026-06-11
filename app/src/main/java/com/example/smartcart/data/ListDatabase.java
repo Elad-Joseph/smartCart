@@ -4,11 +4,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.ImportedShoppingLists;
-import com.example.smartcart.modle.Item;
-import com.example.smartcart.modle.Product;
-import com.example.smartcart.modle.ShoppingList;
+import com.example.smartcart.helpers.CurrentUser;
+import com.example.smartcart.helpers.ImportedShoppingLists;
+import com.example.smartcart.helpers.Item;
+import com.example.smartcart.helpers.Product;
+import com.example.smartcart.helpers.ShoppingList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;

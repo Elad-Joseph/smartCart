@@ -4,7 +4,7 @@
     <item
         android:id="@+id/deleteList"
         android:title="delete list" />
-    <item
-        android:id="@+id/hideList"
-        android:title="hide list" />
+<!--    <item-->
+<!--        android:id="@+id/hideList"-->
+<!--        android:title="hide list" />-->
 </menu>

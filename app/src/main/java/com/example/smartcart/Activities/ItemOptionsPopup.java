@@ -21,10 +21,10 @@ import androidx.fragment.app.DialogFragment;
 import com.example.smartcart.R;
 import com.example.smartcart.data.ListDatabase;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.ImportedShoppingLists;
-import com.example.smartcart.modle.Item;
-import com.example.smartcart.modle.ShoppingList;
+import com.example.smartcart.helpers.CurrentUser;
+import com.example.smartcart.helpers.ImportedShoppingLists;
+import com.example.smartcart.helpers.Item;
+import com.example.smartcart.helpers.ShoppingList;
 import com.google.android.material.button.MaterialButton;
 
 public class ItemOptionsPopup extends DialogFragment {

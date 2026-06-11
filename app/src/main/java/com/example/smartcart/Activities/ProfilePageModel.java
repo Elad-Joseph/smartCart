@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.CurrentUser;
-import com.example.smartcart.modle.NotificationsHandler;
+import com.example.smartcart.helpers.CurrentUser;
+import com.example.smartcart.helpers.NotificationsHandler;
 import com.google.android.material.button.MaterialButton;
 
 public class ProfilePageModel extends BaseActivity {
@@ -31,11 +31,7 @@ public class ProfilePageModel extends BaseActivity {
     private MaterialButton changeUsernameButton;
     private EditText changeUsernameEditText;
 
-    private MaterialButton changePasswordButton;
-    private EditText changePasswordEditText;
 
-    private MaterialButton changeEmailButton;
-    private EditText changeEmailEditText;
 
     private MaterialButton saveChangesButton;
     private boolean DoubleclickSaveChangesButton = false;
@@ -71,14 +67,10 @@ public class ProfilePageModel extends BaseActivity {
         changeUsernameEditText = findViewById(R.id.usernameProfilePage);
         changeUsernameEditText.setText(currentUser.getUsername());
 
-        changeEmailEditText = findViewById(R.id.emailProfilePage);
-        changeEmailButton = findViewById(R.id.editEmailButton);
-        changeUsernameEditText.setText(currentUser.getEmail());
-
         saveChangesButton = findViewById(R.id.saveChangesButton);
 
         notificationsSwitch = findViewById(R.id.userNotificationsSwitch);
-        notificationsSwitch.setChecked(sharedPreferences.getBoolean("notificationState", false));
+        notificationsSwitch.setChecked(sharedPreferences.getBoolean("notifications_enabled", false));
 
         ToHomePageButton = findViewById(R.id.backButtonProfilePage);
     }
@@ -86,8 +78,14 @@ public class ProfilePageModel extends BaseActivity {
     @Override
     protected void SetupListeners() {
         notificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                editor.putBoolean("notificationState" , notificationsSwitch.isEnabled());
-                editor.apply();
+            editor.putBoolean("notifications_enabled", isChecked);
+            editor.apply();
+            if(isChecked){
+                NotificationsHandler.schedule(getApplicationContext());
+            }
+            else {
+                NotificationsHandler.cancel(getApplicationContext());
+            }
         });
 
 
@@ -103,17 +101,6 @@ public class ProfilePageModel extends BaseActivity {
             }
         });
 
-        changeEmailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(changeEmailEditText.isEnabled()){
-                    changeEmailEditText.setEnabled(false);
-                }
-                else{
-                    changeEmailEditText.setEnabled(true);
-                }
-            }
-        });
 
         saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +127,6 @@ public class ProfilePageModel extends BaseActivity {
     }
 
     private void saveChanges(){
-        currentUser.setEmail(changeEmailEditText.getText().toString());
         currentUser.setUsername(changeUsernameEditText.getText().toString());
 
         userDatabase.updateUser();

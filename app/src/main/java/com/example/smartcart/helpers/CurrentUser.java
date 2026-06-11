@@ -1,4 +1,4 @@
-package com.example.smartcart.modle;
+package com.example.smartcart.helpers;
 
 
 
@@ -35,7 +35,7 @@ public class CurrentUser {
     public void setRecommendedProducts(ArrayList<Map<String , Object>> recommendedProducts) {
         ArrayList<Product> productList = new ArrayList<>();
         for(Map<String , Object> product : recommendedProducts){
-            productList.add(new Product(product.get("name").toString() , product.get("id").toString() , "0"));
+            productList.add(new Product(product.get("name").toString() , product.get("id").toString() , product.get("price").toString()));
         }
         this.recommendedProducts = productList;
     }

@@ -1,23 +1,26 @@
 package com.example.smartcart.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.UserDatabase;
-import com.example.smartcart.modle.CurrentUser;
+import com.example.smartcart.helpers.CurrentUser;
 
 public class signInModel extends BaseActivity {
 
     private CurrentUser currentUser;
 
     private UserDatabase userDatabase;
+    private SharedPreferences sharedPreferences;
 
     private Button ToLogin;
     private Button register;
@@ -34,6 +37,7 @@ public class signInModel extends BaseActivity {
         currentUser = CurrentUser.getInstance();
 
         userDatabase = new UserDatabase();
+        sharedPreferences = getSharedPreferences("smartCart", MODE_PRIVATE);
 
         SetupIds();
         SetupListeners();
@@ -76,12 +80,13 @@ public class signInModel extends BaseActivity {
         String usernameText = username.getText().toString().trim();
         String emailText = email.getText().toString().trim();
 
-        if (passwordText.isEmpty() && usernameText.isEmpty()&& emailText.isEmpty()) {
+        if (!passwordText.isEmpty() && !usernameText.isEmpty()&& !emailText.isEmpty()) {
             if (passwordText.equals(confirmPasswordText)) {
 
                 currentUser.setUsername(usernameText);
                 currentUser.setEmail(emailText);
                 currentUser.setPassword(passwordText);
+                sharedPreferences.edit().putBoolean("notifications_enabled" , true).apply();
 
                 userDatabase.createNewUser(new CallBack<Boolean>() {
                     @Override
@@ -97,6 +102,9 @@ public class signInModel extends BaseActivity {
                     }
                 });
             }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
         }
     }
 }

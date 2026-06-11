@@ -29,7 +29,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.smartcart.R;
 import com.example.smartcart.data.CallBack;
 import com.example.smartcart.data.ProductDatabase;
-import com.example.smartcart.modle.Product;
+import com.example.smartcart.helpers.Product;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
